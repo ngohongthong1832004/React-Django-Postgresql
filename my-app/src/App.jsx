@@ -1,38 +1,28 @@
-import { useState } from 'react'
-import './App.css'
-import Header from './components/header'
+// import classNames from "classnames/bind";
+
+// import styles from  "./app.module.scss";
+import "./App.css";
+import Header from "./components/header";
+import Search from "./components/search";
+import Content from "./content";
+import TestRootPage from "./components/test";
+// import TestRootPage from "./components/test";
+// const cx = classNames.bind(styles);
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <Header />
 
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
+      <Search />
 
-      <h1 className="text-3xl font-bold underline">
-          Hello world!
-      </h1>
+      <Content />
 
-      <div className="grid grid-cols-4 gap-4">
-        <div>01</div>
-        <div>02</div>
-        <div>03</div>
-        <div>04</div>
-        <div>05</div>
-        <div>06</div>
-        <div>07</div>
-        <div>08</div>
-        <div>09</div>
-      </div>
-
+      {/* <TestRootPage /> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
