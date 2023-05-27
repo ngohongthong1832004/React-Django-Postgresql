@@ -5,8 +5,9 @@ const cx = classnames.bind(styles);
 
 const Search = function () {
   return (
-    <div className={cx("search")}>
+    <div className={cx("search","container mx-auto p-4")}>
       <input type="text" placeholder="Search" />
+      <button> Search </button>
     </div>
   );
 };

@@ -1,8 +1,13 @@
 .header {
-    display: flex;
-    justify-content: space-between;
+    background-color: var(--light-black);
 }
 
+
+.header__wrap__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .header__title{
     color: red;
 }

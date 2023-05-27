@@ -7,9 +7,8 @@ import { router } from "../router";
 const cx = classNames.bind(styles);
 
 const Content = () => {
-  console.log(router)
   return ( 
-    <div className={cx("content")}>
+    <div className={cx("content", "container mx-auto pt-5")}>
       <RouterProvider router={router}></RouterProvider>
     </div>
     )
