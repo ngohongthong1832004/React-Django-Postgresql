@@ -5,19 +5,14 @@ import Header from "./components/header";
 import Search from "./components/search";
 import Content from "./content";
 
-
-
 function App() {
-
   return (
     <>
-
       <Header />
 
       <Search />
 
       <Content />
-
     </>
   );
 }

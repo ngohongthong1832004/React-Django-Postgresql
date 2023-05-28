@@ -1,8 +1,11 @@
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Rubik+Puddles&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @config "../tailwind.config.js";
+
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -23,3 +26,6 @@
   margin: 0;
   box-sizing: border-box;
 }
+/* html {
+  font-size: 100%;
+} */

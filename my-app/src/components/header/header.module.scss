@@ -1,5 +1,5 @@
 .header {
-    background-color: var(--light-black);
+    background-color: var(--black);
 }
 
 
@@ -8,9 +8,22 @@
     justify-content: space-between;
     align-items: center;
 }
-.header__title{
-    color: red;
+.header__option {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 10rem;
 }
-.header__title--disable{
-    color: blue;
+.header__sidebar {
+    padding: 0.3rem 1rem 0.3rem 0rem;
+    cursor: pointer;
+}
+.header__logo{
+    position: absolute;
+    bottom: -1.1rem;
+    left: 5rem;
+    color: aqua;
+    font-family: "Rubik Puddles", cursive;
+    font-size: 2.8rem;
 }
