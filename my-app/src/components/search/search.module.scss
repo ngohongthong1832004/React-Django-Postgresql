@@ -12,7 +12,7 @@
     font-family: 'Dancing Script', cursive;
 }
 .search__wrap__input {
-    border: 1px solid var(--black);
+    box-shadow: 0px 2px 2px var(--black);
     background-color: var(--light-black);
     border-radius: 2rem;
     overflow: hidden;
@@ -20,15 +20,14 @@
 }
 .search__input {
    padding: 0.5rem 2rem 0.5rem  1rem;
-   font-size: 1.1rem;
    background-color: transparent;
    outline: none;
    border: none;
 }
 .search__input__wrap__option__btn {
     position: absolute;
-    bottom: calc(50% - 12px);
-    right: calc( 3rem + 0.5rem + 2px);
+    bottom: calc(50% - 0.8rem);
+    right: calc( 3rem + 0.5rem + 0.125rem);
 }
 .search__input__wrap__option__btn:hover {
     cursor: pointer;
@@ -47,18 +46,23 @@
 }
 .search__btn:hover {
     cursor: pointer;
+    background-color: var(--gray-2);
 }
 
 .search__wrap__voice {
-    margin: 0.5rem;
-    width: 3rem;
-    height: 3rem;
-    background-color: var(--gray);
-    display: flex;
-    place-content: center;
-    border-radius: 2rem;
-    cursor: pointer;
+       background-color: var(--gray);
+       display: flex;
+       place-content: center;
+       border-radius: 2rem;
+       box-shadow: 0px 2px 2px var(--black);
+       width: 2.5rem;
+       height: 2.5rem;
+       margin-left: 1.2rem;
 }
+.search__wrap__voice:hover {
+    cursor: pointer;
+    background-color: var(--gray-2);
 .search__voice__btn {
 
+}
 }

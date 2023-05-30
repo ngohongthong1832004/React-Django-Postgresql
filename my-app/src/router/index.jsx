@@ -1,21 +1,30 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import ErrorPage from "../components/errorPage";
+import HomeDefault from "../components/homeDefault";
+import HomeSearch from "../components/homeSearch";
+import HomeWishlist from "../components/homeWishlist";
+import HomeErrorSearch from "../components/homeErrorSearch";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: <HomeDefault />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "home",
-    element: <h1>home</h1>,
+    path: "search",
+    element: <HomeSearch />,
+    errorElement : <HomeErrorSearch />,
     children: [
       {
         path: "id/",
         element: <div>id children ne</div>,
       },
     ],
+  },
+  {
+    path: "wishlist",
+    element: <HomeWishlist />,
   },
 ]);
