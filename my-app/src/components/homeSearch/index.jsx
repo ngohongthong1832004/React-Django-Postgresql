@@ -10,15 +10,15 @@ const HomeSearch = () => {
 
     const [show, setShow] = useState(0)
 
-    useEffect(() => {
-        if (show <= 3) {
-            setTimeout(() => {
-                setShow(show + 1)
-            }, 1000)
-        }else {
-            setShow(0)
-        }
-    }, [show])
+    // useEffect(() => {
+    //     if (show <= 3) {
+    //         setTimeout(() => {
+    //             setShow(show + 1)
+    //         }, 1000)
+    //     }else {
+    //         setShow(0)
+    //     }
+    // }, [show])
 
     return (
         <div className={cx("homeSearch", "container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
@@ -26,18 +26,21 @@ const HomeSearch = () => {
                 <div className={cx("homeSearch__header__title")}>Kết quả tìm kiếm cho : transformer 6 </div>
             </div>
             <div className={cx("homeSearch__filter__wrap", "p-1.5")}>
-                <div className={cx("homeSearch__filter__wrap__item", "grid grid-cols-4 gap-4")}>
-                    <div className={cx(`homeSearch__filter__wrap__item__title${show === 0 ? "--active" : ""}`)}>
-                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Search with name</p>
+                <div className={cx("homeSearch__filter__wrap__item", "grid grid-cols-5 gap-5")}>
+                    <div className={cx(`homeSearch__filter__wrap__item__title${show === 0 ? "--active" : "--disable"}`)}>
+                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Name</p>
                     </div>
                     <div className={cx(`homeSearch__filter__wrap__item__title${show === 1 ? "--active" : ""}`)}>
-                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Search with genre</p>
+                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Genre</p>
                     </div>
                     <div className={cx(`homeSearch__filter__wrap__item__title${show === 2 ? "--active" : ""}`)}>
-                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Search with cast</p>
+                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Cast</p>
                     </div>
                     <div className={cx(`homeSearch__filter__wrap__item__title${show === 3 ? "--active" : ""}`)}>
-                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Search with director</p>
+                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Director</p>
+                    </div>
+                    <div className={cx(`homeSearch__filter__wrap__item__title${show === 3 ? "--active" : ""}`)}>
+                        <p className={cx("homeSearch__filter__wrap__item__title__text")}>Your think</p>
                     </div>
                 </div>
             </div>

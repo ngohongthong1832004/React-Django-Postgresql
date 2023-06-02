@@ -28,6 +28,10 @@
       @extend .homeSearch__filter__wrap__item__title;
       background-color: var(--gray-2);
     }
+    &--disable {
+      @extend .homeSearch__filter__wrap__item__title;
+      display: none;
+    }
   }
 .homeSearch__filter__wrap__item__title__text {
     
