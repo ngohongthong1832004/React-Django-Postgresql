@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import imgs from "../../assets";
 import styles from "./header.module.scss";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +22,7 @@ const Header = () => {
             </button>
           </div>
           <div className={cx("header__logo")}>
-            <h1>3Trees</h1>
+            <h1><a href={"/"}>3Trees</a></h1>
           </div>
         </div>
         
