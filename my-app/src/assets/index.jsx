@@ -1,9 +1,7 @@
-import imgUser from './img/Anonymous_emblem.svg.png';
-
+import imgUser from "./img/Anonymous_emblem.svg.png";
 
 const imgs = {
-    imgUser
-}
-
+  imgUser,
+};
 
 export default imgs;

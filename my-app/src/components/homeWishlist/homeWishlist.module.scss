@@ -31,9 +31,68 @@
     }
   }
 
-.item {
+  .item {
     background-color: var(--gray);
     box-shadow: 2px 2px 2px var(--black);
-    height: 13.5rem;
+    height: 15rem;
     border-radius: 1.5rem;
+    &:hover{
+      opacity: 0.9;
+      background-color: var(--gray-2);
+      cursor: pointer;
+    }
+  .item__img {
+    width: 100%;
+    height: 12rem;
+    border-radius: 1.5rem 1.5rem 0 0;
+    background-color: var(--gray-2);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 1.5rem 1.5rem 0 0;
+    }
+  }
+  .item__title {
+    padding: 0.2rem 1rem;
+    .item__title__text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0;
+      font-weight: 500;
+      text-overflow: ellipsis;
+      overflow: hidden; 
+      width: 100%; 
+      white-space: nowrap;
+      &:hover {
+        // color: var(--gray-5);
+      }
+    }
+    .item__title__text:last-child {
+      align-items: center;
+      margin-bottom: 0;
+      font-size: 0.7rem;
+      color: var(--gray-4);
+    }
+  }
+
 }
+
+
+.wishlist__footer__pagination__wrap {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .wishlist__footer__pagination__wrap__item {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      border-radius: 0.5rem;
+      background-color: var(--gray);
+      box-shadow: 2px 2px 2px var(--black);
+    }
+  
+    :hover{
+      cursor: pointer;
+      background-color: var(--gray-2);
+    }
+  }

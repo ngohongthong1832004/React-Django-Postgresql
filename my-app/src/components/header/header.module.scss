@@ -19,10 +19,31 @@
 .header__sidebar {
     padding: 0.3rem 1rem ;
     border-radius: 0.5rem;
+    position: relative;
     &:hover{
         cursor: pointer;
         background-color: var(--gray-2);
     }
+
+
+    .sidebar__modal {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: 0 ;
+        // background-color: rgba(99, 99, 99, 0.3);
+        width: 100vw;
+        height: 100vh;
+        z-index: 10;
+        .sidebar__modal__wrap {
+            background-color: var(--gray);
+            width: 10rem;
+            height: 100vh;
+        }
+    }
+
+
+
+
 }
 .header__logo{
     //disable select text

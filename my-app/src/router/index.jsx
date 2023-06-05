@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
   {
     path: "search",
     element: <HomeSearch />,
-    errorElement : <HomeErrorSearch />,
+    errorElement: <HomeErrorSearch />,
   },
   {
     path: "wishlist",
@@ -25,5 +25,5 @@ export const router = createBrowserRouter([
   {
     path: "id/:slug",
     element: <HomeResult />,
-  }
+  },
 ]);

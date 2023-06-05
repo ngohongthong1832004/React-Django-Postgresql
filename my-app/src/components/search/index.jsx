@@ -9,7 +9,7 @@ const Search = function () {
       <h1 className={cx("search__title")}>
         You can write whatever about the film !! name, genre, cast, desc ...
       </h1>
-      <div style={{display : "flex"}}>
+      <div style={{ display: "flex" }}>
         <>
           <form action="/search">
             <div className={cx("search__wrap__input")}>
