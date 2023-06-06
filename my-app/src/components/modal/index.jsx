@@ -107,8 +107,8 @@ const Modal = ({isLogin, callBack}) => {
                                 }
                             </div>
                             <div className={cx("modal__content__body__form__group", "input__wrap__eye")}>
-                                <label className={cx("modal__content__body__form__group__label")} >Password :</label>
-                                <input  ref={passRefConfirm}  className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your password" />
+                                <label className={cx("modal__content__body__form__group__label")} >Confirm password :</label>
+                                <input  ref={passRefConfirm}  className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your confirm password" />
                                 {isEyeConfirm ?
                                     <span className={cx("modal__content__body__form__group__eye")} onClick={() =>{
                                         setIsEyeConfirm(!isEyeConfirm);

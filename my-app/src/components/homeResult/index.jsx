@@ -105,7 +105,7 @@ const HomeResult = () => {
                 </div>
             </div>
             <div className={cx("homeResult__more")}>
-                <div className={cx("homeResult__more__cast")}>
+                <div className={cx("homeResult__more__cast")}>      
                     <div className={cx("homeResult__more__cast__title")}>
                         <h2 className={cx("homeResult__more__cast__title__text")}>Cast</h2>
                     </div>

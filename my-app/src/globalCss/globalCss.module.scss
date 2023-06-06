@@ -28,6 +28,31 @@ html {
     padding: 0;
     margin: 0;
 }
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  
+/* Track */
+::-webkit-scrollbar-track {
+box-shadow: inset 0 0 0.3rem var(--gray-2); 
+border-radius: 0.5rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: var(--gray-2); 
+border-radius: 0.5rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background:var(--gray-3); 
+}
+
+
 @media (min-width: 640px) {
     html {
         font-size: 80%;
