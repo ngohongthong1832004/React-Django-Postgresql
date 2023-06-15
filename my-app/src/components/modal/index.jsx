@@ -1,5 +1,7 @@
 import classNames from "classnames/bind";
 import { useState, useRef, useEffect } from "react";
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import styles from  "./modal.module.scss";
 
@@ -19,7 +21,74 @@ const Modal = ({isLogin, callBack}) => {
     useEffect(() => {
         inputEmail.current.focus();
     }, [])
+    
+    const handleClickRegister = (e) => {
+        e.preventDefault();
+        // email regex 
+        const emailRegex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+        if (!emailRegex.test(inputEmail.current.value)) {
+            callBack(false,{
+                status : false,
+                message : "Email invalid"
+            })
+        }
 
+        if (passRef.current.value === passRefConfirm.current.value) {
+            axios
+                .post(import.meta.env.VITE_URL_BACKEND+"register/",{
+                    username: inputEmail.current.value,
+                    password : passRef.current.value,
+                    email : inputEmail.current.value,
+                })
+                .then(response => {
+                    // console.log(response.data);
+                    callBack(false,{
+                        status : true,
+                        message : "Register success"
+                    })
+                })
+                .catch((error) => {
+                    // console.log(error);
+                    callBack(false, {
+                        status : false,
+                        message : "Register failed"
+                    })
+                });
+        }
+        else {
+            callBack(false,{
+                status : false,
+                message : "Password not match"
+            })
+        }        
+    }
+
+    const handleClickLogin = (e) => {
+        e.preventDefault();
+        axios
+            .post(import.meta.env.VITE_URL_BACKEND+'login/', {
+                username: inputEmail.current.value,
+                password: passRef.current.value,
+            })
+            .then(response => {
+                console.log(response.data);
+                Cookies.set('sessionToken', response.data.token);
+                Cookies.set('sessionIsStaff', response.data.isStaff);
+                localStorage.setItem('user_name', response.data.email);
+                callBack(false,{
+                    status : true,
+                    message : "Login success",
+                    isUser : true,
+                })
+            })
+            .catch(error => {
+                // console.error(error);
+                callBack(false,{
+                    status : false,
+                    message : "Login failed"
+                })
+            });
+    }
 
     return (
 
@@ -27,15 +96,16 @@ const Modal = ({isLogin, callBack}) => {
             if (modalContent.current.contains(e.target)) {
                 e.stopPropagation();
               } else {
-                callBack(false);
+                callBack(false,{status : null });
               }
         }}>
+          
            {
             isLogin ? 
           ( <div ref={modalContent} className={cx("modal__content")}>
                 <div className={cx("modal__content__header")}>
                     <h2 className={cx("modal__content__header__title")}>Login</h2>
-                    <button className={cx("modal__content__header__close")} onClick={() => callBack(false)}>
+                    <button className={cx("modal__content__header__close")} onClick={() => callBack(false, {status : null })}>
                         <i className="fas fa-times"></i>
                     </button>
                 </div>
@@ -68,7 +138,7 @@ const Modal = ({isLogin, callBack}) => {
                         </div>
                     </div>
                     <div className={cx("modal__content__footer")}>
-                        <button className={cx("modal__content__footer__btn")}>Login</button>
+                        <button className={cx("modal__content__footer__btn")} onClick={handleClickLogin}>Login</button>
                     </div>
                 </form>
             </div>)
@@ -76,11 +146,11 @@ const Modal = ({isLogin, callBack}) => {
             (<div ref={modalContent}  className={cx("modal__content")}>
                 <div className={cx("modal__content__header")}>
                     <h2 className={cx("modal__content__header__title")}>Register</h2>
-                    <button className={cx("modal__content__header__close")} onClick={() => callBack(false)}>
+                    <button className={cx("modal__content__header__close")} onClick={() => callBack(false, {status : null })}>
                         <i className="fas fa-times"></i>
                     </button>
                 </div>
-                <form action="">
+                <form >
                     <div className={cx("modal__content__body")}>
                         <div className={cx("modal__content__body__form")}>
                             <div className={cx("modal__content__body__form__group")}>
@@ -128,7 +198,7 @@ const Modal = ({isLogin, callBack}) => {
                         </div>
                     </div>
                     <div className={cx("modal__content__footer")}>
-                        <button className={cx("modal__content__footer__btn")}>Create account</button>
+                        <button className={cx("modal__content__footer__btn")} onClick = {handleClickRegister}>Create account</button>
                     </div>
                 </form>
             </div>)

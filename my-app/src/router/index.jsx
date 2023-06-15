@@ -6,6 +6,8 @@ import HomeSearch from "../components/homeSearch";
 import HomeResult from "../components/homeResult";
 import HomeWishlist from "../components/homeWishlist";
 import HomeErrorSearch from "../components/homeErrorSearch";
+import HomeManager from "../components/homeManager";
+import HomeProfile from "../components/homeProfile";
 
 export const router = createBrowserRouter([
   {
@@ -26,4 +28,12 @@ export const router = createBrowserRouter([
     path: "id/:slug",
     element: <HomeResult />,
   },
+  {
+    path: "manager",
+    element : <HomeManager />
+  },
+  {
+    path: "profile",
+    element : <HomeProfile />
+  }
 ]);

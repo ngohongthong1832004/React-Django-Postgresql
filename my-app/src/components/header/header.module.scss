@@ -54,6 +54,7 @@
     font-size: 2.8rem;
 }
 .header__user {
+   
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,6 +68,7 @@
         user-select: none;
     }
     .header__user__name {
+        min-width: 6.5rem;
         font-size: 1.3rem;
         font-weight: 600;
         font-family: "Dancing Script", cursive;

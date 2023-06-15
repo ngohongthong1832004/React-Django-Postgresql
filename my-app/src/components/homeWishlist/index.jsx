@@ -16,11 +16,13 @@ const HomeWishlist = () => {
         <div className={cx("wishlist__wrap__item__filter__title")}>
           <p className={cx("wishlist__wrap__item__filter__title__text")}>
             Wishlist
+            <i className={cx("fas fa-music", "pl-2")}></i>
           </p>
         </div>
         <div className={cx("wishlist__wrap__item__filter__title")}>
           <p className={cx("wishlist__wrap__item__filter__title__text")}>
-            Liked
+            Like
+            <i className={cx("fas fa-heart", "pl-2")}></i>
           </p>
         </div>
       </div>
