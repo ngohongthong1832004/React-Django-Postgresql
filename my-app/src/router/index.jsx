@@ -6,8 +6,13 @@ import HomeSearch from "../components/homeSearch";
 import HomeResult from "../components/homeResult";
 import HomeWishlist from "../components/homeWishlist";
 import HomeErrorSearch from "../components/homeErrorSearch";
-import HomeManager from "../components/homeManager";
 import HomeProfile from "../components/homeProfile";
+import HomeManager from "../components/homeManager";
+import HomeManagerUser from "../components/homeManager/HomeManagerUser";
+import HomeManagerAddUser from "../components/homeManager/HomeManagerAddUser";
+import HomeManagerUpdateUser from "../components/homeManager/HomeManagerUpdateUser";
+import HomeManagerDeleteUser from "../components/homeManager/HomeManagerDeleteUser";
+
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +34,27 @@ export const router = createBrowserRouter([
     element: <HomeResult />,
   },
   {
-    path: "manager",
-    element : <HomeManager />
+    path: "manager/",
+    element : <HomeManager />,
+    exact : true,
+    children: [
+      {
+        path: "user",
+        element: <HomeManagerUser />,
+      },
+      {
+        path: "add-user",
+        element: <HomeManagerAddUser />,
+      },
+      {
+        path: "update-user",
+        element: <HomeManagerUpdateUser />,
+      },
+      {
+        path: "delete-user",
+        element: <HomeManagerDeleteUser />,
+      },
+    ]
   },
   {
     path: "profile",

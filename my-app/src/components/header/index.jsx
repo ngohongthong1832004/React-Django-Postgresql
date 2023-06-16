@@ -1,9 +1,10 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie';
+import { redirect } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Cookies from 'js-cookie';
 
 import imgs from "../../assets";
 import styles from "./header.module.scss";
@@ -15,7 +16,6 @@ const Header = () => {
   const sessionToken = Cookies.get('sessionToken');
   const sessionIsStaff = Cookies.get('sessionIsStaff');
   const [isUser, setIsUser] = useState(sessionToken);
-  const [isStaff, setIsStaff] = useState(sessionIsStaff);
 
   const [isShow, setIsShow] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
@@ -43,7 +43,9 @@ const Header = () => {
 
 
   const handleLogout = () => {
+    window.location.href = '/'
     Cookies.remove('sessionToken');
+    Cookies.remove('sessionIsStaff');
     setIsUser(false)
     toast.success("Logout success")
   }
@@ -51,7 +53,18 @@ const Header = () => {
   return (
     
     <div className={cx("header", "p-3")}>
-        <ToastContainer />
+        <ToastContainer
+          position="top-left"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss = {false}
+          draggable = {false}
+          pauseOnHover = {false}
+          theme="dark"
+        />
       <div className={cx("header__wrap__container", "container mx-auto")}>
         <div className={cx("header__option")}>
           <a href="/wishlist"  className={cx("header__sidebar")}>
@@ -81,24 +94,21 @@ const Header = () => {
             </div>
 
             <div className={cx("header__user__modal")}>
-              <div className={cx("header__user__modal__item")}>
-                <a href="profile">
+              <a href="/profile" className={cx("header__user__modal__item")}>
                   <i className="fas fa-user"></i>
                   <span className={cx("header__user__modal__item__text")}>
                     Profile
                   </span>
-                </a>
-              </div>
-              { isStaff && <div className={cx("header__user__modal__item")}>
-                <a href={'manager'}>
+              </a>
+              { sessionIsStaff === "true" && <a href={'/manager/user'} className={cx("header__user__modal__item")}>
+                <>
                   <i className="fas fa-user-cog"></i>
                   <span className={cx("header__user__modal__item__text")}>
                     Manager
                   </span>
-                </a>
-              </div>}
-              <div className={cx("header__user__modal__item")}>
-                <a href={'wishlist'}>
+                </>
+              </a>}
+              <a href={'/wishlist'} className={cx("header__user__modal__item")}>
                   <i className="fas fa-list"></i>
                   <span className={cx("header__user__modal__item__text")}>
                     wishlist
@@ -106,8 +116,7 @@ const Header = () => {
                       123
                     </label>
                   </span>
-                </a>
-              </div>
+              </a>
               <div className={cx("header__user__modal__item")} onClick={handleLogout}>
                 <i className="fas fa-sign-out-alt"></i>
                 <span className={cx("header__user__modal__item__text")}>

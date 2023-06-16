@@ -8,3 +8,113 @@
         font-family: "Dancing Script", cursive;
     }
 }
+.profile__content {
+    width: 100%;
+    display: flex;
+
+    .profile__content__left {
+        width: 25%;
+        margin: 1rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 2px 2px 2px var(--black);
+        background-color: var(--gray);
+        border-radius: 1rem;
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+    .profile__content__right {
+        width: 75%;
+        margin: 1rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 2px 2px 2px var(--black);
+        background-color: var(--gray);
+        border-radius: 1rem;
+        .profile__content__right__info {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: first baseline
+        }
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .profile__content__right__title {
+            font-size: 1.5rem;
+            font-family: "Dancing Script", cursive;
+        }
+    }
+}
+
+.analytics {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    .analytics__item {
+        width: 25%;
+        margin: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 2px 2px 2px var(--black);
+        background-color: var(--gray);
+        padding: 1rem;
+        border-radius: 1rem;
+        .analytics__item__title {
+            font-size: 1.5rem;
+            font-family: "Dancing Script", cursive;
+        }
+        .panalytics__item__number {
+            font-size: 1.5rem;
+            font-family: "Dancing Script", cursive;
+        }
+    }
+}
+
+
+
+
+.homeResult__wrap__info__detail{
+    border-bottom: 1px dashed var(--gray);
+}
+.homeResult__wrap__info__detail:last-child {
+    border: none;
+}
+.homeResult__wrap__info__detail__item {
+    display: flex;
+    margin: 0.25rem;
+    .homeResult__wrap__info__detail__item__text {
+        text-align: justify;
+        width: calc(100% - 7rem);
+    }
+    .homeResult__wrap__info__detail__item__text:first-child {
+        width: 7rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gray-3);
+        user-select: none;
+    }
+    span {
+        margin-right: 0.5rem ;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gray-3);
+        user-select: none;
+    }
+}
