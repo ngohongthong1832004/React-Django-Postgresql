@@ -5,6 +5,7 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { redirect } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 
 
@@ -17,6 +18,7 @@ const HomeManager = () => {
   useEffect(() => {
     const loader = async () => {
       if (isUser === 'false' || !isUser) {
+        toast.error('You are not authorized to access this page');
         return navigate("/");
       }
       return null;
@@ -42,17 +44,17 @@ const HomeManager = () => {
                   User
                 </p>
             </NavLink>
-            <NavLink to={"add-user"} className={cx(`homeSearch__filter__wrap__item__title`)}>
+            <NavLink to={"add-film"} className={cx(`homeSearch__filter__wrap__item__title`)}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Add Film
               </p>
             </NavLink>
-            <NavLink to={"update-user"} className={cx(`homeSearch__filter__wrap__item__title`)}>
+            <NavLink to={"update-film"} className={cx(`homeSearch__filter__wrap__item__title`)}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Update Film
               </p>
             </NavLink>
-            <NavLink to={"delete-user"} className={cx(`homeSearch__filter__wrap__item__title`)}>
+            <NavLink to={"delete-film"} className={cx(`homeSearch__filter__wrap__item__title`)}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Delete Film
               </p>

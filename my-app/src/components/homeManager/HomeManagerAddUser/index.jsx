@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 const HomeManagerAddUser = () => {
     return (
         <div className = {cx("user")}>
-            <h1>HomeManagerAddFilm</h1>
+            <h1>Home Manager Add Film</h1>
             <div className={cx("form__add__film","px-10")}>
                 <form action="">
                     <div className = {cx("homeResult__wrap__info__detail")}>
@@ -49,14 +49,14 @@ const HomeManagerAddUser = () => {
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>IMDb </p>
                             <span>:</span>
-                            <input className={cx("input-text")} defaultValue={6.5} type="number"  min="1" max="10" />
+                            <input className={cx("input-text")} defaultValue={6.5} type="text"  min="1" max="10" />
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Star </p>
                             <span>:</span>
-                            <input className={cx("input-text")} defaultValue={5} type="number" name="rating" min="1" max="10"/>
+                            <input className={cx("input-text")} defaultValue={5} type="text" />
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>

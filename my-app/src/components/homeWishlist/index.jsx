@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import {toast} from 'react-toastify';
 
 import styles from "./homeWishlist.module.scss";
 
@@ -14,6 +15,7 @@ const HomeWishlist = () => {
   useEffect(() => {
     const loader = async () => {
       if (!isUser) {
+        toast.error('Please login to access this page');
         return navigate("/");
       }
       return null;

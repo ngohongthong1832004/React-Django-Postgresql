@@ -43,15 +43,15 @@ export const router = createBrowserRouter([
         element: <HomeManagerUser />,
       },
       {
-        path: "add-user",
+        path: "add-film",
         element: <HomeManagerAddUser />,
       },
       {
-        path: "update-user",
+        path: "update-film",
         element: <HomeManagerUpdateUser />,
       },
       {
-        path: "delete-user",
+        path: "delete-film",
         element: <HomeManagerDeleteUser />,
       },
     ]

@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 const HomeManagerUser = () => {
     return (
         <div className={cx("user")}>
-            <h1>HomeManagerUser</h1>
+            <h1>Home Manager User</h1>
             <div className={cx("user__list")}>
                 <table className={cx("table-auto border-separate border border-slate-500","tableCustom")}>
                     <thead>
