@@ -20,6 +20,7 @@
     width: calc(100% - 13rem);
 }
 
+
 .homeResult__wrap__img__desc {
     margin-top: 1rem;
     display: flex;
@@ -394,5 +395,25 @@
             width: 100%;
             height: 100%;
         }
+    }
+}
+
+
+
+
+@media (max-width : 640px) {
+    .homeResult__wrap {
+        flex-direction: column;
+        align-items: center;
+    }
+    .homeResult__wrap__img {
+       flex: 1;
+    }
+    
+    .homeResult__wrap__info {
+        width: 100%;
+    }
+    .homeResult__chat__wrap__item {
+        margin: 0.5rem !important;
     }
 }

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import styles from  "./modal.module.scss";
+import { ToastContainer, toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -11,6 +12,7 @@ const cx = classNames.bind(styles);
 const Modal = ({isLogin, callBack}) => {
     const [isEye, setIsEye] = useState(true);
     const [isEyeConfirm, setIsEyeConfirm] = useState(true);
+    const [isPending, setIsPending] = useState(false);
 
     const passRef = useRef(null);
     const passRefConfirm = useRef(null);
@@ -24,6 +26,7 @@ const Modal = ({isLogin, callBack}) => {
     
     const handleClickRegister = (e) => {
         e.preventDefault();
+        setIsPending(true);
         // email regex 
         const emailRegex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
         if (!emailRegex.test(inputEmail.current.value)) {
@@ -42,6 +45,7 @@ const Modal = ({isLogin, callBack}) => {
                 })
                 .then(response => {
                     // console.log(response.data);
+                    setIsPending(false);
                     callBack(false,{
                         status : true,
                         message : "Register success"
@@ -49,6 +53,7 @@ const Modal = ({isLogin, callBack}) => {
                 })
                 .catch((error) => {
                     // console.log(error);
+                    setIsPending(false);
                     callBack(false, {
                         status : false,
                         message : "Register failed"
@@ -56,6 +61,7 @@ const Modal = ({isLogin, callBack}) => {
                 });
         }
         else {
+            setIsPending(false);
             callBack(false,{
                 status : false,
                 message : "Password not match"
@@ -65,6 +71,7 @@ const Modal = ({isLogin, callBack}) => {
 
     const handleClickLogin = (e) => {
         e.preventDefault();
+        setIsPending(true);
         axios
             .post(import.meta.env.VITE_URL_BACKEND+'login/', {
                 username: inputEmail.current.value,
@@ -75,6 +82,7 @@ const Modal = ({isLogin, callBack}) => {
                 Cookies.set('sessionToken', response.data.token);
                 Cookies.set('sessionIsStaff', response.data.isStaff);
                 localStorage.setItem('user_name', response.data.email);
+                setIsPending(false);
                 callBack(false,{
                     status : true,
                     message : "Login success",
@@ -83,6 +91,7 @@ const Modal = ({isLogin, callBack}) => {
             })
             .catch(error => {
                 // console.error(error);
+                setIsPending(false);
                 callBack(false,{
                     status : false,
                     message : "Login failed"
@@ -99,7 +108,17 @@ const Modal = ({isLogin, callBack}) => {
                 callBack(false,{status : null });
               }
         }}>
-          
+          <ToastContainer 
+            position="top-left"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss = {false}
+            draggable = {false}
+            pauseOnHover = {false}
+            theme="dark"/>
            {
             isLogin ? 
           ( <div ref={modalContent} className={cx("modal__content")}>
@@ -114,11 +133,11 @@ const Modal = ({isLogin, callBack}) => {
                         <div className={cx("modal__content__body__form")}>
                             <div className={cx("modal__content__body__form__group")}>
                                 <label className={cx("modal__content__body__form__group__label")} >Email :</label>
-                                <input ref={inputEmail} className={cx("modal__content__body__form__group__input")} type="email" placeholder="Your email" />
+                                <input ref={inputEmail} className={cx("modal__content__body__form__group__input")} type="email" placeholder="Your email" required/>
                             </div>
                             <div className={cx("modal__content__body__form__group", "input__wrap__eye")}>
                                 <label className={cx("modal__content__body__form__group__label")} >Password :</label>
-                                <input  ref={passRef} className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your password" />
+                                <input  ref={passRef} className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your password" required />
                                 {isEye ?
                                     <span className={cx("modal__content__body__form__group__eye")} onClick={() =>{
                                         setIsEye(!isEye);
@@ -138,7 +157,8 @@ const Modal = ({isLogin, callBack}) => {
                         </div>
                     </div>
                     <div className={cx("modal__content__footer")}>
-                        <button className={cx("modal__content__footer__btn")} onClick={handleClickLogin}>Login</button>
+                        { !isPending ? <button className={cx("modal__content__footer__btn")} onClick={handleClickLogin}>Login</button>
+                         : <button className={cx("modal__content__footer__btn")}>Please wait a minute !!</button>}
                     </div>
                 </form>
             </div>)
@@ -155,11 +175,11 @@ const Modal = ({isLogin, callBack}) => {
                         <div className={cx("modal__content__body__form")}>
                             <div className={cx("modal__content__body__form__group")}>
                                 <label className={cx("modal__content__body__form__group__label")} >Email :</label>
-                                <input ref={inputEmail} className={cx("modal__content__body__form__group__input")} type="email" placeholder="Your email" />
+                                <input ref={inputEmail} className={cx("modal__content__body__form__group__input")} type="email" placeholder="Your email" required />
                             </div>
                             <div className={cx("modal__content__body__form__group", "input__wrap__eye")}>
                                 <label className={cx("modal__content__body__form__group__label")} >Password :</label>
-                                <input  ref={passRef}  className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your password" />
+                                <input  ref={passRef}  className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your password" required/>
                                 {isEye ?
                                     <span className={cx("modal__content__body__form__group__eye")} onClick={() =>{
                                         setIsEye(!isEye);
@@ -178,7 +198,7 @@ const Modal = ({isLogin, callBack}) => {
                             </div>
                             <div className={cx("modal__content__body__form__group", "input__wrap__eye")}>
                                 <label className={cx("modal__content__body__form__group__label")} >Confirm password :</label>
-                                <input  ref={passRefConfirm}  className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your confirm password" />
+                                <input  ref={passRefConfirm}  className={cx("modal__content__body__form__group__input" )} type="password" placeholder="Your confirm password" required />
                                 {isEyeConfirm ?
                                     <span className={cx("modal__content__body__form__group__eye")} onClick={() =>{
                                         setIsEyeConfirm(!isEyeConfirm);
@@ -198,7 +218,8 @@ const Modal = ({isLogin, callBack}) => {
                         </div>
                     </div>
                     <div className={cx("modal__content__footer")}>
-                        <button className={cx("modal__content__footer__btn")} onClick = {handleClickRegister}>Create account</button>
+                        { !isPending ? <button className={cx("modal__content__footer__btn")} onClick = {handleClickRegister}>Create account</button>
+                        : <button className={cx("modal__content__footer__btn")}>Please wait a minute !!</button>}
                     </div>
                 </form>
             </div>)

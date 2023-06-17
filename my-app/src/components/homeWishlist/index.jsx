@@ -10,6 +10,8 @@ const cx = classNames.bind(styles);
 
 const HomeWishlist = () => {
 
+  const [show, setShow] = useState(0); // 0: wishlist, 1: like
+
   const navigate = useNavigate();
   const isUser = Cookies.get('sessionToken');
   useEffect(() => {
@@ -29,22 +31,22 @@ const HomeWishlist = () => {
      { isUser && <>
         <h1>My Wishlist</h1>
       
-        <div className={cx("wishlist__wrap__item__filter", "grid grid-cols-5 gap-5")}>
-          <div className={cx("wishlist__wrap__item__filter__title")}>
+        <div className={cx("wishlist__wrap__item__filter", "grid gap-5 grid-cols-2 sm:grid-cols-5 ")}>
+          <div className={cx(`wishlist__wrap__item__filter__title${show === 0 ? "--active" : ""}`,)} onClick={() => setShow(0)}>
             <p className={cx("wishlist__wrap__item__filter__title__text")}>
               Wishlist
               <i className={cx("fas fa-music", "pl-2")}></i>
             </p>
           </div>
-          <div className={cx("wishlist__wrap__item__filter__title")}>
+          <div className={cx(`wishlist__wrap__item__filter__title${show === 1 ? "--active" : ""}`,)} onClick={() => setShow(1)}>
             <p className={cx("wishlist__wrap__item__filter__title__text")}>
               Like
               <i className={cx("fas fa-heart", "pl-2")}></i>
             </p>
           </div>
         </div>
-        <div className={cx("wishlist__wrap__item", "grid grid-cols-5 gap-5")}>
-          <div className={cx("item")}>
+        <div className={cx("wishlist__wrap__item", "grid gap-5 grid-cols-6 sm:grid-cols-5")}>
+          <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
               </div>
@@ -53,7 +55,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-            <div className={cx("item")}>
+            <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
               </div>
@@ -62,7 +64,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-          <div className={cx("item")}>
+          <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
               </div>
@@ -71,7 +73,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-            <div className={cx("item")}>
+            <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
               </div>
@@ -80,7 +82,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-          <div className={cx("item")}>
+          <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
               </div>
@@ -89,7 +91,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-            <div className={cx("item")}>
+            <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
               </div>
@@ -98,7 +100,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-          <div className={cx("item")}>
+          <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
               </div>
@@ -107,7 +109,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-            <div className={cx("item")}>
+            <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
               </div>
@@ -116,7 +118,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-          <div className={cx("item")}>
+          <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
               </div>
@@ -125,7 +127,7 @@ const HomeWishlist = () => {
                 <p className={cx("item__title__text")}>2019</p>
               </ div>
             </div>
-            <div className={cx("item")}>
+            <div className={cx("item","col-span-2 sm:col-span-1")}>
               <div className={cx("item__img")}>
                 <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
               </div>

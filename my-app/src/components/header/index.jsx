@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import imgs from "../../assets";
 import styles from "./header.module.scss";
-import Modal from "../modal";
+import Modal from "../modalRegister";
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +19,16 @@ const Header = () => {
 
   const [isShow, setIsShow] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+
+  const handleClickWishlist = (e) => {
+    e.preventDefault()
+    if(!sessionToken){
+      toast.error("Please login to access this page")
+      return
+    }
+    window.location.href = '/wishlist'
+  }
+
 
   const callBack = (data, message) => {
     setIsShow(data)
@@ -63,18 +73,19 @@ const Header = () => {
           pauseOnFocusLoss = {false}
           draggable = {false}
           pauseOnHover = {false}
+          limit={3}
           theme="dark"
         />
       <div className={cx("header__wrap__container", "container mx-auto")}>
         <div className={cx("header__option")}>
-          <a href="/wishlist"  className={cx("header__sidebar")}>
+          <div onClick={handleClickWishlist} className={cx("header__sidebar")}>
               <button>
                 <i className="fas fa-list-ul"></i>
               </button>
-              <div className={cx("count__wishlist")}>
+              { isUser && <div className={cx("count__wishlist")}>
                 <span>123</span>
-              </div>
-          </a>
+              </div>}
+          </div>
           <div className={cx("header__logo")}>
             <h1>
               <a href={"/"}>3Trees</a>
@@ -108,7 +119,7 @@ const Header = () => {
                   </span>
                 </>
               </a>}
-              <a href={'/wishlist'} className={cx("header__user__modal__item")}>
+              <a href={'/wishlist'}  className={cx("header__user__modal__item")}>
                   <i className="fas fa-list"></i>
                   <span className={cx("header__user__modal__item__text")}>
                     wishlist
@@ -127,11 +138,11 @@ const Header = () => {
           </div>
         ) : (
           <div className={cx("header__user__notUser")}>
-            <div className={cx("header__user__notUser__register")}>
-              <button onClick={() => showModalRegister()}>Register</button>
+            <div className={cx("header__user__notUser__register")}  onClick={() => showModalRegister()}>
+              <button>Register</button>
             </div>
-            <div className={cx("header__user__notUser__login")}>
-              <button onClick={() => showModalLogin()}>Login</button>
+            <div className={cx("header__user__notUser__login")}  onClick={() => showModalLogin()}>
+              <button>Login</button>
             </div>
            {isShow && <Modal isLogin = {isLogin} callBack = {callBack} />}
           </div>

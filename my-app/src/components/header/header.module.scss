@@ -85,6 +85,7 @@
         display: none;
         margin-top: 0.5rem;
         position: absolute;
+        z-index: 99;
         top: 100%;
         right: 0;
         background-color: var(--gray-2);

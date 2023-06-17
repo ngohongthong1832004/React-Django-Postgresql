@@ -8,15 +8,6 @@ const cx = classnames.bind(styles);
 const HomeSearch = () => {
   const [show, setShow] = useState(0);
 
-  // useEffect(() => {
-  //     if (show <= 3) {
-  //         setTimeout(() => {
-  //             setShow(show + 1)
-  //         }, 1000)
-  //     }else {
-  //         setShow(0)
-  //     }
-  // }, [show])
 
   return (
     <div
@@ -37,57 +28,27 @@ const HomeSearch = () => {
             "grid grid-cols-5 gap-5",
           )}
         >
-          <div
-            className={cx(
-              `homeSearch__filter__wrap__item__title${
-                show === 0 ? "--active" : "--disable"
-              }`,
-            )}
-          >
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 0 ? "--active" : ""}`,)} onClick={() => setShow(0)}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Name
             </p>
           </div>
-          <div
-            className={cx(
-              `homeSearch__filter__wrap__item__title${
-                show === 1 ? "--active" : ""
-              }`,
-            )}
-          >
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 1 ? "--active" : ""}`,)} onClick={() => setShow(1)}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Genre
             </p>
           </div>
-          <div
-            className={cx(
-              `homeSearch__filter__wrap__item__title${
-                show === 2 ? "--active" : ""
-              }`,
-            )}
-          >
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 2 ? "--active" : ""}`,)} onClick={() => setShow(2)}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Cast
             </p>
           </div>
-          <div
-            className={cx(
-              `homeSearch__filter__wrap__item__title${
-                show === 3 ? "--active" : ""
-              }`,
-            )}
-          >
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 3 ? "--active" : ""}`,)} onClick={() => setShow(3)}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Director
             </p>
           </div>
-          <div
-            className={cx(
-              `homeSearch__filter__wrap__item__title${
-                show === 3 ? "--active" : ""
-              }`,
-            )}
-          >
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 4 ? "--active" : ""}`,)} onClick={() => setShow(4)}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Your think
             </p>
@@ -95,15 +56,28 @@ const HomeSearch = () => {
         </div>
       </div>
       <div className={cx("homeSearch__content", "p-1.5")}>
-        <div
-          className={cx(
-            "homeSearch__content__wrap__item",
-            "grid grid-cols-5 gap-5",
-          )}
-        >
+        <div className={cx("homeSearch__content__wrap__item","grid gap-5 grid-cols-3 sm:grid-cols-5",)}>
           <div className={cx("item")}>
             <div className={cx("item__img")}>
               <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
+            </div>
+            <div className={cx("item__title")}>
+              <h2 className={cx("item__title__text")}>transformer : the last night</h2>
+              <p className={cx("item__title__text")}>2019</p>
+            </ div>
+          </div>
+          <div className={cx("item")}>
+            <div className={cx("item__img")}>
+              <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
+            </div>
+            <div className={cx("item__title")}>
+              <h2 className={cx("item__title__text")}>transformer : the last night</h2>
+              <p className={cx("item__title__text")}>2019</p>
+            </ div>
+          </div>
+          <div className={cx("item")}>
+            <div className={cx("item__img")}>
+              <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
             </div>
             <div className={cx("item__title")}>
               <h2 className={cx("item__title__text")}>transformer : the last night</h2>
@@ -141,7 +115,7 @@ const HomeSearch = () => {
             <div
               className={cx("homeSearch__footer__pagination__wrap__item__text")}
             >
-              1
+              2
             </div>
           </div>
           <div className={cx("homeSearch__footer__pagination__wrap__item")}>

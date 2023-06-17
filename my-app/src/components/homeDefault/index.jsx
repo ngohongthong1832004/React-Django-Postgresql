@@ -39,81 +39,36 @@ const HomeDefault = () => {
           <div
             className={cx(
               "homeDefault__wrap__footer__content__contact__content",
-              "grid grid-cols-5 gap-10",
+              "grid gap-5 grid-cols-3 sm:grid-cols-2 md:grid-cols-6 "
             )}
           >
-            <div
-              className={cx(
-                "homeDefault__wrap__footer__content__contact__content__item",
-              )}
-            >
-              <div
-                className={cx(
-                  "homeDefault__wrap__footer__content__contact__content__item__text",
-                )}
-              >
-                <p
-                  className={cx(
-                    "homeDefault__wrap__footer__content__contact__content__item__text__title",
-                  )}
-                >
+            <div className={cx("homeDefault__wrap__footer__content__contact__content__item",)}>
+              <div className={cx("homeDefault__wrap__footer__content__contact__content__item__text",)}>
+                <p className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title",)}>
                   <label
-                    className={cx(
-                      "homeDefault__wrap__footer__content__contact__content__item__text__title__icon",
-                    )}
-                  >
+                    className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title__icon",)}>
                     <i className={cx("fas fa-map-marker-alt")}></i>
                   </label>
                   Address
                 </p>
               </div>
             </div>
-            <div
-              className={cx(
-                "homeDefault__wrap__footer__content__contact__content__item",
-              )}
-            >
-              <div
-                className={cx(
-                  "homeDefault__wrap__footer__content__contact__content__item__text",
-                )}
-              >
-                <p
-                  className={cx(
-                    "homeDefault__wrap__footer__content__contact__content__item__text__title",
-                  )}
-                >
+            <div className={cx("homeDefault__wrap__footer__content__contact__content__item",)}>
+              <div className={cx("homeDefault__wrap__footer__content__contact__content__item__text",)}>
+                <p className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title",)}>
                   <label
-                    className={cx(
-                      "homeDefault__wrap__footer__content__contact__content__item__text__title__icon",
-                    )}
-                  >
+                    className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title__icon",)}>
                     <i className={cx("fa-brands fa-facebook-f")} />
                   </label>
                   Facebook
                 </p>
               </div>
             </div>
-            <div
-              className={cx(
-                "homeDefault__wrap__footer__content__contact__content__item",
-              )}
-            >
-              <div
-                className={cx(
-                  "homeDefault__wrap__footer__content__contact__content__item__text",
-                )}
-              >
-                <p
-                  className={cx(
-                    "homeDefault__wrap__footer__content__contact__content__item__text__title",
-                  )}
-                >
+            <div className={cx("homeDefault__wrap__footer__content__contact__content__item",)}>
+              <div className={cx("homeDefault__wrap__footer__content__contact__content__item__text",)}>
+                <p className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title",)}>
                   <label
-                    className={cx(
-                      "homeDefault__wrap__footer__content__contact__content__item__text__title__icon",
-                    )}
-                  >
+                    className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title__icon",)}>
                     <i className={cx("fa-brands fa-github")} />
                   </label>
                   Githup
@@ -121,55 +76,36 @@ const HomeDefault = () => {
               </div>
             </div>
 
-            <div
-              className={cx(
-                "homeDefault__wrap__footer__content__contact__content__item",
-              )}
-            >
-              <div
-                className={cx(
-                  "homeDefault__wrap__footer__content__contact__content__item__text",
-                )}
-              >
-                <p
-                  className={cx(
-                    "homeDefault__wrap__footer__content__contact__content__item__text__title",
-                  )}
-                >
+            <div className={cx("homeDefault__wrap__footer__content__contact__content__item",)}>
+              <div className={cx("homeDefault__wrap__footer__content__contact__content__item__text",)}>
+                <p className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title",)}>
                   <label
-                    className={cx(
-                      "homeDefault__wrap__footer__content__contact__content__item__text__title__icon",
-                    )}
-                  >
+                    className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title__icon",)}>
                     <i className={cx("fas fa-phone-alt")}></i>
                   </label>
                   Phone
                 </p>
               </div>
             </div>
-            <div
-              className={cx(
-                "homeDefault__wrap__footer__content__contact__content__item",
-              )}
-            >
-              <div
-                className={cx(
-                  "homeDefault__wrap__footer__content__contact__content__item__text",
-                )}
-              >
-                <p
-                  className={cx(
-                    "homeDefault__wrap__footer__content__contact__content__item__text__title",
-                  )}
-                >
+            <div className={cx("homeDefault__wrap__footer__content__contact__content__item")}>
+              <div className={cx("homeDefault__wrap__footer__content__contact__content__item__text",)}>
+                <p className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title",)}>
                   <label
-                    className={cx(
-                      "homeDefault__wrap__footer__content__contact__content__item__text__title__icon",
-                    )}
-                  >
+                    className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title__icon",)}>
                     <i className={cx("fas fa-envelope")}></i>
                   </label>
                   Email
+                </p>
+              </div>
+            </div>
+            <div className={cx("homeDefault__wrap__footer__content__contact__content__item")}>
+              <div className={cx("homeDefault__wrap__footer__content__contact__content__item__text",)}>
+                <p className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title",)}>
+                  <label
+                    className={cx("homeDefault__wrap__footer__content__contact__content__item__text__title__icon",)}>
+                    <i className={cx("fas fa-link")}></i>
+                  </label>
+                  Linked
                 </p>
               </div>
             </div>

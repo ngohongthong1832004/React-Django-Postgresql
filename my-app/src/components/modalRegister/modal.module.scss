@@ -5,9 +5,7 @@
     width: 100vw;
     height: 100vh;
     z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-top: 6rem;
     background-color: rgba(99, 99, 99 , 0.6);
     .modal__content {
         width: 22rem;

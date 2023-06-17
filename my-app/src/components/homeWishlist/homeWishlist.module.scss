@@ -29,6 +29,14 @@
       background-color: var(--gray-2);
       cursor: pointer;
     }
+    &--active {
+      @extend .wishlist__wrap__item__filter__title;
+      background-color: var(--gray-2);
+    }
+    &--disable {
+      @extend .wishlist__wrap__item__filter__title;
+      display: none;
+    }
   }
 
   .item {
@@ -96,3 +104,12 @@
       background-color: var(--gray-2);
     }
   }
+
+
+
+// @media (max-width: 640px) {
+//     .item:last-child {
+//       // margin-bottom: 1rem;
+//       display: none;
+//     }
+// }

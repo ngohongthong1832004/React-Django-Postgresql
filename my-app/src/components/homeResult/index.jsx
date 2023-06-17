@@ -1,8 +1,10 @@
 import classNames from "classnames/bind"
 import { useState } from "react"
-
+import {toast} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
 
 import styles from "./homeResult.module.scss"
+import ParentChat from "./parentChat"
 
 
 const cx = classNames.bind(styles)
@@ -13,6 +15,26 @@ const cx = classNames.bind(styles)
 const HomeResult = () => {
     const [moreCast, setMoreCast] = useState(true)
     const [moreChat, setMoreChat] = useState(true)
+    const [moreRecommend, setMoreRecommend] = useState(true)
+    const [isLiked, setIsLiked] = useState(false)
+    const [isFollowed, setIsFollowed] = useState(false)
+
+
+    const handleClickLike = () => {
+        if (!isLiked) {
+            toast.success("Liked success !")
+        }
+        setIsLiked(!isLiked)
+    }
+
+    const handleClickFollow = () => {
+        if (!isFollowed) {
+            toast.success("Add to wishlist success !")
+        }else {
+            toast.success("Remove from wishlist success !")
+        }
+        setIsFollowed(!isFollowed)
+    }
 
 
     return (
@@ -36,13 +58,13 @@ const HomeResult = () => {
                         </p>
                     </div>
                     <div className = {cx("homeResult__wrap__img__btn")}>
-                        <button className = {cx("homeResult__wrap__img__btn__item")}>
+                        <button className = {cx("homeResult__wrap__img__btn__item")} onClick={handleClickLike}>
                             <p className = {cx("homeResult__wrap__img__btn__item__text")}>Like</p>
-                            <i className = {cx("fas fa-heart")}></i>
+                            { !isLiked ? <i className = {cx("fas fa-heart")}></i> : <i className = {cx("fas fa-heart")} style={{color : "red"}}></i>  }
                         </button>
-                        <button className = {cx("homeResult__wrap__img__btn__item")}>
+                        <button className = {cx("homeResult__wrap__img__btn__item")} onClick={handleClickFollow}>
                             <p className = {cx("homeResult__wrap__img__btn__item__text")}>Follow</p>
-                            <i className = {cx("fas fa-plus")}></i>
+                            { !isFollowed ? <i className = {cx("fas fa-plus")}></i> : <i className = {cx("fas fa-check")} style={{color : "aqua"}}></i> }
                         </button>
                     </div>
                 </div>
@@ -105,7 +127,7 @@ const HomeResult = () => {
                 </div>
             </div>
             <div className={cx("homeResult__more")}>
-                <div className={cx("homeResult__more__cast")}>      
+                {/* <div className={cx("homeResult__more__cast")}>      
                     <div className={cx("homeResult__more__cast__title")}>
                         <h2 className={cx("homeResult__more__cast__title__text")}>Cast</h2>
                     </div>
@@ -155,13 +177,13 @@ const HomeResult = () => {
                             }
                         </button>
                     </div>
-                </div>
+                </div> */}
                 <div className={cx("homeResult__more__recommend")}>
                     <div className={cx("homeResult__more__recommend__title")}>
                         <h2 className={cx("homeResult__more__recommend__title__text")}>Recommend</h2>
                     </div>
-                    <div className={cx("homeResult__more__recommend__wrap", "grid grid-cols-5 gap-5")}>
-                        <div className={cx("item")}>
+                    <div className={cx("homeResult__more__recommend__wrap", "grid grid-cols-6 gap-5 sm:grid-cols-5" )}>
+                        <div className={cx("item","col-span-2 sm:col-span-1")}>
                             <div className={cx("item__img")}>
                             <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
                             </div>
@@ -170,7 +192,7 @@ const HomeResult = () => {
                             <p className={cx("item__title__text")}>2019</p>
                             </ div>
                         </div>
-                        <div className={cx("item")}>
+                        <div className={cx("item","col-span-2 sm:col-span-1")}>
                             <div className={cx("item__img")}>
                             <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
                             </div>
@@ -179,7 +201,7 @@ const HomeResult = () => {
                             <p className={cx("item__title__text")}>2019</p>
                             </ div>
                         </div>
-                                        <div className={cx("item")}>
+                        <div className={cx("item","col-span-2 sm:col-span-1")}>
                             <div className={cx("item__img")}>
                             <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
                             </div>
@@ -188,7 +210,7 @@ const HomeResult = () => {
                             <p className={cx("item__title__text")}>2019</p>
                             </ div>
                         </div>
-                        <div className={cx("item")}>
+                        <div className={cx("item","col-span-2 col-start-2 sm:col-span-1")}>
                             <div className={cx("item__img")}>
                             <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
                             </div>
@@ -197,7 +219,7 @@ const HomeResult = () => {
                             <p className={cx("item__title__text")}>2019</p>
                             </ div>
                         </div>
-                        <div className={cx("item")}>
+                        <div className={cx("item","col-span-2 sm:col-span-1")}>
                             <div className={cx("item__img")}>
                             <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
                             </div>
@@ -215,7 +237,7 @@ const HomeResult = () => {
                     <h2 className={cx("homeResult__chat__title__text")}>Chat</h2>
                 </div>
                 <div className={cx("homeResult__chat__wrap")}>
-                    {/* imput */}
+                    {/* input */}
                     <div className={cx("homeResult__chat__wrap__input")}>
                         <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
                         <button className={cx("homeResult__chat__wrap__input__btn")}>
@@ -224,508 +246,17 @@ const HomeResult = () => {
                     </div>
                     {/* chat */}
                     <div className={cx("homeResult__chat__wrap__chat")}>
-                        <div className={cx("homeResult__chat__wrap__item")}>
-                            <div className={cx("homeResult__chat__wrap__item__img")}>
-                                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                            </div>
-                            <div className={cx("homeResult__chat__wrap__item__info")}>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                    <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                        <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                    </span>
-                                    
-                                </p>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade  Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Yeager </p>
-                               <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <span className={cx("count__like")}>123</span>
-                                        <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                    </button>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-reply")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-trash")}></i>
-                                    </button>
-                                    <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                        <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                    </p>
-                                </div>
-                                <div className={cx("input__reply__parent")}>
-                                    <div className={cx("homeResult__chat__wrap__input")}>
-                                        <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                        <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                            <i className={cx("fas fa-paper-plane")}></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={cx("homeResult__chat__wrap__item__children__wrap")}> 
-                                    <div className={cx("homeResult__chat__wrap__item__children")}>
-                                        <div className={cx("homeResult__chat__wrap__item__img")}>
-                                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                                        </div>
-                                        <div className={cx("homeResult__chat__wrap__item__info")}>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                                    <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                                </span>
-                                                
-                                            </p>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Ye sdfkjdsf ljkasd aslkd j ialsdfhu pweur lasdjfsx jwadflj slkdbfYeagerCade Yeager </p>
-                                        <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <span className={cx("count__like")}>123</span>
-                                                    <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                                </button>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-reply")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-trash")}></i>
-                                                </button>
-                                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                    <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                                </p>
-                                            </div>
-                                            <div className={cx("input__reply__parent")}>
-                                                <div className={cx("homeResult__chat__wrap__input")}>
-                                                    <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                                    <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                                        <i className={cx("fas fa-paper-plane")}></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx("homeResult__chat__wrap__item")}>
-                            <div className={cx("homeResult__chat__wrap__item__img")}>
-                                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                            </div>
-                            <div className={cx("homeResult__chat__wrap__item__info")}>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                    <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                        <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                    </span>
-                                    
-                                </p>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade  Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Yeager </p>
-                               <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <span className={cx("count__like")}>123</span>
-                                        <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                    </button>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-reply")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-trash")}></i>
-                                    </button>
-                                    <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                        <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                    </p>
-                                </div>
-                                <div className={cx("input__reply__parent")}>
-                                    <div className={cx("homeResult__chat__wrap__input")}>
-                                        <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                        <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                            <i className={cx("fas fa-paper-plane")}></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={cx("homeResult__chat__wrap__item__children__wrap")}> 
-                                    <div className={cx("homeResult__chat__wrap__item__children")}>
-                                        <div className={cx("homeResult__chat__wrap__item__img")}>
-                                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                                        </div>
-                                        <div className={cx("homeResult__chat__wrap__item__info")}>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                                    <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                                </span>
-                                                
-                                            </p>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Ye sdfkjdsf ljkasd aslkd j ialsdfhu pweur lasdjfsx jwadflj slkdbfYeagerCade Yeager </p>
-                                        <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <span className={cx("count__like")}>123</span>
-                                                    <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                                </button>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-reply")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-trash")}></i>
-                                                </button>
-                                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                    <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                                </p>
-                                            </div>
-                                            <div className={cx("input__reply__parent")}>
-                                                <div className={cx("homeResult__chat__wrap__input")}>
-                                                    <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                                    <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                                        <i className={cx("fas fa-paper-plane")}></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx("homeResult__chat__wrap__item")}>
-                            <div className={cx("homeResult__chat__wrap__item__img")}>
-                                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                            </div>
-                            <div className={cx("homeResult__chat__wrap__item__info")}>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                    <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                        <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                    </span>
-                                    
-                                </p>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade  Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Yeager </p>
-                               <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <span className={cx("count__like")}>123</span>
-                                        <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                    </button>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-reply")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-trash")}></i>
-                                    </button>
-                                    <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                        <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                    </p>
-                                </div>
-                                <div className={cx("input__reply__parent")}>
-                                    <div className={cx("homeResult__chat__wrap__input")}>
-                                        <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                        <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                            <i className={cx("fas fa-paper-plane")}></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={cx("homeResult__chat__wrap__item__children__wrap")}> 
-                                    <div className={cx("homeResult__chat__wrap__item__children")}>
-                                        <div className={cx("homeResult__chat__wrap__item__img")}>
-                                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                                        </div>
-                                        <div className={cx("homeResult__chat__wrap__item__info")}>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                                    <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                                </span>
-                                                
-                                            </p>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Ye sdfkjdsf ljkasd aslkd j ialsdfhu pweur lasdjfsx jwadflj slkdbfYeagerCade Yeager </p>
-                                        <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <span className={cx("count__like")}>123</span>
-                                                    <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                                </button>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-reply")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-trash")}></i>
-                                                </button>
-                                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                    <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                                </p>
-                                            </div>
-                                            <div className={cx("input__reply__parent")}>
-                                                <div className={cx("homeResult__chat__wrap__input")}>
-                                                    <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                                    <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                                        <i className={cx("fas fa-paper-plane")}></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx("homeResult__chat__wrap__item")}>
-                            <div className={cx("homeResult__chat__wrap__item__img")}>
-                                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                            </div>
-                            <div className={cx("homeResult__chat__wrap__item__info")}>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                    <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                        <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                    </span>
-                                    
-                                </p>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade  Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Yeager </p>
-                               <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <span className={cx("count__like")}>123</span>
-                                        <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                    </button>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-reply")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-trash")}></i>
-                                    </button>
-                                    <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                        <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                    </p>
-                                </div>
-                                <div className={cx("input__reply__parent")}>
-                                    <div className={cx("homeResult__chat__wrap__input")}>
-                                        <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                        <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                            <i className={cx("fas fa-paper-plane")}></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={cx("homeResult__chat__wrap__item__children__wrap")}> 
-                                    <div className={cx("homeResult__chat__wrap__item__children")}>
-                                        <div className={cx("homeResult__chat__wrap__item__img")}>
-                                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                                        </div>
-                                        <div className={cx("homeResult__chat__wrap__item__info")}>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                                    <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                                </span>
-                                                
-                                            </p>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Ye sdfkjdsf ljkasd aslkd j ialsdfhu pweur lasdjfsx jwadflj slkdbfYeagerCade Yeager </p>
-                                        <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <span className={cx("count__like")}>123</span>
-                                                    <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                                </button>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-reply")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-trash")}></i>
-                                                </button>
-                                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                    <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                                </p>
-                                            </div>
-                                            <div className={cx("input__reply__parent")}>
-                                                <div className={cx("homeResult__chat__wrap__input")}>
-                                                    <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                                    <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                                        <i className={cx("fas fa-paper-plane")}></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx("homeResult__chat__wrap__item")}>
-                            <div className={cx("homeResult__chat__wrap__item__img")}>
-                                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                            </div>
-                            <div className={cx("homeResult__chat__wrap__item__info")}>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                    <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                        <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                    </span>
-                                    
-                                </p>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade  Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Yeager </p>
-                               <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <span className={cx("count__like")}>123</span>
-                                        <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                    </button>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-reply")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-trash")}></i>
-                                    </button>
-                                    <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                        <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                    </p>
-                                </div>
-                                <div className={cx("input__reply__parent")}>
-                                    <div className={cx("homeResult__chat__wrap__input")}>
-                                        <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                        <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                            <i className={cx("fas fa-paper-plane")}></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={cx("homeResult__chat__wrap__item__children__wrap")}> 
-                                    <div className={cx("homeResult__chat__wrap__item__children")}>
-                                        <div className={cx("homeResult__chat__wrap__item__img")}>
-                                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                                        </div>
-                                        <div className={cx("homeResult__chat__wrap__item__info")}>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                                    <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                                </span>
-                                                
-                                            </p>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Ye sdfkjdsf ljkasd aslkd j ialsdfhu pweur lasdjfsx jwadflj slkdbfYeagerCade Yeager </p>
-                                        <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <span className={cx("count__like")}>123</span>
-                                                    <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                                </button>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-reply")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-trash")}></i>
-                                                </button>
-                                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                    <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                                </p>
-                                            </div>
-                                            <div className={cx("input__reply__parent")}>
-                                                <div className={cx("homeResult__chat__wrap__input")}>
-                                                    <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                                    <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                                        <i className={cx("fas fa-paper-plane")}></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx("homeResult__chat__wrap__item")}>
-                            <div className={cx("homeResult__chat__wrap__item__img")}>
-                                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                            </div>
-                            <div className={cx("homeResult__chat__wrap__item__info")}>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                    <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                        <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                    </span>
-                                    
-                                </p>
-                                <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager C Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade  Cade Yeager Cade Yeager Cade YeagerCade Yeager Cade Yeager Cade YeagerCade Yeager </p>
-                               <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <span className={cx("count__like")}>123</span>
-                                        <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                    </button>
-                                    <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-reply")}></i>
-                                    </button>
-                                    <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                        <i className={cx("fa-solid fa-trash")}></i>
-                                    </button>
-                                    <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                        <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                    </p>
-                                </div>
-                                <div className={cx("input__reply__parent")}>
-                                    <div className={cx("homeResult__chat__wrap__input")}>
-                                        <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                        <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                            <i className={cx("fas fa-paper-plane")}></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className={cx("homeResult__chat__wrap__item__children__wrap")}> 
-                                    <div className={cx("homeResult__chat__wrap__item__children")}>
-                                        <div className={cx("homeResult__chat__wrap__item__img")}>
-                                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
-                                        </div>
-                                        <div className={cx("homeResult__chat__wrap__item__info")}>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                <span className={cx("homeResult__chat__wrap__item__info__text__name")}>
-                                                    <span>Mark Wahlberg <i className={cx("fas fa-check iconCheck")}></i></span> 
-                                                </span>
-                                                
-                                            </p>
-                                            <p className={cx("homeResult__chat__wrap__item__info__text")}>Cade Ye sdfkjdsf ljkasd aslkd j ialsdfhu pweur lasdjfsx jwadflj slkdbfYeagerCade Yeager </p>
-                                        <div className={cx("homeResult__chat__wrap__item__info__btn")}>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <span className={cx("count__like")}>123</span>
-                                                    <i className={cx("fa-solid fa-thumbs-up")}></i>
-                                                </button>
-                                                <button className={cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-thumbs-down")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-reply")}></i>
-                                                </button>
-                                                <button className= {cx("homeResult__chat__wrap__item__info__btn__item")}>
-                                                    <i className={cx("fa-solid fa-trash")}></i>
-                                                </button>
-                                                <p className={cx("homeResult__chat__wrap__item__info__text")}>
-                                                    <span className={cx("homeResult__chat__wrap__item__info__text__time")}>12:00</span>
-                                                </p>
-                                            </div>
-                                            <div className={cx("input__reply__parent")}>
-                                                <div className={cx("homeResult__chat__wrap__input")}>
-                                                    <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                                                    <button className={cx("homeResult__chat__wrap__input__btn")}>
-                                                        <i className={cx("fas fa-paper-plane")}></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <ParentChat />
+                        <ParentChat />
                         {/* ====================================================================== */}
-                        <div className={cx("homeResult__more__chat__pagination")}>
-                        <button className={cx("homeResult__more__chat__pagination__item")} onClick={ () => setMoreChat(!moreChat)}>
-                            {
-                                moreChat ? <i className={cx("fas fa-chevron-down")}></i>
-                                :<i className={cx("fas fa-chevron-up")}></i>
-                            }
-                        </button>
-                    </div>
+                        <div className={cx("homeResult__more__chat__pagination")} >
+                            <button className={cx("homeResult__more__chat__pagination__item")} onClick={ () => setMoreChat(!moreChat)} style={{width : "100%"}}>
+                                {
+                                    moreChat ? <i className={cx("fas fa-chevron-down")}></i>
+                                    :<i className={cx("fas fa-chevron-up")}></i>
+                                }
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
