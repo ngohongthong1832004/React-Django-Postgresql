@@ -5,6 +5,8 @@ import Cookies from 'js-cookie';
 import {toast} from 'react-toastify';
 
 import styles from "./homeWishlist.module.scss";
+import ItemFilm from "../itemFilm";
+import Pagination from "../pagination";
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +36,7 @@ const HomeWishlist = () => {
         <div className={cx("wishlist__wrap__item__filter", "grid gap-5 grid-cols-2 sm:grid-cols-5 ")}>
           <div className={cx(`wishlist__wrap__item__filter__title${show === 0 ? "--active" : ""}`,)} onClick={() => setShow(0)}>
             <p className={cx("wishlist__wrap__item__filter__title__text")}>
-              Wishlist
+              Follow
               <i className={cx("fas fa-music", "pl-2")}></i>
             </p>
           </div>
@@ -45,145 +47,18 @@ const HomeWishlist = () => {
             </p>
           </div>
         </div>
-        <div className={cx("wishlist__wrap__item", "grid gap-5 grid-cols-6 sm:grid-cols-5")}>
-          <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-            <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-          <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-            <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-          <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-            <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-          <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-            <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-          <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
-            <div className={cx("item","col-span-2 sm:col-span-1")}>
-              <div className={cx("item__img")}>
-                <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
-              </div>
-              <div className={cx("item__title")}>
-                <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                <p className={cx("item__title__text")}>2019</p>
-              </ div>
-            </div>
+        <div className={cx("wishlist__wrap__item", "grid gap-5 grid-cols-6 sm:grid-cols-10")}>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-start-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
+            <ItemFilm className={"col-span-2 sm:col-span-2"}/>
         </div>
-        <div className={cx("wishlist__footer__pagination", "p-1.5")}>
-          <div className={cx("wishlist__footer__pagination__wrap")}>
-            <div className={cx("wishlist__footer__pagination__wrap__item")}>
-              <div
-                className={cx("wishlist__footer__pagination__wrap__item__text")}
-              >
-                <i className={cx("fas fa-chevron-left")}></i>
-              </div>
-            </div>
-            <div className={cx("wishlist__footer__pagination__wrap__item")}>
-              <div
-                className={cx("wishlist__footer__pagination__wrap__item__text")}
-              >
-                1
-              </div>
-            </div>
-            <div className={cx("wishlist__footer__pagination__wrap__item")}>
-              <div
-                className={cx("wishlist__footer__pagination__wrap__item__text")}
-              >
-                1
-              </div>
-            </div>
-            <div className={cx("wishlist__footer__pagination__wrap__item")}>
-              <div
-                className={cx("wishlist__footer__pagination__wrap__item__text")}
-              >
-                ..
-              </div>
-            </div>
-            <div className={cx("wishlist__footer__pagination__wrap__item")}>
-              <div
-                className={cx("wishlist__footer__pagination__wrap__item__text")}
-              >
-                100
-              </div>
-            </div>
-            <div className={cx("wishlist__footer__pagination__wrap__item")}>
-              <div
-                className={cx("wishlist__footer__pagination__wrap__item__text")}
-              >
-                <i className={cx("fas fa-chevron-right")}></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        
+        <Pagination />
       </>}
     </div>
   );

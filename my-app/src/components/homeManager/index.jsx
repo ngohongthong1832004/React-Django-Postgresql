@@ -31,7 +31,7 @@ const HomeManager = () => {
       { isUser === 'true' && <>
         <h1>Admin Site</h1>
         <div className={cx("homeSearch__filter__wrap", "p-1.5")}>
-          <div className={cx("homeSearch__filter__wrap__item",  "grid grid-cols-5 gap-5",)}>
+          <div className={cx("homeSearch__filter__wrap__item",  "grid grid-cols-12 sm:gird-cols-5 gap-5",)}>
             <style>
             {`
               .active {
@@ -39,22 +39,22 @@ const HomeManager = () => {
               }
             `}
           </style>
-            <NavLink to={"user"}   className={cx("homeSearch__filter__wrap__item__title")}>
+            <NavLink to={"user"}   className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
                 <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                   User
                 </p>
             </NavLink>
-            <NavLink to={"add-film"} className={cx(`homeSearch__filter__wrap__item__title`)}>
+            <NavLink to={"add-film"} className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Add Film
               </p>
             </NavLink>
-            <NavLink to={"update-film"} className={cx(`homeSearch__filter__wrap__item__title`)}>
+            <NavLink to={"update-film"} className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Update Film
               </p>
             </NavLink>
-            <NavLink to={"delete-film"} className={cx(`homeSearch__filter__wrap__item__title`)}>
+            <NavLink to={"delete-film"} className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Delete Film
               </p>

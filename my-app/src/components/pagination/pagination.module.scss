@@ -1,0 +1,18 @@
+.pagination__wrap {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .pagination__wrap__item {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      border-radius: 0.5rem;
+      background-color: var(--gray);
+      box-shadow: 2px 2px 2px var(--black);
+    }
+  
+    :hover{
+      cursor: pointer;
+      background-color: var(--gray-2);
+    }
+  }

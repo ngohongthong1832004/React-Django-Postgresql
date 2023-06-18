@@ -17,7 +17,7 @@ const Search = function () {
   const handleChangeSearchValue = (e) => {
     setSearchValue(e.target.value);
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.trim().length > 0) {
       setIsSpinner(true);
       setIsClose(false);
       setIsShowModalHint(true);
@@ -28,7 +28,7 @@ const Search = function () {
     }
   };
   const handleFocus = () => {
-    if (searchValue.length > 0) {
+    if (searchValue.trim().length > 0) {
       setIsShowModalHint(true);
     }
   }
@@ -37,6 +37,12 @@ const Search = function () {
       setIsShowModalHint(false);
     }, 300);
   }
+
+  const handleClickSearch = (e) => {
+    if (searchValue.trim().length == 0) {
+     return  e.preventDefault()
+    }
+  };
 
   // Check if the searchValue is not changed in 400ms, then close the modal and stop the spinner
   useEffect(() => {
@@ -100,7 +106,7 @@ const Search = function () {
                 autoComplete="off"
               />
               <div className={cx("search__input__wrap__option__btn")}>
-                  { searchValue.length > 0 && isClose && <div className={cx("search__option__btn__close")} onClick={() => setSearchValue("")}>
+                  { searchValue.trim().length > 0 && isClose && <div className={cx("search__option__btn__close")} onClick={() => setSearchValue("")}>
                     <i className="fas fa-times"></i>
                   </div>}
                 
@@ -108,7 +114,7 @@ const Search = function () {
                     <i className="fas fa-spinner"></i>
                   </div> }
               </div>
-              <button className={cx("search__btn")}>
+              <button className={cx("search__btn")} onClick={handleClickSearch}>
                 <div>
                   <i className="fas fa-search"></i>
                 </div>
@@ -119,7 +125,7 @@ const Search = function () {
           </form>
         </>
         <div className={cx("search__wrap__voice")}>
-          <button className={cx("search__voice__btn")}>
+          <button className={cx("search__voice__btn")} >
             <i className="fas fa-microphone"></i>
           </button>
         </div>

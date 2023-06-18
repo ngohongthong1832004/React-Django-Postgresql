@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import styles from "./homeResult.module.scss"
 import ParentChat from "./parentChat"
+import ItemFilm from "../itemFilm"
 
 
 const cx = classNames.bind(styles)
@@ -183,51 +184,11 @@ const HomeResult = () => {
                         <h2 className={cx("homeResult__more__recommend__title__text")}>Recommend</h2>
                     </div>
                     <div className={cx("homeResult__more__recommend__wrap", "grid grid-cols-6 gap-5 sm:grid-cols-5" )}>
-                        <div className={cx("item","col-span-2 sm:col-span-1")}>
-                            <div className={cx("item__img")}>
-                            <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-                            </div>
-                            <div className={cx("item__title")}>
-                            <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                            <p className={cx("item__title__text")}>2019</p>
-                            </ div>
-                        </div>
-                        <div className={cx("item","col-span-2 sm:col-span-1")}>
-                            <div className={cx("item__img")}>
-                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
-                            </div>
-                            <div className={cx("item__title")}>
-                            <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                            <p className={cx("item__title__text")}>2019</p>
-                            </ div>
-                        </div>
-                        <div className={cx("item","col-span-2 sm:col-span-1")}>
-                            <div className={cx("item__img")}>
-                            <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-                            </div>
-                            <div className={cx("item__title")}>
-                            <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                            <p className={cx("item__title__text")}>2019</p>
-                            </ div>
-                        </div>
-                        <div className={cx("item","col-span-2 col-start-2 sm:col-span-1")}>
-                            <div className={cx("item__img")}>
-                            <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg"></img>
-                            </div>
-                            <div className={cx("item__title")}>
-                            <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                            <p className={cx("item__title__text")}>2019</p>
-                            </ div>
-                        </div>
-                        <div className={cx("item","col-span-2 sm:col-span-1")}>
-                            <div className={cx("item__img")}>
-                            <img src="https://i.ytimg.com/vi/6Vtf0MszgP8/maxresdefault.jpg"></img>
-                            </div>
-                            <div className={cx("item__title")}>
-                            <h2 className={cx("item__title__text")}>transformer : the last night</h2>
-                            <p className={cx("item__title__text")}>2019</p>
-                            </ div>
-                        </div>
+                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
+                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
+                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
+                        <ItemFilm className={"col-span-2 col-start-2 sm:col-span-1"}/>
+                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
                     </div>
 
                 </div>

@@ -1,11 +1,12 @@
 import classNames from "classnames/bind";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import {toast} from 'react-toastify';
 
 import imgs from "../../assets";
 import styles from "./homeProfile.module.scss";
+import ModalConfirm from "../modalConfirm";
 
 const cx = classNames.bind(styles);
 
@@ -14,8 +15,10 @@ const HomeProfile = () => {
   const navigate = useNavigate();
   const isUser = Cookies.get('sessionToken');
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isShowModalUpdateImg, setIsShowModalUpdateImg] = useState(false);
   const [firstNameChange, setFirstNameChange] = useState("");
   const [lastNameChange, setLastNameChange] = useState("");
+  // const [valueResultForm, setValueResultForm] = useState(null);
 
   useEffect(() => {
     const loader = async () => {
@@ -29,13 +32,30 @@ const HomeProfile = () => {
   }, []);  
 
 
-  const handleClickChangeToUpdate = () => {
-    setIsUpdate(true);
-  }
-  const handleClickUpdate = (() => {
+  const handleClickUpdateInfoUser = () => {
+    if(firstNameChange === "" || lastNameChange === ""){
+      return toast.error('Please fill all field');
+    }
+    console.log("change :", firstNameChange, lastNameChange)
+    setFirstNameChange("");
+    setLastNameChange("");
     setIsUpdate(false);
+    toast.success('Update success');
+  }
+  const handleClickChangeToUpdate = (() => {
+    setIsUpdate(true);
   })
 
+  const handleClickUpdateImg = (() => {
+    setIsShowModalUpdateImg(true);
+  })
+
+  const handleCloseModal = ((status) => {
+    setIsShowModalUpdateImg(status);
+  })
+  const handleUploadImg = ((payload) => {
+    console.log(payload)
+  })
   return (
     <div className={cx("profile", "container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
       {isUser && <>
@@ -46,9 +66,10 @@ const HomeProfile = () => {
               <img src={imgs.imgUser} alt="avatar" />
             </div>
             <div className={cx("wrap__btn__update","absolute right-1 bottom-3")}>
-                  <button className={cx("btn__update")} type="submit">
+                  <button className={cx("btn__update")} type="submit" onClick={handleClickUpdateImg}>
                     <i className={cx("fas fa-camera")}></i>
                   </button>
+                  {isShowModalUpdateImg && <ModalConfirm result={handleUploadImg} callBack={handleCloseModal} titleModal="Upload Avatar" typeForm={"file"} titleBtnForm={"Upload"} labelForm={"Chose your img"} />}
               </div>
           </div>
           <div className={cx("profile__content__right","relative col-span-10 sm:col-span-7")}>
@@ -63,7 +84,7 @@ const HomeProfile = () => {
                           <span>:</span>
                           {
                             !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>bap hong</p> : 
-                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text")} value={firstNameChange} onChange={(e)=> setFirstNameChange(e.target.value)}/>
+                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={firstNameChange} onChange={(e)=> setFirstNameChange(e.target.value)} />
                           }
 
                       </div>
@@ -76,7 +97,7 @@ const HomeProfile = () => {
                           <span>:</span>
                           {
                             !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>Thong</p> : 
-                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text")} value={lastNameChange} onChange={(e)=> setLastNameChange(e.target.value)}/>
+                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={lastNameChange} onChange={(e)=> setLastNameChange(e.target.value)} />
                           }
 
                       </div>
@@ -112,7 +133,7 @@ const HomeProfile = () => {
                       <i className={cx("fas fa-cancel","pr-3")}></i>
                       Cancel
                     </button>
-                    <button className={cx("btn__update")}  onClick={handleClickUpdate}>
+                    <button className={cx("btn__update")}  onClick={handleClickUpdateInfoUser}>
                       <i className={cx("fas fa-save","pr-3")}></i>
                       Save
                     </button>

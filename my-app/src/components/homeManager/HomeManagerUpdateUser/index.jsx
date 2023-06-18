@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "../homeManager.module.scss";
+import SearchMini from "../SearchComponent";
 
 const cx = classNames.bind(styles);
 
@@ -8,47 +9,7 @@ const HomeManagerUpdateUser = () => {
     return (
         <div className = {cx("user")}>
             <h1>Home Manager Update Film</h1>
-
-            <div className={cx("search__film__update","px-10")}>
-                <form action="">
-                    <div className = {cx("homeResult__wrap__info__detail")}>
-                        <div className = {cx("homeResult__wrap__info__detail__item","w-100 relative")}>
-                            <input className={cx("input-text")} placeholder="Write name film to update" type="text"/>
-                            <div className = {cx("wrap__btn__search")}>
-                                <button className={cx("btn__search__film")} type="submit">Search</button>
-                            </div>
-                            <div className = {cx("modal__search__film", "absolute left")}>
-                                <div className = {cx("modal__search__film__item")}>
-                                    <div className = {cx("modal__search__film__item__title")}>
-                                        <p className = {cx("modal__search__film__item__title__text")}>Name 1 </p>
-                                    </div>
-                                </div>
-                                <div className = {cx("modal__search__film__item")}>
-                                    <div className = {cx("modal__search__film__item__title")}>
-                                        <p className = {cx("modal__search__film__item__title__text")}>Name 2</p>
-                                    </div>
-                                </div>
-                                <div className = {cx("modal__search__film__item")}>
-                                    <div className = {cx("modal__search__film__item__title")}>
-                                        <p className = {cx("modal__search__film__item__title__text")}>Name 3</p>
-                                    </div>
-                                </div>
-                                <div className = {cx("modal__search__film__item")}>
-                                    <div className = {cx("modal__search__film__item__title")}>
-                                        <p className = {cx("modal__search__film__item__title__text")}>Name 4</p>
-                                    </div>
-                                </div>
-                                <div className = {cx("modal__search__film__item")}>
-                                    <div className = {cx("modal__search__film__item__title")}>
-                                        <p className = {cx("modal__search__film__item__title__text")}>Name 4</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </form>
-            </div>
+            <SearchMini />
             <br/>
             <div className={cx("form__add__film","px-10")}>
                 <form action="">
