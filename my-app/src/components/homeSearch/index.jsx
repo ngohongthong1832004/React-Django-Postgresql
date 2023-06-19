@@ -1,5 +1,6 @@
 import classnames from "classnames/bind";
 import { useEffect, useState } from "react";
+import {toast} from 'react-toastify';
 
 import styles from "./homeSearch.module.scss";
 import ItemFilm from "../itemFilm";
@@ -14,6 +15,9 @@ const HomeSearch = () => {
   var params = new URLSearchParams(url.search);
   var searchValue = params.get('q'); 
 
+  const getPage = (page) => {
+    toast.success(page);
+  }
 
 
 
@@ -77,7 +81,7 @@ const HomeSearch = () => {
           <ItemFilm className={"col-span-1 sm:col-span-2"}/>
         </div>
       </div>
-      <Pagination />
+      <Pagination result = {getPage}/>
     </div>
   );
 };

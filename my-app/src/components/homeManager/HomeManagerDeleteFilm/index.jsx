@@ -1,17 +1,33 @@
 import classNames from "classnames/bind";
+import { useEffect, useState } from "react";
+import {toast } from 'react-toastify';
+
 import styles from "../homeManager.module.scss";
 import FilmItem from "./filmitem";
 import Pagination from "../../pagination";
 import SearchMini from "../SearchComponent";
 
+
 const cx = classNames.bind(styles);
 
 
 const HomeManagerDeleteUser = () => {
+
+
+    const getPage = (page) => {
+        toast.success(page);
+    }
+
+    const getValueSearch = (value) => {
+        toast.success(value);
+    }
+
+
+
     return (
         <div className={cx("user")}>
             <h1>Home Manager Delete Film</h1>
-            <SearchMini />
+            <SearchMini  result={getValueSearch} />
             <br/>
             <div className={cx("user__list")}>
                 <table className={cx("table-auto border-separate border border-slate-500","tableCustom")}>
@@ -28,7 +44,7 @@ const HomeManagerDeleteUser = () => {
                         <FilmItem />
                     </tbody>
                 </table>
-                <Pagination />
+                <Pagination  result = {getPage} />
             </div>
         </div>
     );

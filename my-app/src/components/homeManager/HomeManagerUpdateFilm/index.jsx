@@ -1,4 +1,6 @@
 import classNames from "classnames/bind";
+import {toast} from 'react-toastify';
+
 import styles from "../homeManager.module.scss";
 import SearchMini from "../SearchComponent";
 
@@ -6,10 +8,15 @@ const cx = classNames.bind(styles);
 
 
 const HomeManagerUpdateUser = () => {
+
+    const getValueSearch = (value) => {
+        toast.success(value);
+    }
+
     return (
         <div className = {cx("user")}>
             <h1>Home Manager Update Film</h1>
-            <SearchMini />
+            <SearchMini result={getValueSearch}/>
             <br/>
             <div className={cx("form__add__film","px-10")}>
                 <form action="">

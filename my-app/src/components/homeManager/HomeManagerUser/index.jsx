@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
+import {toast } from 'react-toastify';
 
 import styles from "../homeManager.module.scss";
 import UserItem from "./userItem";
@@ -11,14 +12,18 @@ const cx = classNames.bind(styles);
 
 const HomeManagerUser = () => {
 
+    const getPage = (page) => {
+        toast.success(page);
+    }
     
-    
-
+    const getValueSearch = (value) => {
+        toast.success(value);
+    }
 
     return (
         <div className={cx("user")}>
             <h1>Home Manager User</h1>
-            <SearchMini />
+            <SearchMini  result={getValueSearch}/>
             <br/>
             <div className={cx("user__list")}>
                 <table className={cx("table-auto border-separate border border-slate-500","tableCustom")}>
@@ -37,7 +42,7 @@ const HomeManagerUser = () => {
                         <UserItem/>
                     </tbody>
                 </table>
-                <Pagination />
+                <Pagination result = {getPage}/>
             </div>
         </div>
     );

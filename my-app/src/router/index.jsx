@@ -9,9 +9,9 @@ import HomeErrorSearch from "../components/homeErrorSearch";
 import HomeProfile from "../components/homeProfile";
 import HomeManager from "../components/homeManager";
 import HomeManagerUser from "../components/homeManager/HomeManagerUser";
-import HomeManagerAddUser from "../components/homeManager/HomeManagerAddUser";
-import HomeManagerUpdateUser from "../components/homeManager/HomeManagerUpdateUser";
-import HomeManagerDeleteUser from "../components/homeManager/HomeManagerDeleteUser";
+import HomeManagerAddUser from "../components/homeManager/HomeManagerAddFilm";
+import HomeManagerUpdateUser from "../components/homeManager/HomeManagerUpdateFilm";
+import HomeManagerDeleteUser from "../components/homeManager/HomeManagerDeleteFilm";
 
 
 export const router = createBrowserRouter([

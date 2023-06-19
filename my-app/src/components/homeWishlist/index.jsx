@@ -16,6 +16,12 @@ const HomeWishlist = () => {
 
   const navigate = useNavigate();
   const isUser = Cookies.get('sessionToken');
+
+  const getPage = (page) => {
+    toast.success(page);
+  }
+
+
   useEffect(() => {
     const loader = async () => {
       if (!isUser) {
@@ -58,7 +64,7 @@ const HomeWishlist = () => {
             <ItemFilm className={"col-span-2 sm:col-span-2"}/>
             <ItemFilm className={"col-span-2 sm:col-span-2"}/>
         </div>
-        <Pagination />
+        <Pagination result = {getPage}/>
       </>}
     </div>
   );

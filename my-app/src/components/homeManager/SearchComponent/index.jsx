@@ -3,26 +3,38 @@ import { useState, useEffect } from "react";
 
 import styles from "../homeManager.module.scss";
 import SearchItemMini from "./searchItemMini";
+import { toast } from "react-toastify";
 
 
 
 const cx = classNames.bind(styles);
 
-const SearchMini = ({data = []}) => {
+const SearchMini = ({
+    data = [],
+    result = () => {},
+    }) => {
     const [isShowModal, setIsShowModal] = useState(false)
     const [searchValue, setSearchValue] = useState("")
 
     const handleChangeSearchValue = (e) => {
         setSearchValue(e.target.value)
-        setIsShowModal(true)
+        if (e.target.value.trim().length > 0) setIsShowModal(true)
         if (e.target.value.length === 0) setIsShowModal(false)
     }
 
     const handleOnBlur = () => {
+       setTimeout(() => {
         setIsShowModal(false)
+       }, 200);
     }
     const handleFocus = () => {
-        if (searchValue.length > 0) setIsShowModal(true)
+        if (searchValue.trim().length > 0) setIsShowModal(true)
+    }
+
+    const getValueSearch = (value) => {
+        result(value)
+        setSearchValue(value)
+        setIsShowModal(false)
     }
 
     return (
@@ -42,11 +54,11 @@ const SearchMini = ({data = []}) => {
                             <button className={cx("btn__search__film")} type="submit">Search</button>
                         </div>
                        {isShowModal && <div className = {cx("modal__search__film", "absolute left")}>
-                            <SearchItemMini />
-                            <SearchItemMini />
-                            <SearchItemMini />
-                            <SearchItemMini />
-                            <SearchItemMini />
+                            <SearchItemMini result={getValueSearch}/>
+                            <SearchItemMini result={getValueSearch}/>
+                            <SearchItemMini result={getValueSearch}/>
+                            <SearchItemMini result={getValueSearch}/>
+                            <SearchItemMini result={getValueSearch}/>
                         </div>}
                     </div>
                 </div>
