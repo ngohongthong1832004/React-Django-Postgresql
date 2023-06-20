@@ -78,9 +78,10 @@ const Modal = ({isLogin, callBack}) => {
                 password: passRef.current.value,
             })
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 Cookies.set('sessionToken', response.data.token);
                 Cookies.set('sessionIsStaff', response.data.isStaff);
+                Cookies.set('userInfo', JSON.stringify(response.data));
                 localStorage.setItem('user_name', response.data.email);
                 setIsPending(false);
                 callBack(false,{

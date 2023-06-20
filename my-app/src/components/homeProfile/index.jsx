@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import {toast} from 'react-toastify';
+import axios from "axios";
 
 import imgs from "../../assets";
 import styles from "./homeProfile.module.scss";
@@ -18,6 +19,7 @@ const HomeProfile = () => {
   const [isShowModalUpdateImg, setIsShowModalUpdateImg] = useState(false);
   const [firstNameChange, setFirstNameChange] = useState("");
   const [lastNameChange, setLastNameChange] = useState("");
+  const [dataUser, setDataUser] = useState({});
   // const [valueResultForm, setValueResultForm] = useState(null);
 
   useEffect(() => {
@@ -31,12 +33,27 @@ const HomeProfile = () => {
     loader();
   }, []);  
 
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: "Token " + Cookies.get('sessionToken')
+      }
+    };
+  
+    axios.get(import.meta.env.VITE_URL_BACKEND + 'get-user-info/', config)
+      .then((res) => {
+        setDataUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleClickUpdateInfoUser = () => {
     if(firstNameChange === "" || lastNameChange === ""){
       return toast.error('Please fill all field');
     }
-    console.log("change :", firstNameChange, lastNameChange)
+    // console.log("change :", firstNameChange, lastNameChange)
     setFirstNameChange("");
     setLastNameChange("");
     setIsUpdate(false);
@@ -54,7 +71,7 @@ const HomeProfile = () => {
     setIsShowModalUpdateImg(status);
   })
   const handleUploadImg = ((payload) => {
-    console.log(payload)
+    // console.log(payload)
   })
   return (
     <div className={cx("profile", "container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
@@ -83,7 +100,7 @@ const HomeProfile = () => {
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>First name </p>
                           <span>:</span>
                           {
-                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>bap hong</p> : 
+                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.firstname}</p> : 
                             <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={firstNameChange} onChange={(e)=> setFirstNameChange(e.target.value)} />
                           }
 
@@ -96,7 +113,7 @@ const HomeProfile = () => {
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>Last name </p>
                           <span>:</span>
                           {
-                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>Thong</p> : 
+                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.lastname}</p> : 
                             <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={lastNameChange} onChange={(e)=> setLastNameChange(e.target.value)} />
                           }
 
@@ -108,7 +125,7 @@ const HomeProfile = () => {
                       <div className = {cx("homeResult__wrap__info__detail__item")}>
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>Email </p>
                           <span>:</span>
-                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>baphongpine@gmail.com</p>
+                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.email}</p>
                       </div>
                   </div>
               </div>
@@ -117,7 +134,7 @@ const HomeProfile = () => {
                       <div className = {cx("homeResult__wrap__info__detail__item")}>
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>User </p>
                           <span>:</span>
-                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>Normal</p>
+                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.superuser ? "Admin" : ( dataUser.isStaff ? "Staff" : "Normal" )}</p>
                       </div>
                   </div>
               </div>
