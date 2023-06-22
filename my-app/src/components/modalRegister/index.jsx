@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 
 
 const Modal = ({isLogin, callBack}) => {
+    const dataInfoUser = {}
     const [isEye, setIsEye] = useState(true);
     const [isEyeConfirm, setIsEyeConfirm] = useState(true);
     const [isPending, setIsPending] = useState(false);
@@ -78,17 +79,50 @@ const Modal = ({isLogin, callBack}) => {
                 password: passRef.current.value,
             })
             .then(response => {
-                // console.log(response.data);
+                console.log("response.data :", response.data);
+                dataInfoUser['token'] = response.data.token;
+                dataInfoUser['isStaff'] = response.data.isStaff;
+                dataInfoUser['email'] = response.data.email;
+                dataInfoUser['firstName'] = response.data.firstName;
+                dataInfoUser['lastName'] = response.data.lastName;
+                dataInfoUser['isSuperuser'] = response.data.isSuperuser;
+
                 Cookies.set('sessionToken', response.data.token);
                 Cookies.set('sessionIsStaff', response.data.isStaff);
-                Cookies.set('userInfo', JSON.stringify(response.data));
-                localStorage.setItem('user_name', response.data.email);
+                // Cookies.set('sessionEmail', response.data.email);
                 setIsPending(false);
                 callBack(false,{
                     status : true,
                     message : "Login success",
                     isUser : true,
                 })
+
+                const config = {
+                    headers: {
+                        Authorization: "Token " + response.data.token,
+                    }
+                };
+                
+                axios.get(import.meta.env.VITE_URL_BACKEND + 'get-user-info/', config)
+                    .then((res) => {
+                        Cookies.set('userInfo', JSON.stringify(res.data.infoUser));
+                        dataInfoUser['id'] = res.data.infoUser['id'];
+                        dataInfoUser['countComment'] = res.data.infoUser['countComment'];
+                        dataInfoUser['countLike'] = res.data.infoUser['countLike'];
+                        dataInfoUser['countWishlist'] = res.data.infoUser['countWishlist'];
+                        dataInfoUser['username'] = res.data.infoUser['user']
+                        dataInfoUser['avatar'] = res.data.infoUser['avatar']
+                        dataInfoUser['fullName'] = res.data.infoUser['fullName']
+        
+
+                        Cookies.set('userInfo', JSON.stringify(dataInfoUser));
+                        console.log("dataInfoUser : ", dataInfoUser);
+                        console.log("res.data.dataInfoUser : ", res.data.infoUser);
+                        window.location.reload();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             })
             .catch(error => {
                 // console.error(error);

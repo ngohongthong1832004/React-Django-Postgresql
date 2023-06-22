@@ -1,6 +1,10 @@
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
 import {toast } from 'react-toastify';
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 import styles from "../homeManager.module.scss";
 import UserItem from "./userItem";
@@ -11,6 +15,38 @@ const cx = classNames.bind(styles);
 
 
 const HomeManagerUser = () => {
+    const navigate = useNavigate();
+
+    const userInfo = Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')) : {};
+
+
+    useEffect(() => {
+        const loader = async () => {
+          if (!userInfo.isSuperuser) {
+            toast.error('You are not authorized to access this page');
+            return navigate("/");
+          }
+          return null;
+        };
+        loader();
+      }, []);  
+
+
+    useEffect(() => {
+        const option = {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Token ${Cookies.get('sessionToken')}`
+            }
+        }
+        axios.get('http://localhost:8000/get-all-user',option)
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    },[])
 
     const getPage = (page) => {
         toast.success(page);

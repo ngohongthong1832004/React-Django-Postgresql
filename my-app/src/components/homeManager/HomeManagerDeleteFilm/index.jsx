@@ -1,6 +1,9 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import {toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
 
 import styles from "../homeManager.module.scss";
 import FilmItem from "./filmitem";
@@ -12,6 +15,20 @@ const cx = classNames.bind(styles);
 
 
 const HomeManagerDeleteUser = () => {
+    const navigate = useNavigate();
+    const userInfo = Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')) : {};
+
+    
+    useEffect(() => {
+        const loader = async () => {
+          if (!userInfo.isSuperUser) {
+            toast.error('You are not authorized to access this page');
+            return navigate("/");
+          }
+          return null;
+        };
+        loader();
+      }, []);  
 
 
     const getPage = (page) => {

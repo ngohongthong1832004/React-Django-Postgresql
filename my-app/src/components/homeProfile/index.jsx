@@ -15,11 +15,12 @@ const cx = classNames.bind(styles);
 const HomeProfile = () => {
   const navigate = useNavigate();
   const isUser = Cookies.get('sessionToken');
+  const dataUser = Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')) : {}
+
   const [isUpdate, setIsUpdate] = useState(false);
   const [isShowModalUpdateImg, setIsShowModalUpdateImg] = useState(false);
   const [firstNameChange, setFirstNameChange] = useState("");
   const [lastNameChange, setLastNameChange] = useState("");
-  const [dataUser, setDataUser] = useState({});
   // const [valueResultForm, setValueResultForm] = useState(null);
 
   useEffect(() => {
@@ -33,21 +34,6 @@ const HomeProfile = () => {
     loader();
   }, []);  
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: "Token " + Cookies.get('sessionToken')
-      }
-    };
-  
-    axios.get(import.meta.env.VITE_URL_BACKEND + 'get-user-info/', config)
-      .then((res) => {
-        setDataUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   const handleClickUpdateInfoUser = () => {
     if(firstNameChange === "" || lastNameChange === ""){
@@ -73,6 +59,7 @@ const HomeProfile = () => {
   const handleUploadImg = ((payload) => {
     // console.log(payload)
   })
+
   return (
     <div className={cx("profile", "container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
       {isUser && <>
@@ -80,7 +67,7 @@ const HomeProfile = () => {
         <div className={cx("profile__content","grid grid-cols-10")}>
           <div className={cx("profile__content__left","relative col-span-10 sm:col-span-3")}>
             <div className={cx("profile__content__left__avatar")}>
-              <img src={imgs.imgUser} alt="avatar" />
+              <img src={dataUser?.avatar === "null" ? imgs.imgUser : dataUser?.avatar  } alt="avatar" />
             </div>
             <div className={cx("wrap__btn__update","absolute right-1 bottom-3")}>
                   <button className={cx("btn__update")} type="submit" onClick={handleClickUpdateImg}>
@@ -100,7 +87,7 @@ const HomeProfile = () => {
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>First name </p>
                           <span>:</span>
                           {
-                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.firstname}</p> : 
+                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser?.firstName || ""}</p> : 
                             <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={firstNameChange} onChange={(e)=> setFirstNameChange(e.target.value)} />
                           }
 
@@ -113,7 +100,7 @@ const HomeProfile = () => {
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>Last name </p>
                           <span>:</span>
                           {
-                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.lastname}</p> : 
+                            !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser?.lastName || "" }</p> : 
                             <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={lastNameChange} onChange={(e)=> setLastNameChange(e.target.value)} />
                           }
 
@@ -125,7 +112,7 @@ const HomeProfile = () => {
                       <div className = {cx("homeResult__wrap__info__detail__item")}>
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>Email </p>
                           <span>:</span>
-                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.email}</p>
+                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser?.email}</p>
                       </div>
                   </div>
               </div>
@@ -134,7 +121,7 @@ const HomeProfile = () => {
                       <div className = {cx("homeResult__wrap__info__detail__item")}>
                           <p className = {cx("homeResult__wrap__info__detail__item__text")}>User </p>
                           <span>:</span>
-                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser.superuser ? "Admin" : ( dataUser.isStaff ? "Staff" : "Normal" )}</p>
+                          <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser?.isSuperuser ? "Admin" : ( dataUser?.isStaff ? "Staff" : "Normal" )}</p>
                       </div>
                   </div>
               </div>
@@ -163,15 +150,15 @@ const HomeProfile = () => {
         <div className={cx("analytics","grid grid-cols-9 sm:grid-cols-3 ")}>
           <div className={cx("analytics__item","col-start-1 col-span-4 sm:col-span-1")}>
             <div className={cx("analytics__item__title")}>My wishlist</div>
-            <div className={cx("analytics__item__number")}>0</div>
+            <div className={cx("analytics__item__number")}>{dataUser?.countWishlist}</div>
           </div>
           <div className={cx("analytics__item","col-start-6 col-span-4 sm:col-span-1")}>
             <div className={cx("analytics__item__title")}>My Likes</div>
-            <div className={cx("analytics__item__number")}>0</div>
+            <div className={cx("analytics__item__number")}>{dataUser?.countLike}</div>
           </div>
           <div className={cx("analytics__item","col-start-3 col-span-5 sm:col-span-1")}>
             <div className={cx("analytics__item__title")}>My comments</div>
-            <div className={cx("analytics__item__number")}>0</div>
+            <div className={cx("analytics__item__number")}>{dataUser?.countComment}</div>
           </div>
         </div>
       </>}

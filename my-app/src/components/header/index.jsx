@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 const Header = () => {
   const sessionToken = Cookies.get('sessionToken');
   const sessionIsStaff = Cookies.get('sessionIsStaff');
+  const userInfo = Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')) : {};
   const [isUser, setIsUser] = useState(sessionToken);
 
   const [isShow, setIsShow] = useState(false);
@@ -56,9 +57,13 @@ const Header = () => {
     window.location.href = '/'
     Cookies.remove('sessionToken');
     Cookies.remove('sessionIsStaff');
+    Cookies.remove('sessionEmail');
+    Cookies.remove('userInfo');
     setIsUser(false)
     toast.success("Logout success")
   }
+
+  console.log("userInfo :", userInfo)
 
   return (
     
@@ -83,7 +88,7 @@ const Header = () => {
                 <i className="fas fa-list-ul"></i>
               </button>
               { isUser && <div className={cx("count__wishlist")}>
-                <span>123</span>
+                {userInfo?.countWishlist > 0 && <span>{userInfo?.countWishlist}</span>}
               </div>}
           </div>
           <div className={cx("header__logo")}>
@@ -96,9 +101,9 @@ const Header = () => {
         {isUser ? (
           <div className={cx("header__user")}>
             <div className={cx("header__user__img")}>
-              <img src={imgs.imgUser}></img>
+              <img src={userInfo?.avatar === "null" ? imgs.imgUser : userInfo?.avatar }></img>
             </div>
-            <div className={cx("header__user__name")}>{localStorage.getItem("user_name").split('@')[0]}</div>
+            <div className={cx("header__user__name")}>{(userInfo.firstName && userInfo.lastName) ? userInfo?.firstName +" "+ userInfo?.lastName : userInfo?.email?.split("@")[0]}</div>
 
             <div className={cx("header__user__icon")}>
               <i className="fas fa-chevron-down"></i>
@@ -111,7 +116,7 @@ const Header = () => {
                     Profile
                   </span>
               </a>
-              { sessionIsStaff === "true" && <a href={'/manager/user'} className={cx("header__user__modal__item")}>
+              { sessionIsStaff === "true" && <a href={ userInfo.isSuperuser ? '/manager/user' : '/manager/add-film'} className={cx("header__user__modal__item")}>
                 <>
                   <i className="fas fa-user-cog"></i>
                   <span className={cx("header__user__modal__item__text")}>
@@ -123,9 +128,9 @@ const Header = () => {
                   <i className="fas fa-list"></i>
                   <span className={cx("header__user__modal__item__text")}>
                     wishlist
-                    <label className={cx("header__user__modal__item__text__count")}>
-                      123
-                    </label>
+                    { userInfo?.countWishlist > 0 && <label className={cx("header__user__modal__item__text__count")}>
+                      {userInfo?.countWishlist} 
+                    </label>}
                   </span>
               </a>
               <div className={cx("header__user__modal__item")} onClick={handleLogout}>

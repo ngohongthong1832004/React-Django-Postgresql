@@ -14,6 +14,7 @@ const cx = classNames.bind(styles);
 const HomeManager = () => {
   const navigate = useNavigate();
   const isUser = Cookies.get('sessionIsStaff');
+  const userInfo = Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')) : {};
 
   useEffect(() => {
     const loader = async () => {
@@ -39,11 +40,11 @@ const HomeManager = () => {
               }
             `}
           </style>
-            <NavLink to={"user"}   className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
+           {userInfo.isSuperuser  && <NavLink to={"user"}   className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
                 <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                   User
                 </p>
-            </NavLink>
+            </NavLink>}
             <NavLink to={"add-film"} className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Add Film
@@ -54,11 +55,11 @@ const HomeManager = () => {
                 Update Film
               </p>
             </NavLink>
-            <NavLink to={"delete-film"} className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
+            {userInfo.isSuperuser  &&  <NavLink to={"delete-film"} className={cx("homeSearch__filter__wrap__item__title","col-span-3")}>
               <p className={cx("homeSearch__filter__wrap__item__title__text")}>
                 Delete Film
               </p>
-            </NavLink>
+            </NavLink>}
           </div>
         </div>
         <div className={cx("manager__content", "pb-8")}>
