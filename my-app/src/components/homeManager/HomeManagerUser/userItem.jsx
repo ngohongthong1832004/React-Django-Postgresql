@@ -7,7 +7,7 @@ import ModalConfirm from "../../modalConfirm";
 
 const cx = classNames.bind(styles);
 
-const UserItem = ({data = []}) => {
+const UserItem = ({data = {}}) => {
 
     const [isShowModelConFirm, setIsShowModelConFirm] = useState(false);
 
@@ -27,11 +27,12 @@ const UserItem = ({data = []}) => {
 
     return (
         <tr>
-            <td className={cx('border border-slate-700','customRow')}>1</td>
-            <td className={cx('border border-slate-700','customRow')}>admin</td>
-            <td className={cx('border border-slate-700','customRow')}>admin@gmail.com</td>
+            <td className={cx('border border-slate-700','customRow')}>{data.id}</td>
+            <td className={cx('border border-slate-700','customRow')}>{ !(data.first_name === "" && data.last_name === "") ? data.first_name + " " +data.last_name  : "Null"} </td>
+            <td className={cx('border border-slate-700','customRow')}>{data.email}</td>
             <td className={cx('border border-slate-700','customRow')}>
-                <i className={cx("fas fa-times","text-green-500")}></i>
+                { data.is_staff ? <i className={cx("fas fa-check","text-green-500")}></i> : <i className={cx("fas fa-times","text-red-500")}></i>}
+
             </td>
             <td className={cx('border border-slate-700','customRow')}>
                 <div className={cx("wrap-btn")}>

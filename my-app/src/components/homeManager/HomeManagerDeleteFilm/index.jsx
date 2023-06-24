@@ -21,7 +21,7 @@ const HomeManagerDeleteUser = () => {
     
     useEffect(() => {
         const loader = async () => {
-          if (!userInfo.isSuperUser) {
+          if (!userInfo.isSuperuser) {
             toast.error('You are not authorized to access this page');
             return navigate("/");
           }
