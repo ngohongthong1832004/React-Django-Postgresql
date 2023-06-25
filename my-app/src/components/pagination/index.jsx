@@ -13,6 +13,7 @@ const Pagination = ({
     className = ""
     }) => {
 
+    
 
     const classes = cx("pagination","p-1.5", className) 
 
@@ -56,7 +57,7 @@ const Pagination = ({
 
     return (
         <div className={classes}>
-           { paginationArr(data.max_page, 2, data.current_page).length > 0 && <div className={cx("pagination__wrap")}>
+           { data.total > 0 && <div className={cx("pagination__wrap")}>
                 { data.previous_page && <div className={cx("pagination__wrap__item")} onClick ={() => {result(data.current_page - 1)}} >
                     <div className={cx("pagination__wrap__item__text")}><i className={cx("fas fa-chevron-left")}></i></div>
                 </div>}
