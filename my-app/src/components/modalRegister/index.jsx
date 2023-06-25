@@ -79,7 +79,7 @@ const Modal = ({isLogin, callBack}) => {
                 password: passRef.current.value,
             })
             .then(response => {
-                console.log("response.data :", response.data);
+                // console.log("response.data :", response.data);
                 dataInfoUser['token'] = response.data.token;
                 dataInfoUser['isStaff'] = response.data.isStaff;
                 dataInfoUser['email'] = response.data.email;
@@ -116,8 +116,8 @@ const Modal = ({isLogin, callBack}) => {
         
 
                         Cookies.set('userInfo', JSON.stringify(dataInfoUser));
-                        console.log("dataInfoUser : ", dataInfoUser);
-                        console.log("res.data.dataInfoUser : ", res.data.infoUser);
+                        // console.log("dataInfoUser : ", dataInfoUser);
+                        // console.log("res.data.dataInfoUser : ", res.data.infoUser);
                         window.location.reload();
                     })
                     .catch((err) => {

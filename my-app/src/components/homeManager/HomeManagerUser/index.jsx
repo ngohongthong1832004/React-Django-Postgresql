@@ -75,7 +75,7 @@ const HomeManagerUser = () => {
             return res.data
         })
         .then(res => {
-            console.log("res : ",res)
+            // console.log("res : ",res)
             setSearchData(res)
         })
         .catch(err => {
@@ -97,7 +97,7 @@ const HomeManagerUser = () => {
             "Authorization": `Token ${Cookies.get('sessionToken')}`
         };
 
-        console.log("===================== value : %s ====================", value)
+        // console.log("===================== value : %s ====================", value)
 
         const formData = new FormData();
         formData.append('searchValue', value.trim());
@@ -108,7 +108,7 @@ const HomeManagerUser = () => {
             return res.data
         })
         .then(res => {
-            console.log("res : ",res)
+            // console.log("res : ",res)
             setSearchData(res)
         })
         .catch(err => {
@@ -120,18 +120,22 @@ const HomeManagerUser = () => {
         setIsSearchSet(value)
     }
 
+    const setGetIsSearchSet = (value) => {
+        setIsSearchSet(value)
+    }
+
     const searchDataWithName = searchData?.data?.map((item) => {
         return {...item, name : item.first_name + " " + item.last_name}
     })
 
     // console.log("searchDataWithName : ",searchDataWithName)
     
-    console.log("searchData : ",searchData)
-    console.log("isSearchSet : ",isSearchSet)
+    // console.log("searchData : ",searchData)
+    // console.log("isSearchSet : ",isSearchSet)
     return (
         <div className={cx("user")}>
             <h1>Home Manager User</h1>
-            <SearchMini isSearchSet = {isSearchSet} data = {searchDataWithName} result={getValueSearch} cb = {handleClickBtnAndMiniItem}/>
+            <SearchMini getIsSearchSet= {setGetIsSearchSet} isSearchSet = {isSearchSet} data={searchDataWithName} result={getValueSearch} cb = {handleClickBtnAndMiniItem}/>
             <br/>
             { !isSearchSet ? <div className={cx("user__list")}>
                 <table className={cx("table-auto border-separate border border-slate-500","tableCustom")}>
