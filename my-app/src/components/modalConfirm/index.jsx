@@ -51,7 +51,7 @@ const ModalConfirm = ({
                             <div className={cx("modal__content__body__form")}>
                                 <div className={cx("modal__content__body__form__group")}>
                                     <label className={cx("modal__content__body__form__group__label")} >{labelForm} :</label>
-                                    <input ref={inputRef} className={cx("modal__content__body__form__group__input")} type={typeForm} placeholder={`Your ${labelForm}`} required/>
+                                    <input ref={inputRef} className={cx("modal__content__body__form__group__input")} type={typeForm} placeholder={`${labelForm}`} required/>
                                 </div>
                             </div>
                         </div>

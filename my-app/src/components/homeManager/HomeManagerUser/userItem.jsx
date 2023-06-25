@@ -12,14 +12,23 @@ const cx = classNames.bind(styles);
 const UserItem = ({data = {}}) => {
 
     const [isShowModelConFirm, setIsShowModelConFirm] = useState(false);
+    const [isShowModelForm, setIsShowModelForm] = useState(false);
 
     const handleClickDelete = () => {
         setIsShowModelConFirm(true);
     }
-
+    
+    const handleClickEdit = () => {
+        setIsShowModelForm(true);
+    }
     const handleCloseModalConfirm = (status) => {
         setIsShowModelConFirm(status);
     }
+
+    const handleCloseModalForm = (status) => {
+        setIsShowModelForm(status);
+    }
+
     const handleResultDelete = (status => {
         if (status) {
             // toast.success('Delete user success');
@@ -38,6 +47,27 @@ const UserItem = ({data = {}}) => {
         }
     })
 
+    const handleResultEdit = (status => {
+        if (status === "yes") {
+            const headers = {
+                "Authorization": `Token ${Cookies.get('sessionToken')}`
+            };
+    
+            axios.post(`${import.meta.env.VITE_URL_BACKEND}update-user/${data.id}`, null, { headers })
+            .then(res => {
+                toast.success(res.data.message)
+                window.location.reload()
+            })
+            .catch(err => {
+                toast.error(err.message)
+            })
+        }
+        else {  
+            toast.error('Please write "yes" to confirm');
+        }
+    })
+
+
     console.log(data)
 
     return (
@@ -51,7 +81,8 @@ const UserItem = ({data = {}}) => {
             </td>
             <td className={cx('border border-slate-700','customRow')}>
                { !data.is_superuser && <div className={cx("wrap-btn")}>
-                    <button className={cx("btn","btn__edit")}>Edit</button>
+                    <button className={cx("btn","btn__edit")} onClick = {handleClickEdit}>Edit</button>
+                    { isShowModelForm && <ModalConfirm result={handleResultEdit} callBack={handleCloseModalForm} isFormOrConfirm= {true} titleBtnForm={"YES"} labelForm="Write ' yes '" titleModal="Set user to staff"/>}
                     <button className={cx("btn","btn__delete")} onClick = {handleClickDelete}>Delete</button>
                     { isShowModelConFirm && <ModalConfirm result={handleResultDelete} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to delete this user" />}
                 </div>}
