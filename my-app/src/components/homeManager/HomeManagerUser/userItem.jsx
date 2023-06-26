@@ -81,7 +81,7 @@ const UserItem = ({data = {}}) => {
             </td>
             <td className={cx('border border-slate-700','customRow')}>
                { !data.is_superuser && <div className={cx("wrap-btn")}>
-                    <button className={cx("btn","btn__edit")} onClick = {handleClickEdit}>Edit</button>
+                    { !data.is_staff && <button className={cx("btn","btn__edit")} onClick = {handleClickEdit}>Edit</button>}
                     { isShowModelForm && <ModalConfirm result={handleResultEdit} callBack={handleCloseModalForm} isFormOrConfirm= {true} titleBtnForm={"YES"} labelForm="Write ' yes '" titleModal="Set user to staff"/>}
                     <button className={cx("btn","btn__delete")} onClick = {handleClickDelete}>Delete</button>
                     { isShowModelConFirm && <ModalConfirm result={handleResultDelete} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to delete this user" />}

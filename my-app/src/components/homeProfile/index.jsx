@@ -19,8 +19,8 @@ const HomeProfile = () => {
 
   const [isUpdate, setIsUpdate] = useState(false);
   const [isShowModalUpdateImg, setIsShowModalUpdateImg] = useState(false);
-  const [firstNameChange, setFirstNameChange] = useState("");
-  const [lastNameChange, setLastNameChange] = useState("");
+  const [firstNameChange, setFirstNameChange] = useState(dataUser?.firstName);
+  const [lastNameChange, setLastNameChange] = useState(dataUser?.lastName);
   // const [valueResultForm, setValueResultForm] = useState(null);
 
   useEffect(() => {
@@ -36,14 +36,34 @@ const HomeProfile = () => {
 
 
   const handleClickUpdateInfoUser = () => {
-    if(firstNameChange === "" || lastNameChange === ""){
-      return toast.error('Please fill all field');
+    if(firstNameChange === "" && lastNameChange === ""){
+      return toast.error('Please at least one field');
     }
-    // console.log("change :", firstNameChange, lastNameChange)
-    setFirstNameChange("");
-    setLastNameChange("");
-    setIsUpdate(false);
-    toast.success('Update success');
+
+    if (firstNameChange === dataUser?.firstName && lastNameChange === dataUser?.lastName){
+      return toast.error('Please change at least one field');
+    }
+    const headers = {
+      "Authorization": `Token ${Cookies.get('sessionToken')}`
+    };
+    const dataForm = new FormData();
+    dataForm.append("first_name", firstNameChange);
+    dataForm.append("last_name", lastNameChange);
+
+    axios.post(`${import.meta.env.VITE_URL_BACKEND}update-user-info/`, dataForm, {headers})
+    .then(res => {
+      console.log(res.data)
+      setFirstNameChange("");
+      setLastNameChange("");
+      setIsUpdate(false);
+      Cookies.set('userInfo', JSON.stringify({...dataUser, firstName: res.data.first_name, lastName: res.data.last_name}));
+      toast.success('Update success');
+      window.location.reload();
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    
   }
   const handleClickChangeToUpdate = (() => {
     setIsUpdate(true);
@@ -57,7 +77,27 @@ const HomeProfile = () => {
     setIsShowModalUpdateImg(status);
   })
   const handleUploadImg = ((payload) => {
-    // console.log(payload)
+    console.log(payload)
+    const headers = {
+      "Authorization": `Token ${Cookies.get('sessionToken')}`
+    };
+    const formData = new FormData();
+    for (const field in payload) {
+      formData.append(field, payload[field]);
+    }    
+
+    axios.post(`${import.meta.env.VITE_URL_BACKEND}update-user-avatar/`, formData, {headers})
+    .then(res => {
+      console.log(res.data)
+      setIsShowModalUpdateImg(false);
+      Cookies.set('userInfo', JSON.stringify({...dataUser, avatar: res.data.avatar}));
+      toast.success('Update success');
+      window.location.reload();
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
   })
 
   return (
@@ -67,7 +107,7 @@ const HomeProfile = () => {
         <div className={cx("profile__content","grid grid-cols-10")}>
           <div className={cx("profile__content__left","relative col-span-10 sm:col-span-3")}>
             <div className={cx("profile__content__left__avatar")}>
-              <img src={dataUser?.avatar === "null" ? imgs.imgUser : dataUser?.avatar  } alt="avatar" />
+              <img src={dataUser?.avatar === "/null" ? imgs.imgUser : dataUser?.avatar  } alt="avatar" />
             </div>
             <div className={cx("wrap__btn__update","absolute right-1 bottom-3")}>
                   <button className={cx("btn__update")} type="submit" onClick={handleClickUpdateImg}>
@@ -88,7 +128,7 @@ const HomeProfile = () => {
                           <span>:</span>
                           {
                             !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser?.firstName || ""}</p> : 
-                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={firstNameChange} onChange={(e)=> setFirstNameChange(e.target.value)} />
+                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} defaultValue={dataUser?.firstName} onChange={(e)=> setFirstNameChange(e.target.value)} />
                           }
 
                       </div>
@@ -101,7 +141,7 @@ const HomeProfile = () => {
                           <span>:</span>
                           {
                             !isUpdate ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{dataUser?.lastName || "" }</p> : 
-                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} value={lastNameChange} onChange={(e)=> setLastNameChange(e.target.value)} />
+                            <input type="text" className={cx("homeResult__wrap__info__detail__item__text","px-3")} defaultValue={dataUser?.lastName} onChange={(e)=> setLastNameChange(e.target.value)} />
                           }
 
                       </div>

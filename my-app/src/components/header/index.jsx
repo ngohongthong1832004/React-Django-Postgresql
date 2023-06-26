@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { redirect } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
 import imgs from "../../assets";
 import styles from "./header.module.scss";
@@ -52,15 +53,26 @@ const Header = () => {
     setIsShow(true)
   }
 
-
   const handleLogout = () => {
-    window.location.href = '/'
-    Cookies.remove('sessionToken');
-    Cookies.remove('sessionIsStaff');
-    Cookies.remove('sessionEmail');
-    Cookies.remove('userInfo');
-    setIsUser(false)
-    toast.success("Logout success")
+    const headers = {
+      "Authorization": `Token ${Cookies.get('sessionToken')}`
+    };
+
+    axios.post(`${import.meta.env.VITE_URL_BACKEND}logout/`, null, { headers })
+    .then(res => {
+        toast.success(res.data)
+        Cookies.remove('sessionToken');
+        Cookies.remove('sessionIsStaff');
+        Cookies.remove('sessionEmail');
+        Cookies.remove('userInfo');
+        setIsUser(false)
+        toast.success("Logout success")
+        window.location.reload()
+    })
+    .catch(err => {
+        toast.error(err.message)
+    })
+   
   }
 
   console.log("userInfo :", userInfo)
@@ -101,7 +113,7 @@ const Header = () => {
         {isUser ? (
           <div className={cx("header__user")}>
             <div className={cx("header__user__img")}>
-              <img src={userInfo?.avatar === "null" ? imgs.imgUser : userInfo?.avatar }></img>
+              <img src={userInfo?.avatar === "/null" ? imgs.imgUser : userInfo?.avatar }></img>
             </div>
             <div className={cx("header__user__name")}>{(userInfo.firstName || userInfo.lastName) ? userInfo?.firstName +" "+ userInfo?.lastName : userInfo?.email?.split("@")[0]}</div>
 

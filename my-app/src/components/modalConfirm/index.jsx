@@ -27,6 +27,18 @@ const ModalConfirm = ({
     const modalContent = useRef(null);
     const inputRef = useRef(null);
 
+    const [formData, setFormData] = useState({
+        image: null,
+        // Add other form fields here
+      });
+    
+      const handleInputChange = (e) => {
+        if (e.target.type === 'file') {
+          setFormData({ ...formData, [e.target.name]: e.target.files[0] });
+        } else {
+          setFormData({ ...formData, [e.target.name]: e.target.value });
+        }
+      };
 
     return (
 
@@ -51,12 +63,12 @@ const ModalConfirm = ({
                             <div className={cx("modal__content__body__form")}>
                                 <div className={cx("modal__content__body__form__group")}>
                                     <label className={cx("modal__content__body__form__group__label")} >{labelForm} :</label>
-                                    <input ref={inputRef} className={cx("modal__content__body__form__group__input")} type={typeForm} placeholder={`${labelForm}`} required/>
+                                    <input ref={inputRef} name="avatar"  className={cx("modal__content__body__form__group__input")} onChange={handleInputChange} type={typeForm} placeholder={`${labelForm}`} required/>
                                 </div>
                             </div>
                         </div>
                         <div className={cx("modal__content__footer")}>
-                            <button className={cx("modal__content__footer__btn")} onClick={() =>{ result(inputRef.current.value); callBack(false)}}>{titleBtnForm}</button>
+                            <button className={cx("modal__content__footer__btn")} onClick={() =>{ result(formData); callBack(false)}}>{titleBtnForm}</button>
                         </div>
                 </div>
                 : 
