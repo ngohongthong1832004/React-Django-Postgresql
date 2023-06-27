@@ -76,21 +76,19 @@ const HomeProfile = () => {
   const handleCloseModal = ((status) => {
     setIsShowModalUpdateImg(status);
   })
-  const handleUploadImg = ((payload) => {
-    console.log(payload)
+  const handleUploadImg = ((file) => {
+    console.log("file : ",file)
     const headers = {
       "Authorization": `Token ${Cookies.get('sessionToken')}`
     };
     const formData = new FormData();
-    for (const field in payload) {
-      formData.append(field, payload[field]);
-    }    
+    formData.append('avatar', file); 
 
     axios.post(`${import.meta.env.VITE_URL_BACKEND}update-user-avatar/`, formData, {headers})
     .then(res => {
       console.log(res.data)
       setIsShowModalUpdateImg(false);
-      Cookies.set('userInfo', JSON.stringify({...dataUser, avatar: res.data.avatar}));
+      Cookies.set('userInfo', JSON.stringify({...dataUser, avatar: import.meta.env.VITE_URL_BACKEND + res.data.avatarURL}));
       toast.success('Update success');
       window.location.reload();
     })
