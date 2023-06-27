@@ -48,6 +48,7 @@ const UserItem = ({data = {}}) => {
     })
 
     const handleResultEdit = (status => {
+        // console.log(status)
         if (status === "yes") {
             const headers = {
                 "Authorization": `Token ${Cookies.get('sessionToken')}`
@@ -68,7 +69,7 @@ const UserItem = ({data = {}}) => {
     })
 
 
-    console.log(data)
+    // console.log(data)
 
     return (
         <tr>

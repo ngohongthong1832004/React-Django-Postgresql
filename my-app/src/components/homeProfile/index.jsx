@@ -52,7 +52,7 @@ const HomeProfile = () => {
 
     axios.post(`${import.meta.env.VITE_URL_BACKEND}update-user-info/`, dataForm, {headers})
     .then(res => {
-      console.log(res.data)
+      // console.log(res.data)
       setFirstNameChange("");
       setLastNameChange("");
       setIsUpdate(false);
@@ -77,7 +77,10 @@ const HomeProfile = () => {
     setIsShowModalUpdateImg(status);
   })
   const handleUploadImg = ((file) => {
-    console.log("file : ",file)
+    // console.log("file : ",file)
+    if (!file) {
+      return toast.error('Please chose your img');
+    }
     const headers = {
       "Authorization": `Token ${Cookies.get('sessionToken')}`
     };
@@ -86,10 +89,11 @@ const HomeProfile = () => {
 
     axios.post(`${import.meta.env.VITE_URL_BACKEND}update-user-avatar/`, formData, {headers})
     .then(res => {
-      console.log(res.data)
+      console.log(res.data.avatarURL)
       setIsShowModalUpdateImg(false);
-      Cookies.set('userInfo', JSON.stringify({...dataUser, avatar: import.meta.env.VITE_URL_BACKEND + res.data.avatarURL}));
+      Cookies.set('userInfo', JSON.stringify({...dataUser, avatar:"http://" + res.data.avatarURL}));
       toast.success('Update success');
+      console.log("imgURLSession : ",JSON.parse(Cookies.get('userInfo')).avatar)
       window.location.reload();
     })
     .catch(err => {
@@ -105,13 +109,13 @@ const HomeProfile = () => {
         <div className={cx("profile__content","grid grid-cols-10")}>
           <div className={cx("profile__content__left","relative col-span-10 sm:col-span-3")}>
             <div className={cx("profile__content__left__avatar")}>
-              <img src={dataUser?.avatar === "/null" ? imgs.imgUser : dataUser?.avatar  } alt="avatar" />
+              <img src={dataUser?.avatar === "/media/null" ? imgs.imgUser : dataUser?.avatar  } alt="avatar" />
             </div>
             <div className={cx("wrap__btn__update","absolute right-1 bottom-3")}>
                   <button className={cx("btn__update")} type="submit" onClick={handleClickUpdateImg}>
                     <i className={cx("fas fa-camera")}></i>
                   </button>
-                  {isShowModalUpdateImg && <ModalConfirm result={handleUploadImg} callBack={handleCloseModal} titleModal="Upload Avatar" typeForm={"file"} titleBtnForm={"Upload"} labelForm={"Chose your img"} />}
+                  {isShowModalUpdateImg && <ModalConfirm result={handleUploadImg} callBack={handleCloseModal} accept={"image/*"} titleModal="Upload Avatar" typeForm={"file"} titleBtnForm={"Upload"} labelForm={"Chose your img"} />}
               </div>
           </div>
           <div className={cx("profile__content__right","relative col-span-10 sm:col-span-7")}>

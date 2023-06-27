@@ -111,7 +111,7 @@ const Modal = ({isLogin, callBack}) => {
                         dataInfoUser['countLike'] = res.data.infoUser['countLike'];
                         dataInfoUser['countWishlist'] = res.data.infoUser['countWishlist'];
                         dataInfoUser['username'] = res.data.infoUser['user']
-                        dataInfoUser['avatar'] = res.data.infoUser['avatar']
+                        dataInfoUser['avatar'] = import.meta.env.VITE_URL_BACKEND + res.data.infoUser['avatar']
                         dataInfoUser['fullName'] = res.data.infoUser['fullName']
         
 

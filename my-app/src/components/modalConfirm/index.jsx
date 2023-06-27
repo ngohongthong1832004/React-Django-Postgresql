@@ -17,6 +17,7 @@ const ModalConfirm = ({
     labelForm = "label",
     typeForm = "text",
     titleBtnForm = "Submit",
+    accept = "",
 
     textConfirm = "Are you sure ?",
     titleBtnYes = "Yes",
@@ -28,10 +29,16 @@ const ModalConfirm = ({
     const inputRef = useRef(null);
 
     const [file, setFile] = useState(null);
+    const [valueResultForm, setValueResultForm] = useState(null);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
+    };
+
+
+    const handleInputChange = (event) => {
+        setValueResultForm(event.target.value);
     };
 
     return (
@@ -57,12 +64,15 @@ const ModalConfirm = ({
                             <div className={cx("modal__content__body__form")}>
                                 <div className={cx("modal__content__body__form__group")}>
                                     <label className={cx("modal__content__body__form__group__label")} >{labelForm} :</label>
-                                    <input ref={inputRef} name="avatar"  className={cx("modal__content__body__form__group__input")} onChange={handleFileChange} type={typeForm} placeholder={`${labelForm}`} required/>
+                                    { typeForm === "file" ? <input accept={accept}  className={cx("modal__content__body__form__group__input")} onChange={handleFileChange} type={typeForm} placeholder={`${labelForm}`} required/> : 
+                                       <input ref={inputRef} className={cx("modal__content__body__form__group__input")} onChange={handleInputChange} type={typeForm} placeholder={`${labelForm}`} required/> }
                                 </div>
                             </div>
                         </div>
                         <div className={cx("modal__content__footer")}>
-                            <button className={cx("modal__content__footer__btn")} onClick={() =>{ result(file); callBack(false)}}>{titleBtnForm}</button>
+                            { typeForm === "file" ? <button className={cx("modal__content__footer__btn")} onClick={() =>{ result(file); callBack(false)}}>{titleBtnForm}</button> : 
+                            <button className={cx("modal__content__footer__btn")} onClick={() =>{ result(valueResultForm); callBack(false)}}>{titleBtnForm}</button> }
+                            
                         </div>
                 </div>
                 : 

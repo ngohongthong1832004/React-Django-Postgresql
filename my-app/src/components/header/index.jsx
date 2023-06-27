@@ -113,7 +113,7 @@ const Header = () => {
         {isUser ? (
           <div className={cx("header__user")}>
             <div className={cx("header__user__img")}>
-              <img src={userInfo?.avatar === "/null" ? imgs.imgUser : userInfo?.avatar }></img>
+              <img src={userInfo?.avatar === "/media/null" ? imgs.imgUser : userInfo?.avatar }></img>
             </div>
             <div className={cx("header__user__name")}>{(userInfo.firstName || userInfo.lastName) ? userInfo?.firstName +" "+ userInfo?.lastName : userInfo?.email?.split("@")[0]}</div>
 
