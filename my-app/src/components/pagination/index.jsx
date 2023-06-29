@@ -64,7 +64,7 @@ const Pagination = ({
                 { paginationArr(data.max_page, 2, data.current_page).map((item, index) => {
                     if (item === "...") {
                         return (
-                            <div key = {index} className={cx("pagination__wrap__item")} onClick ={() => {result("null")}} >
+                            <div key = {index} className={cx("pagination__wrap__item")}>
                                 <div className={cx("pagination__wrap__item__text")}>..</div>
                             </div>
                         )

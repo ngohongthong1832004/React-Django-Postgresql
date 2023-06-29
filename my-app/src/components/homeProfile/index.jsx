@@ -191,7 +191,7 @@ const HomeProfile = () => {
         </div>
         <div className={cx("analytics","grid grid-cols-9 sm:grid-cols-3 ")}>
           <div className={cx("analytics__item","col-start-1 col-span-4 sm:col-span-1")}>
-            <div className={cx("analytics__item__title")}>My wishlist</div>
+            <div className={cx("analytics__item__title")}>My follows</div>
             <div className={cx("analytics__item__number")}>{dataUser?.countWishlist}</div>
           </div>
           <div className={cx("analytics__item","col-start-6 col-span-4 sm:col-span-1")}>

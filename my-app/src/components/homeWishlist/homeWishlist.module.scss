@@ -25,6 +25,11 @@
     align-items: center;
     height: 2rem;
     box-shadow: 2px 2px 2px var(--black);
+    span {
+      color: aqua;
+      font-size: 0.6rem;
+      margin-right: 0.5rem;
+    }
     &:hover {
       background-color: var(--gray-2);
       cursor: pointer;

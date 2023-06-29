@@ -1,7 +1,9 @@
 import classNames from "classnames/bind"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
+import Cookies from "js-cookie"
+import axios from "axios"
 
 import styles from "./homeResult.module.scss"
 import ParentChat from "./parentChat"
@@ -19,40 +21,146 @@ const HomeResult = () => {
     const [moreRecommend, setMoreRecommend] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
     const [isFollowed, setIsFollowed] = useState(false)
+    const [data, setData] = useState({})
+    const [dataRecommend, setDataRecommend] = useState([])
+    const [idAllWishlistLike, setIdAllWishlistLike] = useState([])
+    const [idAllWishlistFollow, setIdAllWishlistFollow] = useState([])
 
+    let url = new URL(window.location.href);
+    let params = new URLSearchParams(url.search);
+    let searchValue = params.get('q'); 
+    console.log(searchValue)
+
+    useEffect(() => {
+        const option = {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Token ${Cookies.get('sessionToken')}`
+            }
+        }
+      
+        axios.get(import.meta.env.VITE_URL_BACKEND + "get-all-id-movie-wishlist-like/", option)
+        .then(res => {
+            const arrIdWishlistLike = res.data.map((item) => {
+                return item.id
+            })
+            console.log("arrIdWishlistLike : ",arrIdWishlistLike)
+            setIdAllWishlistLike(arrIdWishlistLike)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+       
+        axios.get(import.meta.env.VITE_URL_BACKEND + "get-all-id-movie-wishlist-follow/", option)
+        .then(res => {
+            const arrIdWishlistFollow = res.data.map((item) => {
+                return item.id
+            })
+            console.log("arrIdWishlistFollow : ",arrIdWishlistFollow)
+            setIdAllWishlistFollow(arrIdWishlistFollow)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+    },[])
+    useEffect(() => {
+        const formData = new FormData()
+        formData.append("searchValue", searchValue)
+        axios.post(import.meta.env.VITE_URL_BACKEND + "search-movie/", formData)
+        .then((res) => {
+            console.log(res.data)
+            setData(res.data.data[0])
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+
+        axios.get(import.meta.env.VITE_URL_BACKEND + "get-random-movie/")
+        .then((res) => {
+            console.log(res.data)
+            setDataRecommend(res.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+    },[])
 
     const handleClickLike = () => {
-        if (!isLiked) {
-            toast.success("Liked success !")
-        }
-        setIsLiked(!isLiked)
+            const formData = new FormData()
+            formData.append("movieId", data.id)
+
+            const option = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Token ${Cookies.get('sessionToken')}`
+                }
+            }
+            axios.post(import.meta.env.VITE_URL_BACKEND + "toggle-wishlist-like/",formData, option)
+            .then((res) => {
+                toast.success(res.data.message)
+                let dataInfo = JSON.parse(Cookies.get("userInfo"))
+                if (res.data.message.includes("Add")){
+                    dataInfo.countLike = dataInfo.countLike + 1
+                }else {
+                    dataInfo.countLike = dataInfo.countLike - 1
+                }
+                Cookies.set("userInfo", JSON.stringify(dataInfo))
+                window.location.reload()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     const handleClickFollow = () => {
-        if (!isFollowed) {
-            toast.success("Add to wishlist success !")
-        }else {
-            toast.success("Remove from wishlist success !")
+        const formData = new FormData()
+        formData.append("movieId", data.id)
+
+        const option = {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Token ${Cookies.get('sessionToken')}`
+            }
         }
-        setIsFollowed(!isFollowed)
+        axios.post(import.meta.env.VITE_URL_BACKEND + "toggle-wishlist-follow/",formData, option)
+        .then((res) => {
+            toast.success(res.data.message)
+            let dataInfo = JSON.parse(Cookies.get("userInfo"))
+            if (res.data.message.includes("Add")){
+                dataInfo.countWishlist = dataInfo.countWishlist + 1
+            }else {
+                dataInfo.countWishlist = dataInfo.countWishlist - 1
+            }
+
+            Cookies.set("userInfo", JSON.stringify(dataInfo))
+            window.location.reload()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
+    
 
     return (
         <div className={cx("homeResult","container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
             <div className={cx("homeResult__wrap")}>
                 <div className = {cx("homeResult__wrap__img")}>
-                    <img src="https://www.themoviedb.org/t/p/w220_and_h330_face/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="" />
+                    <img src={data?.img} alt="" />
                     <div className = {cx("homeResult__wrap__img__desc")}>
                         <p className = {cx("homeResult__wrap__img__desc__text")}>
-                            <span className = {cx("homeResult__wrap__img__desc__text__span")}>5.5</span>
+                            <span className = {cx("homeResult__wrap__img__desc__text__span")}>{data?.star}</span>
                             <label className = {cx("homeResult__wrap__img__desc__text__label")}>
                                 <i className = {cx("fas fa-star")}></i>
                             </label>
                         </p>
                         <p className = {cx("homeResult__wrap__img__desc__horizon")}>|</p>
                         <p className = {cx("homeResult__wrap__img__desc__text")}>
-                        <span className = {cx("homeResult__wrap__img__desc__text__span")}>8.6</span>
+                        <span className = {cx("homeResult__wrap__img__desc__text__span")}>{data?.IMDb}</span>
                             <label className = {cx("homeResult__wrap__img__desc__text__label")}>
                                 IMDb
                             </label>
@@ -61,68 +169,68 @@ const HomeResult = () => {
                     <div className = {cx("homeResult__wrap__img__btn")}>
                         <button className = {cx("homeResult__wrap__img__btn__item")} onClick={handleClickLike}>
                             <p className = {cx("homeResult__wrap__img__btn__item__text")}>Like</p>
-                            { !isLiked ? <i className = {cx("fas fa-heart")}></i> : <i className = {cx("fas fa-heart")} style={{color : "red"}}></i>  }
+                            { !idAllWishlistLike.includes(data?.id) ? <i className = {cx("fas fa-heart")}></i> : <i className = {cx("fas fa-heart")} style={{color : "red"}}></i>  }
                         </button>
                         <button className = {cx("homeResult__wrap__img__btn__item")} onClick={handleClickFollow}>
                             <p className = {cx("homeResult__wrap__img__btn__item__text")}>Follow</p>
-                            { !isFollowed ? <i className = {cx("fas fa-plus")}></i> : <i className = {cx("fas fa-check")} style={{color : "aqua"}}></i> }
+                            { !idAllWishlistFollow.includes(data?.id) ? <i className = {cx("fas fa-plus")}></i> : <i className = {cx("fas fa-check")} style={{color : "aqua"}}></i> }
                         </button>
                     </div>
                 </div>
                 <div className = {cx("homeResult__wrap__info")}>
                     <div className = {cx("homeResult__wrap__info__title")}>
-                        <h1 className = {cx("homeResult__wrap__info__title__text")}>Transformers: The Last Knight</h1>
+                        <h1 className = {cx("homeResult__wrap__info__title__text")}>{data?.name}</h1>
                     </div>
-                    <div className = {cx("homeResult__wrap__info__subTitle")}>
-                        <h2 className = {cx("homeResult__wrap__info__subTitle__text")}>Hiệp si cuối cùng</h2>
-                    </div>
+                    { data?.subName != "null" && <div className = {cx("homeResult__wrap__info__subTitle")}>
+                        <h2 className = {cx("homeResult__wrap__info__subTitle__text")}>{data?.subName}</h2>
+                    </div>}
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Genre </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>Action, Adventure, Science Fiction</p>
+                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.genres}</p>
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Release </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>2017-06-21</p>
+                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.releaseDate}</p>
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Length </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>90 min</p>
+                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.length}</p>
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Cast </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>Michael Bay, Mark Wahlberg, Isabela Merced, Jerrod Carmichael, Santiago Cabrera</p>
+                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.casts}</p>
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>countries </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>Michael Bay, Mark Wahlberg, Isabela Merced, Jerrod Carmichael</p>
+                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.countries}</p>
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Production </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>Quisquam, Michael Bay, Mark Wahlberg, Isabela Merced, voluptatum.</p>
+                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.productions}</p>
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Desc </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>Mark Wahlberg, , Isabela Merced, Jerrod Carmichael, Santiago Cabrera, John Turturro, Liam Garrigan, Mitch Pileggi, Glenn Morshower, Gemma Chan, John Goodman, Peter Cullen, Frank Welker, Ken Watanabe, Jim Carter, Omar Sy, Reno Wilson, John DiMaggio, Tom Kenny, Steve Buscemi, Jess Harnell, Andy Bean, Walles Hamonde, Erik Aadahl, Jim Carter, Tom Kenny, Steve Buscemi, Jess Harnell, Andy Bean, Walles Hamonde, Erik Aadahl</p>
+                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.desc}</p>
                         </div>
                     </div>
                 </div>
@@ -184,11 +292,12 @@ const HomeResult = () => {
                         <h2 className={cx("homeResult__more__recommend__title__text")}>Recommend</h2>
                     </div>
                     <div className={cx("homeResult__more__recommend__wrap", "grid grid-cols-6 gap-5 sm:grid-cols-5" )}>
-                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
-                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
-                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
-                        <ItemFilm className={"col-span-2 col-start-2 sm:col-span-1"}/>
-                        <ItemFilm className={"col-span-2 sm:col-span-1"}/>
+                       {dataRecommend?.map((item, index) => {
+                            return (
+                             <ItemFilm key={index} data={item} />
+                            )
+                        })
+                       }
                     </div>
 
                 </div>

@@ -1,18 +1,43 @@
 import classnames from "classnames/bind";
 import  {useEffect, useState, useRef} from "react";
-
+import Cookies from "js-cookie"
+import axios from "axios"
+import useDebounce from "../debounce"
 
 import styles from "./search.module.scss";
 
 const cx = classnames.bind(styles);
+
 
 const Search = function () {
   const [searchValue, setSearchValue] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);
   const [isClose, setIsClose] = useState(false);
   const [isShowModalHint, setIsShowModalHint] = useState(false);
+  const [data, setData] = useState(null)
   const inputRef = useRef(null);
   const modalRef = useRef(null);
+
+  const debouncedSearchTerm = useDebounce(searchValue, 500);
+
+  useEffect(() => {
+    if (debouncedSearchTerm.trim().length == 0) {
+      setIsShowModalHint(false);
+      return
+    }
+    const formData = new FormData()
+    formData.append("searchValue", debouncedSearchTerm)
+    axios.post(import.meta.env.VITE_URL_BACKEND + "search-movie/", formData)
+    .then((res) => {
+        console.log(res.data)
+        setData(res.data.data)
+        setIsShowModalHint(true);
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
+},[debouncedSearchTerm])
 
   const handleChangeSearchValue = (e) => {
     setSearchValue(e.target.value);
@@ -20,7 +45,7 @@ const Search = function () {
     if (e.target.value.trim().length > 0) {
       setIsSpinner(true);
       setIsClose(false);
-      setIsShowModalHint(true);
+     
     } else {
       setIsSpinner(false);
       setIsClose(true);
@@ -73,21 +98,13 @@ const Search = function () {
       <div className={cx("relative")} style={{ display: "flex" }} >
         { isShowModalHint && 
           <div className={cx("search__wrap__modal")} id="modal" ref = {modalRef}>
-              <a href="/id/1" className={cx("search__modal__wrap__title")}>
-                <h3 className={cx("search__modal__title")}>Film 1 ngo hong tong  that la gioi qua di</h3>
-              </a>
-              <a href="/id/2" className={cx("search__modal__wrap__title")}>
-                <h3 className={cx("search__modal__title")}>Film 2</h3>
-              </a>
-              <a href="/id/3" className={cx("search__modal__wrap__title")}>
-                <h3 className={cx("search__modal__title")}>Film 3</h3>
-              </a>
-              <a href="/id/4" className={cx("search__modal__wrap__title")}>
-                <h3 className={cx("search__modal__title")}>Film 4</h3>
-              </a>
-              <a href="/id/5" className={cx("search__modal__wrap__title")}>
-                <h3 className={cx("search__modal__title")}>Film 5</h3>
-              </a>
+            { data && data.length > 0 &&  data?.map((item, index) => {
+              return (
+                <a href={`/name?q=${item.name}`} key={index} className={cx("search__modal__wrap__title")}>
+                  <h3 className={cx("search__modal__title")}>{item.name}</h3>
+                </a>
+              )
+            })}
           </div>
         }
         <>

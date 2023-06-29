@@ -13,7 +13,7 @@
     font-weight: 500;
     margin-bottom: 0.5rem;
     color: var(--gray-3);
-    width: calc(100% - 4rem);
+    width: calc(100% - 10rem);
     span{
       color: var(--gray-5);
       font-weight: 600;
@@ -21,7 +21,8 @@
 }
 .homeSearch__header__countItem {
   @extend .homeSearch__header__title;
-  width: 4rem;
+  width: 10rem;
+  text-align: right;
   span{
     color: var(--gray-5);
     font-weight: 600;
@@ -119,6 +120,13 @@
     }
   }
 
+}
+.noMovie {
+  text-align: center;
+  color: aqua;
+  font-size: 3rem;
+  font-weight: 600;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 

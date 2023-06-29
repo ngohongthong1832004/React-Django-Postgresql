@@ -100,7 +100,7 @@ const Header = () => {
                 <i className="fas fa-list-ul"></i>
               </button>
               { isUser && <div className={cx("count__wishlist")}>
-                {userInfo?.countWishlist > 0 && <span>{userInfo?.countWishlist}</span>}
+                {userInfo?.countWishlist + userInfo?.countLike > 0 && <span>{userInfo?.countWishlist + userInfo?.countLike }</span>}
               </div>}
           </div>
           <div className={cx("header__logo")}>
@@ -140,8 +140,8 @@ const Header = () => {
                   <i className="fas fa-list"></i>
                   <span className={cx("header__user__modal__item__text")}>
                     wishlist
-                    { userInfo?.countWishlist > 0 && <label className={cx("header__user__modal__item__text__count")}>
-                      {userInfo?.countWishlist} 
+                    { userInfo?.countWishlist + userInfo?.countLike  > 0 && <label className={cx("header__user__modal__item__text__count")}>
+                      {userInfo?.countWishlist + userInfo?.countLike } 
                     </label>}
                   </span>
               </a>
