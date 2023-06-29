@@ -17,14 +17,20 @@ const FilmItem = ({
 
     const navigate = useNavigate();
     const [isShowModelConFirm, setIsShowModelConFirm] = useState(false);
+    const [isShowModelConFirm2, setIsShowModelConFirm2] = useState(false);
 
     // console.log(data)
     const handleClickDelete = () => {
         // show modal confirm
         setIsShowModelConFirm(true);
     }
+    const handleClickEdit = () => {
+        // show modal confirm
+        setIsShowModelConFirm2(true);
+    }
 
     const handleCloseModalConfirm = (status) => {
+        console.log(status)
         setIsShowModelConFirm(status);
     }
     const handleResultDelete = (status => {
@@ -70,10 +76,10 @@ const FilmItem = ({
             <td className={cx('border border-slate-700','customRow')}>{data.year}</td>
             <td className={cx('border border-slate-700','customRow')}>
                 <div className={cx("wrap-btn")}>
-                    <button className={cx("btn","btn__edit")} onClick = {handleClickDelete}>Edit</button>
-                    { isShowModelConFirm && <ModalConfirm result={handleResultDelete} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to delete this Film" />}
+                    <button className={cx("btn","btn__edit")} onClick = {handleClickEdit}>Edit</button>
+                    { isShowModelConFirm2 && <ModalConfirm result={handleResultEdit} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to edit this Film" />}
                     <button className={cx("btn","btn__delete")} onClick = {handleClickDelete}>Delete</button>
-                    { isShowModelConFirm && <ModalConfirm result={handleResultEdit} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to edit this Film" />}
+                    { isShowModelConFirm && <ModalConfirm result={handleResultDelete} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to delete this Film" />}
                 </div>
             </td>
         </tr>
