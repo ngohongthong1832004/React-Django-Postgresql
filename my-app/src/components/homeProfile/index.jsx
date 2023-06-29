@@ -89,11 +89,11 @@ const HomeProfile = () => {
 
     axios.post(`${import.meta.env.VITE_URL_BACKEND}update-user-avatar/`, formData, {headers})
     .then(res => {
-      console.log(res.data.avatarURL)
+      // console.log(res.data.avatarURL)
       setIsShowModalUpdateImg(false);
       Cookies.set('userInfo', JSON.stringify({...dataUser, avatar:"http://" + res.data.avatarURL}));
       toast.success('Update success');
-      console.log("imgURLSession : ",JSON.parse(Cookies.get('userInfo')).avatar)
+      // console.log("imgURLSession : ",JSON.parse(Cookies.get('userInfo')).avatar)
       window.location.reload();
     })
     .catch(err => {

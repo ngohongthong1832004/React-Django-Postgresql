@@ -167,7 +167,7 @@
   .btn__search__film {
     width: 10rem;
     height: 100%;
-    margin:0 0.75rem;
+    // margin:0  0.75rem;
     padding:0 1rem;
     border-radius: 0.5rem;
     background-color: var(--gray);
@@ -177,6 +177,7 @@
       background-color: var(--gray-2);
     }
   }
+  
 }
 .modal__search__film {
   width: calc(100%);

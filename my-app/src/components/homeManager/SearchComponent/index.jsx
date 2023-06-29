@@ -16,14 +16,17 @@ const SearchMini = ({
     data = [],
     result = () => {},
     cb = () => {},
-    isSearchSet,
-    getIsSearchSet,
+    isSearchSet = false,
+    getIsSearchSet = () => {},
+    showAllBtn = true,
     }) => {
 
     
     const [isShowModal, setIsShowModal] = useState(false)
     const [searchValue, setSearchValue] = useState("")
 
+    // console.log(isShowModal)
+    // console.log(data)
     // const debounce = useDebounce(searchValue, 0)
 
 
@@ -71,9 +74,9 @@ const SearchMini = ({
         <div className={cx("search__mini","px-10")} onBlur={handleOnBlur}>
             <div className = {cx("search__mini__detail")}>
                 <div className = {cx("search__mini__detail__item","w-100 relative")}>
-                    <div className = {cx("wrap__btn__search")}>
+                    { showAllBtn && <div className = {cx("wrap__btn__search", "mr-3")}>
                         <button className={cx("btn__search__film",{"active" : !isSearchSet})} type=""  onClick={(e) => handleClickAll(e)}>All</button>
-                    </div>
+                    </div>}
                     <input 
                         className={cx("input-text")} 
                         value={searchValue}  
@@ -81,7 +84,7 @@ const SearchMini = ({
                         onFocus={handleFocus}
                         placeholder="Search..."
                         type="text"/>
-                    <div className = {cx("wrap__btn__search" )}>
+                    <div className = {cx("wrap__btn__search", "ml-3" )}>
                         <button className={cx("btn__search__film",{"active" : isSearchSet})} onClick={(e) => handleClickSearch(e)}>Search</button>
                     </div>
                     {isShowModal &&  data?.length > 0 && <div className = {cx("modal__search__film", "absolute")}>
@@ -90,7 +93,6 @@ const SearchMini = ({
                                 if (index < 5) return <SearchItemMini key={index} result={getValueSearch} item={item.name}/>
                             })
                         }
-                        
                     </div>}
                 </div>
             </div>
