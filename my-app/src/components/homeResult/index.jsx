@@ -22,43 +22,82 @@ const HomeResult = () => {
     const [isLiked, setIsLiked] = useState(false)
     const [isFollowed, setIsFollowed] = useState(false)
     const [data, setData] = useState({})
+    const [dataChat, setDataChat] = useState({})
     const [dataRecommend, setDataRecommend] = useState([])
     const [idAllWishlistLike, setIdAllWishlistLike] = useState([])
     const [idAllWishlistFollow, setIdAllWishlistFollow] = useState([])
+    const [renderChat, setRenderChat] = useState(false)
 
     let url = new URL(window.location.href);
     let params = new URLSearchParams(url.search);
     let searchValue = params.get('q'); 
-    console.log(searchValue)
 
     useEffect(() => {
-        const option = {
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": `Token ${Cookies.get('sessionToken')}`
+        if (Cookies.get('sessionToken')) {
+            const option = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Token ${Cookies.get('sessionToken')}`
+                }
             }
-        }
-      
-        axios.get(import.meta.env.VITE_URL_BACKEND + "get-all-id-movie-wishlist-like/", option)
-        .then(res => {
-            const arrIdWishlistLike = res.data.map((item) => {
-                return item.id
+        
+            axios.get(import.meta.env.VITE_URL_BACKEND + "get-all-id-movie-wishlist-like/", option)
+            .then(res => {
+                const arrIdWishlistLike = res.data.map((item) => {
+                    return item.id
+                })
+                setIdAllWishlistLike(arrIdWishlistLike)
             })
-            console.log("arrIdWishlistLike : ",arrIdWishlistLike)
-            setIdAllWishlistLike(arrIdWishlistLike)
+            .catch((err) => {
+                console.log(err)
+            })
+
+        
+            axios.get(import.meta.env.VITE_URL_BACKEND + "get-all-id-movie-wishlist-follow/", option)
+            .then(res => {
+                const arrIdWishlistFollow = res.data.map((item) => {
+                    return item.id
+                })
+                setIdAllWishlistFollow(arrIdWishlistFollow)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    },[])
+    useEffect(() => {
+        const formData = new FormData()
+        formData.append("searchValue", searchValue)
+        axios.post(import.meta.env.VITE_URL_BACKEND + "search-movie/", formData)
+        .then((res) => {
+            setData(res.data.data[0])
+            formData.append("movieId", res.data.data[0].id)
+            let option = {}
+            Cookies.get('sessionToken') ? option = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Token ${Cookies.get('sessionToken')}`
+                }
+            }: option = {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+            axios.post(import.meta.env.VITE_URL_BACKEND + "get-chat-item/", formData, option)
+            .then((res) => {
+                setDataChat(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         })
         .catch((err) => {
             console.log(err)
         })
 
-       
-        axios.get(import.meta.env.VITE_URL_BACKEND + "get-all-id-movie-wishlist-follow/", option)
-        .then(res => {
-            const arrIdWishlistFollow = res.data.map((item) => {
-                return item.id
-            })
-            console.log("arrIdWishlistFollow : ",arrIdWishlistFollow)
-            setIdAllWishlistFollow(arrIdWishlistFollow)
+        axios.get(import.meta.env.VITE_URL_BACKEND + "get-random-movie/")
+        .then((res) => {
+            setDataRecommend(res.data)
         })
         .catch((err) => {
             console.log(err)
@@ -67,27 +106,29 @@ const HomeResult = () => {
     },[])
     useEffect(() => {
         const formData = new FormData()
-        formData.append("searchValue", searchValue)
-        axios.post(import.meta.env.VITE_URL_BACKEND + "search-movie/", formData)
-        .then((res) => {
-            console.log(res.data)
-            setData(res.data.data[0])
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+        // console.log("data?.id : ",data)
+        formData.append("movieId", data?.id)
 
+        if (data.id == undefined){
+            return
+        }else {
+            const option = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Token ${Cookies.get('sessionToken')}`
+                }
+            }
+            axios.post(import.meta.env.VITE_URL_BACKEND + "get-chat-item/", formData, option)
+            .then((res) => {
+                setDataChat(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })  
+        }
+       
+    },[renderChat])
 
-        axios.get(import.meta.env.VITE_URL_BACKEND + "get-random-movie/")
-        .then((res) => {
-            console.log(res.data)
-            setDataRecommend(res.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-
-    },[])
 
     const handleClickLike = () => {
             const formData = new FormData()
@@ -144,7 +185,33 @@ const HomeResult = () => {
         })
     }
 
+    const handleSendChat = (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        const value = Object.fromEntries(formData)
+        if (value.content.trim() == ""){
+            return 
+        }
+        formData.append("movieId", data.id)
+        const option = {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Token ${Cookies.get('sessionToken')}`
+            }
+        }
+        axios.post(import.meta.env.VITE_URL_BACKEND + "add-chat-item/", formData, option)
+        .then((res) => {
+            setRenderChat(!renderChat)
+            e.target.reset()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+
+    }
     
+    console.log("dataChat : ",dataChat)
 
     return (
         <div className={cx("homeResult","container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
@@ -309,24 +376,30 @@ const HomeResult = () => {
                 <div className={cx("homeResult__chat__wrap")}>
                     {/* input */}
                     <div className={cx("homeResult__chat__wrap__input")}>
-                        <input className={cx("homeResult__chat__wrap__input__inputEl")} type="text" placeholder="Type your message here..." />
-                        <button className={cx("homeResult__chat__wrap__input__btn")}>
-                            <i className={cx("fas fa-paper-plane")}></i>
-                        </button>
+                        <form onSubmit={handleSendChat}>
+                            <input className={cx("homeResult__chat__wrap__input__inputEl")} name="content" type="text" placeholder="Type your message here..." />
+                            <button className={cx("homeResult__chat__wrap__input__btn")}>
+                                <i className={cx("fas fa-paper-plane")}></i>
+                            </button>
+                        </form>
                     </div>
+                    <span className={cx("countComment")}><span>{dataChat?.pagination?.total}</span> { dataChat?.pagination?.total > 1 ? "comments" : "comment"}</span>
                     {/* chat */}
                     <div className={cx("homeResult__chat__wrap__chat")}>
-                        <ParentChat />
-                        <ParentChat />
+                        {dataChat?.data?.map((item, index) => {
+                            return (
+                                <ParentChat key={index} data={item} render={(e) => setRenderChat(e)} />
+                            )
+                        })}                       
                         {/* ====================================================================== */}
-                        <div className={cx("homeResult__more__chat__pagination")} >
+                        { dataChat?.pagination?.total > 5 && <div className={cx("homeResult__more__chat__pagination")} >
                             <button className={cx("homeResult__more__chat__pagination__item")} onClick={ () => setMoreChat(!moreChat)} style={{width : "100%"}}>
                                 {
                                     moreChat ? <i className={cx("fas fa-chevron-down")}></i>
                                     :<i className={cx("fas fa-chevron-up")}></i>
                                 }
                             </button>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>
