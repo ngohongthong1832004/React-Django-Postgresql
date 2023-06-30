@@ -1,5 +1,5 @@
 import classNames from "classnames/bind"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import {toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from "js-cookie"
@@ -7,6 +7,7 @@ import axios from "axios"
 
 import imgs from "../../assets"
 import styles from "./homeResult.module.scss"
+import ModalConfirm from "../modalConfirm"
 
 
 const cx = classNames.bind(styles)
@@ -16,8 +17,10 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
     const [isLiked , setIsLiked] = useState(false)
     const [isDisLiked , setIsDisLiked] = useState(false)
     const [isReply , setIsReply] = useState(false)
+    const [isShowModal , setIsShowModal] = useState(false)
+    const inputRef = useRef(null)
 
-    console.log(data?.user?.username)
+    // console.log(data?.user?.username)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -27,7 +30,7 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
         // console.log("axios")
         const formData = new FormData(e.target)
         formData.append("chatItemId" , parentUser.id)
-        formData.append("content" , `@${String(data?.user?.username)}: ${formData.get("content")}`)
+        formData.append("content" , `@${String(data?.user?.username).trim()}: ${formData.get("content")}`)
         // formData.append("parent" , data?.id)
         let option = {
             headers : {
@@ -38,8 +41,6 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
         .then(res => {
             setIsReply(!isReply)
             render(Math.random())
-            // console.log("reply childrent")
-            console.log(res.data)
         })
         .catch(err => {
             toast.error("Reply fail")
@@ -61,9 +62,29 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
     }
     const handleClickRep = () => {
         setIsReply(!isReply)
+        setTimeout(() => {
+            inputRef.current.focus()
+        }, 100);
     }
-    const handleClickDelete = () => {
-
+    const handleResultDelete = (status) => {
+        if (status == true) {
+            let option = {
+                headers : {
+                    "Authorization" : `Token ${Cookies.get("sessionToken")}`
+                }
+            }
+            axios.post(import.meta.env.VITE_URL_BACKEND + `delete-chat-reply/${data?.id}`,null , option)
+            .then(res => {
+                toast.success("Delete success")
+                render(Math.random())
+            })
+            .catch(err => {
+                toast.error("Delete fail")
+            })
+        }
+    }
+    const handleCloseModalConfirm = (status) => {
+        setIsShowModal(status)
     }
 
     return (
@@ -95,9 +116,10 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
                         <button className= {cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickRep}>
                             <i className={cx("fa-solid fa-reply")}></i>
                         </button>
-                        <button className= {cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickDelete}>
+                        { data?.user?.isDelete && <button className= {cx("homeResult__chat__wrap__item__info__btn__item")} onClick={() => setIsShowModal(true)}>
                             <i className={cx("fa-solid fa-trash")}></i>
-                        </button>
+                        </button>}
+                        { isShowModal && <ModalConfirm result={handleResultDelete} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to delete this comment" />}
                         <p className={cx("homeResult__chat__wrap__item__info__text")}>
                             <span className={cx("homeResult__chat__wrap__item__info__text__time")}>{data?.created_at}</span>
                         </p>
@@ -105,7 +127,7 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
                     { isReply && <div className={cx("input__reply__parent")}>
                         <div className={cx("homeResult__chat__wrap__input")}>
                             <form onSubmit={handleSubmit}>
-                                <input className={cx("homeResult__chat__wrap__input__inputEl")} name="content" type="text" placeholder="Type your message here..." />
+                                <input className={cx("homeResult__chat__wrap__input__inputEl")} ref={inputRef} name="content" type="text" placeholder="Type your message here..." />
                                 <button className={cx("homeResult__chat__wrap__input__btn")}>
                                     <i className={cx("fas fa-paper-plane")}></i>
                                 </button>

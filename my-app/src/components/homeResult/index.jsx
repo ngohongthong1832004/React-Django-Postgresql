@@ -16,17 +16,13 @@ const cx = classNames.bind(styles)
 
 
 const HomeResult = () => {
-    const [moreCast, setMoreCast] = useState(true)
-    const [moreChat, setMoreChat] = useState(true)
-    const [moreRecommend, setMoreRecommend] = useState(true)
-    const [isLiked, setIsLiked] = useState(false)
-    const [isFollowed, setIsFollowed] = useState(false)
     const [data, setData] = useState({})
     const [dataChat, setDataChat] = useState({})
     const [dataRecommend, setDataRecommend] = useState([])
     const [idAllWishlistLike, setIdAllWishlistLike] = useState([])
     const [idAllWishlistFollow, setIdAllWishlistFollow] = useState([])
     const [renderChat, setRenderChat] = useState(false)
+    const [pageSize, setPageSize] = useState(5)
 
     let url = new URL(window.location.href);
     let params = new URLSearchParams(url.search);
@@ -83,7 +79,7 @@ const HomeResult = () => {
                     'Content-Type': 'application/json',
                 }
             }
-            axios.post(import.meta.env.VITE_URL_BACKEND + "get-chat-item/", formData, option)
+            axios.post(import.meta.env.VITE_URL_BACKEND + `get-chat-item/?page_size=${pageSize}`, formData, option)
             .then((res) => {
                 setDataChat(res.data)
             })
@@ -118,7 +114,7 @@ const HomeResult = () => {
                     "Authorization": `Token ${Cookies.get('sessionToken')}`
                 }
             }
-            axios.post(import.meta.env.VITE_URL_BACKEND + "get-chat-item/", formData, option)
+            axios.post(import.meta.env.VITE_URL_BACKEND + `get-chat-item/?page_size=${pageSize}`, formData, option)
             .then((res) => {
                 setDataChat(res.data)
             })
@@ -127,7 +123,7 @@ const HomeResult = () => {
             })  
         }
        
-    },[renderChat])
+    },[renderChat, pageSize])
 
 
     const handleClickLike = () => {
@@ -209,6 +205,12 @@ const HomeResult = () => {
         })
 
 
+    }
+
+    const handleClickPaginationChat = () => {
+        if (dataChat?.pagination?.total > pageSize){
+            setPageSize(pageSize + 5)
+        }
     }
     
     console.log("dataChat : ",dataChat)
@@ -392,12 +394,9 @@ const HomeResult = () => {
                             )
                         })}                       
                         {/* ====================================================================== */}
-                        { dataChat?.pagination?.total > 5 && <div className={cx("homeResult__more__chat__pagination")} >
-                            <button className={cx("homeResult__more__chat__pagination__item")} onClick={ () => setMoreChat(!moreChat)} style={{width : "100%"}}>
-                                {
-                                    moreChat ? <i className={cx("fas fa-chevron-down")}></i>
-                                    :<i className={cx("fas fa-chevron-up")}></i>
-                                }
+                        { dataChat?.pagination?.max_page != 1 && <div className={cx("homeResult__more__chat__pagination","my-3")} >
+                            <button className={cx("homeResult__more__chat__pagination__item")} onClick={handleClickPaginationChat}>
+                                <i className={cx("fas fa-chevron-down")}></i>
                             </button>
                         </div>}
                     </div>

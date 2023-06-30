@@ -96,7 +96,7 @@ const Search = function () {
         You can write whatever about the film !! name, genre, cast, desc ...
       </h1>
       <div className={cx("relative")} style={{ display: "flex" }} >
-        { isShowModalHint && 
+        { isShowModalHint &&  data.length > 0 &&
           <div className={cx("search__wrap__modal")} id="modal" ref = {modalRef}>
             { data && data.length > 0 &&  data?.map((item, index) => {
               return (

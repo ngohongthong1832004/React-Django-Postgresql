@@ -1,10 +1,11 @@
 import classNames from "classnames/bind"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import {toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from "js-cookie"
 import imgs from "../../assets"
 import axios from "axios"
+import ModalConfirm from "../modalConfirm"
 
 
 import styles from "./homeResult.module.scss"
@@ -18,13 +19,13 @@ const ParentChat = ({
     render = () => {}
     }) => {
 
-    const [moreChat, setMoreChat] = useState(true)
-    const [isVipUser , setIsVipUser] = useState(false)
-    const [isCheckUser , setIsCheckUser] = useState(false)
+   
     const [isLiked , setIsLiked] = useState(false)
     const [isDisLiked , setIsDisLiked] = useState(false)
     const [isReply , setIsReply] = useState(false)
-    const [pageChildren , setPageChildren] = useState(3)
+    const [isShowModal , setIsShowModal] = useState(false)
+    const [pageChildren , setPageChildren] = useState(0)
+    const inputRef = useRef(null)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -40,6 +41,7 @@ const ParentChat = ({
             setTimeout(() => {
                 render(Math.random())
             }, 1000);
+            if ( pageChildren == 0 ) setPageChildren(pageChildren + 3)
             setIsReply(!isReply)
 
         })
@@ -62,12 +64,30 @@ const ParentChat = ({
     }
     const handleClickRep = () => {
         setIsReply(!isReply)
+        setTimeout(() => {
+            inputRef?.current?.focus()
+        }, 100);
     }
-    const handleClickDelete = () => {
-
+    const handleResultDelete = () => {
+        let option = {
+            headers : {
+                "Authorization" : `Token ${Cookies.get("sessionToken")}`
+            }
+        }
+        axios.post(import.meta.env.VITE_URL_BACKEND + `delete-chat-item/${data?.data?.chatItem?.id}`,null , option)
+        .then(res => {
+            toast.success("Delete success")
+            render(Math.random())
+        })
+        .catch(err => {
+            toast.error("Delete fail")
+        })
+    }
+    const handleCloseModalConfirm = (status) => {
+        setIsShowModal(status)
     }
 
-    console.log("data?.data?.chatReply?.data? : ",data?.data?.chatReply?.data)
+    // console.log("data?.data?.chatReply?.data? : ",data?.data?.chatReply?.data)
     
     return (
         <div className={cx("homeResult__chat__wrap__item")}>
@@ -96,9 +116,10 @@ const ParentChat = ({
                     <button className= {cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickRep}>
                         <i className={cx("fa-solid fa-reply")}></i>
                     </button>
-                    {data?.data?.chatItem?.isDelete && <button className= {cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickDelete}>
+                    {data?.data?.chatItem?.isDelete && <button className= {cx("homeResult__chat__wrap__item__info__btn__item")} onClick={() => setIsShowModal(true)}>
                         <i className={cx("fa-solid fa-trash")}></i>
                     </button>}
+                    { isShowModal && <ModalConfirm result={handleResultDelete} callBack={handleCloseModalConfirm} isFormOrConfirm= {false} titleModal={"Confirm"} textConfirm="Are you sure to delete this comment" />}
                     <p className={cx("homeResult__chat__wrap__item__info__text")}>
                         <span className={cx("homeResult__chat__wrap__item__info__text__time")}>{data?.data?.chatItem?.created_at}</span>
                     </p>
@@ -106,7 +127,7 @@ const ParentChat = ({
                {isReply && <div className={cx("input__reply__parent")}>
                     <div className={cx("homeResult__chat__wrap__input")}>
                         <form onSubmit={handleSubmit}>
-                            <input className={cx("homeResult__chat__wrap__input__inputEl")} name="content" type="text" placeholder="Type your message here..." />
+                            <input className={cx("homeResult__chat__wrap__input__inputEl")} ref={inputRef} name="content" type="text" placeholder="Type your message here..." />
                             <button className={cx("homeResult__chat__wrap__input__btn")}>
                                 <i className={cx("fas fa-paper-plane")}></i>
                             </button>
@@ -119,14 +140,29 @@ const ParentChat = ({
                         return <ChildrenChat key={index} data={item} parentUser = {{id :data?.data?.chatItem?.id, name:data?.data?.user?.username }} render={render} />
                     }
                 })}
-                <div className={cx("homeResult__more__chat__pagination")}>
-                    <button className={cx("homeResult__more__chat__pagination__item")} onClick={ () => setMoreChat(!moreChat)}>
-                        {
-                            moreChat ? <i className={cx("fas fa-chevron-down")}></i>
-                            :<i className={cx("fas fa-chevron-up")}></i>
-                        }
+                { data?.data?.chatReply?.data?.length > 0 && <div className={cx("homeResult__more__chat__pagination")} style={{justifyContent: "left"}}>
+                    <button className={cx("homeResult__more__chat__pagination__item")} style={{backgroundColor: "transparent", boxShadow : "none"}}>
+                        { pageChildren == 0 &&  <div onClick={() => setPageChildren(pageChildren + 3)}>
+                            <span>See reply </span>
+                            <i className={cx("fas fa-chevron-down")}></i>
+                        </div> }
+                        { pageChildren > 0  && ( pageChildren < data?.data?.chatReply?.data?.length ? 
+                            <div>
+                                <span onClick={() => setPageChildren(pageChildren + 3)}>
+                                    <span>See more</span>
+                                    <i className={cx("fas fa-chevron-down")}></i>
+                                </span>
+                                <span onClick={() => setPageChildren(0)}>Close reply</span>
+                            </div> : 
+                            <div>
+                                <span onClick={() => setPageChildren(pageChildren - 3)}>
+                                    <span>See less</span>
+                                    <i className={cx("fas fa-chevron-up","mr-5")}></i>
+                                </span>
+                                <span onClick={() => setPageChildren(0)}>Close reply</span>
+                            </div>)}
                     </button>
-                </div>
+                </div>}
             </div>
         </div>
 
