@@ -13,14 +13,25 @@ import ModalConfirm from "../modalConfirm"
 const cx = classNames.bind(styles)
 
 
-const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
-    const [isLiked , setIsLiked] = useState(false)
-    const [isDisLiked , setIsDisLiked] = useState(false)
+const ChildrenChat = ({
+    data = {},
+    parentUser,
+    render = () => {},
+    checkLikeAndDisLikeChildren = {},
+
+    }) => {
+
+    const likeArr = checkLikeAndDisLikeChildren?.like?.map(item => item.id)
+    const disLikeArr = checkLikeAndDisLikeChildren?.dislike?.map(item => item.id)
+
+    const [isLiked , setIsLiked] = useState(likeArr?.includes(data?.id))
+    const [isDisLiked , setIsDisLiked] = useState(disLikeArr?.includes(data?.id))
     const [isReply , setIsReply] = useState(false)
     const [isShowModal , setIsShowModal] = useState(false)
+    const [like , setLike] = useState(data?.like)
     const inputRef = useRef(null)
 
-    // console.log(data?.user?.username)
+    // console.log(checkLikeAndDisLikeChildren)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -50,22 +61,56 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
 
     const handleClickLike = () => {
         setIsLiked(!isLiked)
+        setLike(like + 1)
         if(isDisLiked){
             setIsDisLiked(!isDisLiked)
         }
+
+        let option = {
+            headers : {
+                "Authorization" : `Token ${Cookies.get("sessionToken")}`
+            }
+        }
+        axios.post(import.meta.env.VITE_URL_BACKEND + `like-chat-reply/${data?.id}`,null , option)
+        .then(res => {
+            // render(Math.random())
+            // console.log(res.data)
+        })
+        .catch(err => {
+            toast.error("like fail")
+        })
+
     }
+
     const handleClickDisLike = () => {
         setIsDisLiked(!isDisLiked)
+        setLike(like - 1)
         if(isLiked){
             setIsLiked(!isLiked)
         }
+
+        let option = {
+            headers : {
+                "Authorization" : `Token ${Cookies.get("sessionToken")}`
+            }
+        }
+        axios.post(import.meta.env.VITE_URL_BACKEND + `dislike-chat-reply/${data?.id}`,null , option)
+        .then(res => {
+            // render(Math.random())
+            // console.log(res.data)
+        })
+        .catch(err => {
+            toast.error("like fail")
+        })
     }
+
     const handleClickRep = () => {
         setIsReply(!isReply)
         setTimeout(() => {
             inputRef.current.focus()
         }, 100);
     }
+
     const handleResultDelete = (status) => {
         if (status == true) {
             let option = {
@@ -83,6 +128,7 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
             })
         }
     }
+
     const handleCloseModalConfirm = (status) => {
         setIsShowModal(status)
     }
@@ -107,7 +153,7 @@ const ChildrenChat = ({data = {}, parentUser, render = () => {}}) => {
                     <p className={cx("homeResult__chat__wrap__item__info__text")}>{data?.content}</p>
                 <div className={cx("homeResult__chat__wrap__item__info__btn")}>
                         <button className={cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickLike}>
-                            <span className={cx("count__like")}>{data?.like > 0 && data?.like}</span>
+                            <span className={cx("count__like")}>{like > 0 && like}</span>
                             {!isLiked ? <i className={cx("fa-solid fa-thumbs-up")}></i> : <i className={cx("fa-solid fa-thumbs-up")} style={{color : "aqua"}}></i>} 
                         </button>
                         <button className={cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickDisLike}>

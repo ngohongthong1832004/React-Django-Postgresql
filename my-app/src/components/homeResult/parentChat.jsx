@@ -16,16 +16,20 @@ const cx = classNames.bind(styles)
 
 const ParentChat = ({
     data = {},
-    render = () => {}
+    render = () => {},
+    checkLikeAndDisLike =  {},
+    checkLikeAndDisLikeChildren = {},
     }) => {
-
-   
-    const [isLiked , setIsLiked] = useState(false)
-    const [isDisLiked , setIsDisLiked] = useState(false)
+    
+    const arrIdLike = checkLikeAndDisLike?.like?.map(item => item.id) 
+    const arrIdDisLike = checkLikeAndDisLike?.dislike?.map(item => item.id)
+    const [isLiked , setIsLiked] = useState(arrIdLike?.includes(data?.data?.chatItem?.id))
+    const [isDisLiked , setIsDisLiked] = useState(arrIdDisLike?.includes(data?.data?.chatItem?.id))
     const [isReply , setIsReply] = useState(false)
     const [isShowModal , setIsShowModal] = useState(false)
     const [pageChildren , setPageChildren] = useState(0)
     const inputRef = useRef(null)
+    const [like , setLike] = useState(data?.data?.chatItem?.like)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -52,15 +56,43 @@ const ParentChat = ({
 
     const handleClickLike = () => {
         setIsLiked(!isLiked)
+        setLike(like + 1)
         if(isDisLiked){
             setIsDisLiked(!isDisLiked)
         }
+
+        axios.post(import.meta.env.VITE_URL_BACKEND + `like-chat-item/${data?.data?.chatItem?.id}` , null , {
+            headers : {
+                "Authorization" : `Token ${Cookies.get("sessionToken")}`
+            }
+        })
+        .then(res => {
+            // render(Math.random())
+        })
+        .catch(err => {
+            toast.error("Like fail")
+        })
+
     }
     const handleClickDisLike = () => {
         setIsDisLiked(!isDisLiked)
+        setLike(like - 1)
         if(isLiked){
             setIsLiked(!isLiked)
         }
+
+        axios.post(import.meta.env.VITE_URL_BACKEND + `dislike-chat-item/${data?.data?.chatItem?.id}` , null , {
+            headers : {
+                "Authorization" : `Token ${Cookies.get("sessionToken")}`
+            }
+        })
+        .then(res => {
+            // render(Math.random())
+            // console.log(res.data)
+        })
+        .catch(err => {
+            toast.error("dislike fail")
+        })
     }
     const handleClickRep = () => {
         setIsReply(!isReply)
@@ -87,7 +119,6 @@ const ParentChat = ({
         setIsShowModal(status)
     }
 
-    // console.log("data?.data?.chatReply?.data? : ",data?.data?.chatReply?.data)
     
     return (
         <div className={cx("homeResult__chat__wrap__item")}>
@@ -107,7 +138,7 @@ const ParentChat = ({
                 <p className={cx("homeResult__chat__wrap__item__info__text")}>{data?.data?.chatItem?.content}</p>
                 <div className={cx("homeResult__chat__wrap__item__info__btn")}>
                     <button className={cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickLike}>
-                        <span className={cx("count__like")}>{data?.data?.chatItem?.like > 0 && data?.data?.chatItem?.like }</span>
+                        <span className={cx("count__like")}>{like > 0 && like}</span>
                         {!isLiked ? <i className={cx("fa-solid fa-thumbs-up")}></i> : <i className={cx("fa-solid fa-thumbs-up")} style={{color : "aqua"}}></i>} 
                     </button>
                     <button className={cx("homeResult__chat__wrap__item__info__btn__item")} onClick={handleClickDisLike}>
@@ -137,7 +168,7 @@ const ParentChat = ({
                 {/* chat reply */}
                 {data?.data?.chatReply?.data?.map((item , index) => {
                     if (index < pageChildren){
-                        return <ChildrenChat key={index} data={item} parentUser = {{id :data?.data?.chatItem?.id, name:data?.data?.user?.username }} render={render} />
+                        return <ChildrenChat key={index} data={item} parentUser = {{id :data?.data?.chatItem?.id, name:data?.data?.user?.username }} render={render} checkLikeAndDisLikeChildren = {checkLikeAndDisLikeChildren}/>
                     }
                 })}
                 { data?.data?.chatReply?.data?.length > 0 && <div className={cx("homeResult__more__chat__pagination")} style={{justifyContent: "left"}}>

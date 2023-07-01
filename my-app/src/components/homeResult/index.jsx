@@ -23,6 +23,10 @@ const HomeResult = () => {
     const [idAllWishlistFollow, setIdAllWishlistFollow] = useState([])
     const [renderChat, setRenderChat] = useState(false)
     const [pageSize, setPageSize] = useState(5)
+    const [AllIdLikeChatItem, setAllIdLikeChatItem] = useState([])
+    const [AllIdDisLikeChatItem, setAllIdDisLikeChatItem] = useState([])
+    const [allIdLikeChatReply, setAllIdLikeChatReply] = useState([])
+    const [allIdDisLikeChatReply, setAllIdDisLikeChatReply] = useState([])
 
     let url = new URL(window.location.href);
     let params = new URLSearchParams(url.search);
@@ -59,8 +63,41 @@ const HomeResult = () => {
             .catch((err) => {
                 console.log(err)
             })
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-item/`, option)
+            .then((res) => {
+                setAllIdLikeChatItem(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-item/`, option)
+            .then((res) => {
+                setAllIdDisLikeChatItem(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-reply/`, option)
+            .then((res) => {
+                setAllIdLikeChatReply(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-reply/`, option)
+            .then((res) => {
+                setAllIdDisLikeChatReply(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
     },[])
+
     useEffect(() => {
         const formData = new FormData()
         formData.append("searchValue", searchValue)
@@ -86,6 +123,7 @@ const HomeResult = () => {
             .catch((err) => {
                 console.log(err)
             })
+
         })
         .catch((err) => {
             console.log(err)
@@ -100,6 +138,7 @@ const HomeResult = () => {
         })
 
     },[])
+
     useEffect(() => {
         const formData = new FormData()
         // console.log("data?.id : ",data)
@@ -121,6 +160,38 @@ const HomeResult = () => {
             .catch((err) => {
                 console.log(err)
             })  
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-item/`, option)
+            .then((res) => {
+                setAllIdLikeChatItem(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-item/`, option)
+            .then((res) => {
+                setAllIdDisLikeChatItem(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-reply/`, option)
+            .then((res) => {
+                setAllIdLikeChatReply(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-reply/`, option)
+            .then((res) => {
+                setAllIdDisLikeChatReply(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
        
     },[renderChat, pageSize])
@@ -213,7 +284,7 @@ const HomeResult = () => {
         }
     }
     
-    console.log("dataChat : ",dataChat)
+    // console.log("dataChat : ",dataChat)
 
     return (
         <div className={cx("homeResult","container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
@@ -390,7 +461,7 @@ const HomeResult = () => {
                     <div className={cx("homeResult__chat__wrap__chat")}>
                         {dataChat?.data?.map((item, index) => {
                             return (
-                                <ParentChat key={index} data={item} render={(e) => setRenderChat(e)} />
+                                <ParentChat key={index} data={item} checkLikeAndDisLike = {{like: AllIdLikeChatItem, dislike : AllIdDisLikeChatItem}} checkLikeAndDisLikeChildren = {{like: allIdLikeChatReply, dislike : allIdDisLikeChatReply}} render={(e) => setRenderChat(e)} />
                             )
                         })}                       
                         {/* ====================================================================== */}
