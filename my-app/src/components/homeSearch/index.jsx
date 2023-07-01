@@ -7,6 +7,7 @@ import axios from "axios";
 import styles from "./homeSearch.module.scss";
 import ItemFilm from "../itemFilm";
 import Pagination from "../pagination";
+import Skeleton from "../skeleton";
 
 const cx = classnames.bind(styles);
 
@@ -15,6 +16,7 @@ const HomeSearch = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('search-movie/');
+  const [isSkeleton, setIsSkeleton] = useState(false);
   
   let url = new URL(window.location.href);
   let params = new URLSearchParams(url.search);
@@ -33,6 +35,7 @@ const HomeSearch = () => {
     })
     .then(function (response) {
       setData(response.data);
+      setIsSkeleton(true);
     })
     .catch(function (error) {
       console.log(error);
@@ -43,7 +46,6 @@ const HomeSearch = () => {
   const getPage = (page) => {
     setPage(page);
   }
-
 
 
 
@@ -66,27 +68,27 @@ const HomeSearch = () => {
             "grid grid-cols-5 gap-5",
           )}
         >
-          <div className={cx(`homeSearch__filter__wrap__item__title${show === 0 ? "--active" : ""}`,)} onClick={() =>{ setShow(0); setPage(1) ; setQuery("search-movie/")}}>
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 0 ? "--active" : ""}`,)} onClick={() =>{ setShow(0); setPage(1); if (show != 0) setIsSkeleton(false) ; setQuery("search-movie/")}}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Name
             </p>
           </div>
-          <div className={cx(`homeSearch__filter__wrap__item__title${show === 1 ? "--active" : ""}`,)} onClick={() =>{ setShow(1); setPage(1) ; setQuery("search-movie-with-genre/")}}>
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 1 ? "--active" : ""}`,)} onClick={() =>{ setShow(1); setPage(1); if (show != 1) setIsSkeleton(false) ; setQuery("search-movie-with-genre/")}}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Genre
             </p>
           </div>
-          <div className={cx(`homeSearch__filter__wrap__item__title${show === 2 ? "--active" : ""}`,)} onClick={() =>{ setShow(2); setPage(1) ; setQuery("search-movie-with-cast/")}}>
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 2 ? "--active" : ""}`,)} onClick={() =>{ setShow(2); setPage(1); if (show != 2) setIsSkeleton(false) ; setQuery("search-movie-with-cast/")}}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Cast
             </p>
           </div>
-          <div className={cx(`homeSearch__filter__wrap__item__title${show === 3 ? "--active" : ""}`,)} onClick={() =>{ setShow(3); setPage(1) ; setQuery("search-movie-with-country/")}}>
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 3 ? "--active" : ""}`,)} onClick={() =>{ setShow(3); setPage(1); if (show != 3) setIsSkeleton(false) ; setQuery("search-movie-with-country/")}}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Country
             </p>
           </div>
-          <div className={cx(`homeSearch__filter__wrap__item__title${show === 4 ? "--active" : ""}`,)} onClick={() => {setShow(4); setPage(1) ; setQuery("search-movie-with-description/")}}>
+          <div className={cx(`homeSearch__filter__wrap__item__title${show === 4 ? "--active" : ""}`,)} onClick={() => {setShow(4); setPage(1); if (show != 4) setIsSkeleton(false) ; setQuery("search-movie-with-description/")}}>
             <p className={cx("homeSearch__filter__wrap__item__title__text")}>
               Description
             </p>
@@ -94,7 +96,7 @@ const HomeSearch = () => {
         </div>
       </div>
       <div className={cx("homeSearch__content", "p-1.5")}>
-        <div className={cx("homeSearch__content__wrap__item","grid gap-5 grid-cols-3 sm:grid-cols-10",)}>
+        { isSkeleton ? <div className={cx("homeSearch__content__wrap__item","grid gap-5 grid-cols-3 sm:grid-cols-10",)}>
           {  data?.data?.length > 0 ? data?.data?.map((movie, index) => {
 
             if (index == 5) {
@@ -105,7 +107,7 @@ const HomeSearch = () => {
             }
 
           }) : <h2 className={cx("col-span-10", "noMovie", "mt-3")}>Can not find movie</h2> }
-        </div>
+        </div> : <Skeleton/>}
       </div>
       <Pagination data = {data?.pagination}  result = {getPage}/>
     </div>

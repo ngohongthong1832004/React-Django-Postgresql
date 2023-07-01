@@ -33,6 +33,10 @@ const ParentChat = ({
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to send comment")
+            return
+        }
         const formData = new FormData(e.target)
         formData.append("chatItemId" , data?.data?.chatItem?.id)
         let option = {
@@ -55,6 +59,10 @@ const ParentChat = ({
     }
 
     const handleClickLike = () => {
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to like comment")
+            return
+        }
         setIsLiked(!isLiked)
         setLike(like + 1)
         if(isDisLiked){
@@ -75,6 +83,10 @@ const ParentChat = ({
 
     }
     const handleClickDisLike = () => {
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to dislike comment")
+            return
+        }
         setIsDisLiked(!isDisLiked)
         setLike(like - 1)
         if(isLiked){

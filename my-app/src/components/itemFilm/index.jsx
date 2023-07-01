@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
+import imgs from "../../assets";
 
 
 import styles from "./itemFilm.module.scss";
@@ -16,7 +17,14 @@ const ItemFilm = ({className, data= {}}) => {
     return (
         <div className={classes} onClick={handleClickItem}>
             <div className={cx("item__img")}>
-                <img src={data.img}></img>
+            <img
+                src={data.img}
+                onError={(e) => {
+                    e.target.src = imgs.noImage; // Replace with the path to your fallback image
+                    e.target.onerror = null; // Prevent infinite fallback loop if fallback image also fails
+                }}
+                alt="Fallback Image"
+            />
             </div>
             <div className={cx("item__title")}>
                 <h2 className={cx("item__title__text")}>{data.name}</h2>

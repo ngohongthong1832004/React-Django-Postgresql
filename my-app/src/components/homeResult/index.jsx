@@ -4,10 +4,13 @@ import {toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from "js-cookie"
 import axios from "axios"
+import imgs from "../../assets"
 
 import styles from "./homeResult.module.scss"
 import ParentChat from "./parentChat"
 import ItemFilm from "../itemFilm"
+import SkeletonFive from "../skeleton/skeletonFive"
+import SkeletonText from "../skeleton/SkeletonText"
 
 
 const cx = classNames.bind(styles)
@@ -27,11 +30,14 @@ const HomeResult = () => {
     const [AllIdDisLikeChatItem, setAllIdDisLikeChatItem] = useState([])
     const [allIdLikeChatReply, setAllIdLikeChatReply] = useState([])
     const [allIdDisLikeChatReply, setAllIdDisLikeChatReply] = useState([])
+    const [skeletonInfo, setSkeletonInfo] = useState(false)
+    const [skeletonRecommend, setSkeletonRecommend] = useState(false)
 
     let url = new URL(window.location.href);
     let params = new URLSearchParams(url.search);
     let searchValue = params.get('q'); 
 
+    // USER check
     useEffect(() => {
         if (Cookies.get('sessionToken')) {
             const option = {
@@ -98,6 +104,7 @@ const HomeResult = () => {
         }
     },[])
 
+    // GET RECOMMEND MOVIE AND RANDOM MOVIE
     useEffect(() => {
         const formData = new FormData()
         formData.append("searchValue", searchValue)
@@ -119,6 +126,7 @@ const HomeResult = () => {
             axios.post(import.meta.env.VITE_URL_BACKEND + `get-chat-item/?page_size=${pageSize}`, formData, option)
             .then((res) => {
                 setDataChat(res.data)
+                setSkeletonInfo(true)
             })
             .catch((err) => {
                 console.log(err)
@@ -132,6 +140,7 @@ const HomeResult = () => {
         axios.get(import.meta.env.VITE_URL_BACKEND + "get-random-movie/")
         .then((res) => {
             setDataRecommend(res.data)
+            setSkeletonRecommend(true)
         })
         .catch((err) => {
             console.log(err)
@@ -139,6 +148,7 @@ const HomeResult = () => {
 
     },[])
 
+    // GET CHAT ITEM
     useEffect(() => {
         const formData = new FormData()
         // console.log("data?.id : ",data)
@@ -147,12 +157,22 @@ const HomeResult = () => {
         if (data.id == undefined){
             return
         }else {
-            const option = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": `Token ${Cookies.get('sessionToken')}`
-                }
-            }
+            let option = {}
+
+            if (Cookies.get('sessionToken')){ 
+                option = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": `Token ${Cookies.get('sessionToken')}`
+                    }
+                    }
+            }else {
+                option = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+            }}
+
             axios.post(import.meta.env.VITE_URL_BACKEND + `get-chat-item/?page_size=${pageSize}`, formData, option)
             .then((res) => {
                 setDataChat(res.data)
@@ -161,70 +181,81 @@ const HomeResult = () => {
                 console.log(err)
             })  
 
-            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-item/`, option)
-            .then((res) => {
-                setAllIdLikeChatItem(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            if (Cookies.get('sessionToken')){
+                axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-item/`, option)
+                .then((res) => {
+                    setAllIdLikeChatItem(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
 
-            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-item/`, option)
-            .then((res) => {
-                setAllIdDisLikeChatItem(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+                axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-item/`, option)
+                .then((res) => {
+                    setAllIdDisLikeChatItem(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
 
-            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-reply/`, option)
-            .then((res) => {
-                setAllIdLikeChatReply(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+                axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-like-chat-reply/`, option)
+                .then((res) => {
+                    setAllIdLikeChatReply(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
 
-            axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-reply/`, option)
-            .then((res) => {
-                setAllIdDisLikeChatReply(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        }
+                axios.get(import.meta.env.VITE_URL_BACKEND + `get-all-id-dislike-chat-reply/`, option)
+                .then((res) => {
+                    setAllIdDisLikeChatReply(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
+         }
        
     },[renderChat, pageSize])
 
 
     const handleClickLike = () => {
-            const formData = new FormData()
-            formData.append("movieId", data.id)
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to like this movie")
+            return
+        }
 
-            const option = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": `Token ${Cookies.get('sessionToken')}`
-                }
+        const formData = new FormData()
+        formData.append("movieId", data.id)
+
+        const option = {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Token ${Cookies.get('sessionToken')}`
             }
-            axios.post(import.meta.env.VITE_URL_BACKEND + "toggle-wishlist-like/",formData, option)
-            .then((res) => {
-                toast.success(res.data.message)
-                let dataInfo = JSON.parse(Cookies.get("userInfo"))
-                if (res.data.message.includes("Add")){
-                    dataInfo.countLike = dataInfo.countLike + 1
-                }else {
-                    dataInfo.countLike = dataInfo.countLike - 1
-                }
-                Cookies.set("userInfo", JSON.stringify(dataInfo))
-                window.location.reload()
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+        }
+        axios.post(import.meta.env.VITE_URL_BACKEND + "toggle-wishlist-like/",formData, option)
+        .then((res) => {
+            toast.success(res.data.message)
+            let dataInfo = JSON.parse(Cookies.get("userInfo"))
+            if (res.data.message.includes("Add")){
+                dataInfo.countLike = dataInfo.countLike + 1
+            }else {
+                dataInfo.countLike = dataInfo.countLike - 1
+            }
+            Cookies.set("userInfo", JSON.stringify(dataInfo))
+            window.location.reload()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     const handleClickFollow = () => {
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to follow this movie")
+            return
+        }
         const formData = new FormData()
         formData.append("movieId", data.id)
 
@@ -254,6 +285,10 @@ const HomeResult = () => {
 
     const handleSendChat = (e) => {
         e.preventDefault()
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to comment")
+            return
+        }
         const formData = new FormData(e.target)
         const value = Object.fromEntries(formData)
         if (value.content.trim() == ""){
@@ -284,13 +319,20 @@ const HomeResult = () => {
         }
     }
     
-    // console.log("dataChat : ",dataChat)
 
     return (
         <div className={cx("homeResult","container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
             <div className={cx("homeResult__wrap")}>
                 <div className = {cx("homeResult__wrap__img")}>
-                    <img src={data?.img} alt="" />
+                    { skeletonInfo ? <img
+                        src={data?.img}
+                        onError={(e) => {
+                            e.target.src = imgs.noImage; // Replace with the path to your fallback image
+                            e.target.onerror = null; // Prevent infinite fallback loop if fallback image also fails
+                        }}
+                        alt="Fallback Image"
+                    /> : <SkeletonText className={"h-64"} tagName = "div" /> }
+                     
                     <div className = {cx("homeResult__wrap__img__desc")}>
                         <p className = {cx("homeResult__wrap__img__desc__text")}>
                             <span className = {cx("homeResult__wrap__img__desc__text__span")}>{data?.star}</span>
@@ -319,58 +361,60 @@ const HomeResult = () => {
                 </div>
                 <div className = {cx("homeResult__wrap__info")}>
                     <div className = {cx("homeResult__wrap__info__title")}>
-                        <h1 className = {cx("homeResult__wrap__info__title__text")}>{data?.name}</h1>
+                        { skeletonInfo ? <h1 className = {cx("homeResult__wrap__info__title__text")}>{data?.name}</h1> : <SkeletonText className={"h-12 mb-5"} tagName = "h1" />}
                     </div>
                     { data?.subName != "null" && <div className = {cx("homeResult__wrap__info__subTitle")}>
-                        <h2 className = {cx("homeResult__wrap__info__subTitle__text")}>{data?.subName}</h2>
+                        { true ? <h2 className = {cx("homeResult__wrap__info__subTitle__text")}>{data?.subName}</h2> : <SkeletonText tagName = "h2" />}
                     </div>}
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Genre </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.genres}</p>
+                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.genres}</p> : <SkeletonText tagName = "p" />}
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Release </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.releaseDate}</p>
+                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.releaseDate}</p> : <SkeletonText tagName = "p" />}
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Length </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.length}</p>
+                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.length}</p> : <SkeletonText tagName = "p" />}
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Cast </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.casts}</p>
+                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.casts}</p> : <SkeletonText tagName = "p" />}
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>countries </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.countries}</p>
+                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.countries}</p> : <SkeletonText tagName = "p" />}
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Production </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.productions}</p>
+                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.productions}</p> : <SkeletonText tagName = "p" />}
                         </div>
                     </div>
                     <div className = {cx("homeResult__wrap__info__detail")}>
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Desc </p>
                             <span>:</span>
-                            <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.desc}</p>
+                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.desc}</p> : 
+                               <SkeletonText className={"h-16"} tagName = "h1" />
+                            }
                         </div>
                     </div>
                 </div>
@@ -431,15 +475,20 @@ const HomeResult = () => {
                     <div className={cx("homeResult__more__recommend__title")}>
                         <h2 className={cx("homeResult__more__recommend__title__text")}>Recommend</h2>
                     </div>
-                    <div className={cx("homeResult__more__recommend__wrap", "grid grid-cols-6 gap-5 sm:grid-cols-5" )}>
+                   {skeletonRecommend ? <div className={cx("homeResult__more__recommend__wrap", "grid grid-cols-6 gap-5 sm:grid-cols-5" )}>
                        {dataRecommend?.map((item, index) => {
-                            return (
-                             <ItemFilm key={index} data={item} />
-                            )
+                            if (index == 3){
+                                return (
+                                    <ItemFilm className={cx(" col-span-2 col-start-2 sm:col-span-1 ")} key={index} data={item} />
+                                )
+                            }else {
+                                return (
+                                    <ItemFilm className={cx(" col-span-2 sm:col-span-1")} key={index} data={item} />
+                                )
+                            }
                         })
                        }
-                    </div>
-
+                    </div> : <SkeletonFive />}
                 </div>
             </div>
             <div className={cx("homeResult__chat")}>

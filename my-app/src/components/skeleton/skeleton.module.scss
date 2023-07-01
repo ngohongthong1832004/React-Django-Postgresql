@@ -1,0 +1,46 @@
+.skeleton__item {
+    background-color: var(--gray);
+    border-radius: 0.5rem;
+    height: 15rem;
+    &--active {
+        @extend .skeleton__item;
+        background-color: var(--gray-2);
+    }
+}
+
+.skeleton-text {
+    border-radius: 0.5rem;
+    width: 100%;
+    &--active {
+        @extend .skeleton-text;
+        background-color: var(--gray-2);
+    }
+    animation: identifier 0.8s linear infinite;
+
+}
+
+@keyframes identifier {
+    0% {
+        background: linear-gradient(to right, var(--gray), var(--gray-2));
+    }
+    50% {
+        background: linear-gradient(to right, var(--gray), var(--gray));
+    }
+    100% {
+        background: linear-gradient(to right, var(--gray-2), var(--gray));
+    }
+}
+    
+
+.skeleton-text + .skeleton-text {
+    margin: 0.4rem 0 ;
+}
+
+.h1 {
+    height: 3rem;
+}
+
+.img {
+    height: 12rem;
+
+}

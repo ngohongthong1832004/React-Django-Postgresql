@@ -141,11 +141,11 @@ const Search = function () {
             </div>
           </form>
         </>
-        <div className={cx("search__wrap__voice")}>
+        {/* <div className={cx("search__wrap__voice")}>
           <button className={cx("search__voice__btn")} >
             <i className="fas fa-microphone"></i>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

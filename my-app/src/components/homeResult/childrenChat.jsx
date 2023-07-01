@@ -35,6 +35,10 @@ const ChildrenChat = ({
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to send comment")
+            return
+        }
         if (parentUser.id == undefined) {
             return
         }
@@ -60,6 +64,10 @@ const ChildrenChat = ({
     }
 
     const handleClickLike = () => {
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to like comment")
+            return
+        }
         setIsLiked(!isLiked)
         setLike(like + 1)
         if(isDisLiked){
@@ -83,6 +91,10 @@ const ChildrenChat = ({
     }
 
     const handleClickDisLike = () => {
+        if (!Cookies.get('sessionToken')){
+            toast.error("Please login to dislike comment")
+            return
+        }
         setIsDisLiked(!isDisLiked)
         setLike(like - 1)
         if(isLiked){
