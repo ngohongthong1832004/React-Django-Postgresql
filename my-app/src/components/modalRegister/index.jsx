@@ -45,19 +45,25 @@ const Modal = ({isLogin, callBack}) => {
                     email : inputEmail.current.value,
                 })
                 .then(response => {
-                    // console.log(response.data);
                     setIsPending(false);
+                    if ( response.data.message == "Email already exists" ){
+                        callBack(false,{
+                            status : false,
+                            message : response.data.message
+                        })
+                        return
+                    }
                     callBack(false,{
                         status : true,
                         message : "Register success"
                     })
                 })
                 .catch((error) => {
-                    // console.log(error);
+                    console.log(error);
                     setIsPending(false);
                     callBack(false, {
                         status : false,
-                        message : "Register failed"
+                        message : error
                     })
                 });
         }

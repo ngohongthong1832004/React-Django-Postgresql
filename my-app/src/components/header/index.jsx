@@ -36,6 +36,11 @@ const Header = () => {
     setIsShow(data)
     setIsUser(message.isUser)
     if(message.status === true){
+      // console.log("message :", message.message)
+      // if ( message.message == "Email already exists" ){
+      //   toast.error(message.message)
+      //   return
+      // }
       toast.success(message.message)
     }
     if(message.status === false){
