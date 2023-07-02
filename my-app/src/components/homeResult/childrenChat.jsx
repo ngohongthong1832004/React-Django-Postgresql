@@ -55,6 +55,9 @@ const ChildrenChat = ({
         axios.post(import.meta.env.VITE_URL_BACKEND + "add-chat-reply/" , formData , option)
         .then(res => {
             setIsReply(!isReply)
+            let dataInfo = JSON.parse(Cookies.get("userInfo"))
+            dataInfo.countComment += 1
+            Cookies.set("userInfo" , JSON.stringify(dataInfo))
             render(Math.random())
         })
         .catch(err => {
@@ -133,6 +136,9 @@ const ChildrenChat = ({
             axios.post(import.meta.env.VITE_URL_BACKEND + `delete-chat-reply/${data?.id}`,null , option)
             .then(res => {
                 toast.success("Delete success")
+                let dataInfo = JSON.parse(Cookies.get("userInfo"))
+                dataInfo.countComment -= 1
+                Cookies.set("userInfo" , JSON.stringify(dataInfo))
                 render(Math.random())
             })
             .catch(err => {

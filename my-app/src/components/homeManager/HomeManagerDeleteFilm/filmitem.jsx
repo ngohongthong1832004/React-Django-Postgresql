@@ -30,7 +30,6 @@ const FilmItem = ({
     }
 
     const handleCloseModalConfirm = (status) => {
-        console.log(status)
         setIsShowModelConFirm(status);
     }
     const handleResultDelete = (status => {
@@ -59,7 +58,7 @@ const FilmItem = ({
     
             axios.get(`${import.meta.env.VITE_URL_BACKEND}get-movie/${data.id}`,null ,{headers})
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 Cookies.set('dataFilm', JSON.stringify(res.data))
                 navigate(`/manager/update-film`)
             })

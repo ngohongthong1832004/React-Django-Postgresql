@@ -14,7 +14,7 @@ const HomeManagerUpdateUser = () => {
 
     const [id, setId] = useState(Cookies.get('dataFilm') ? JSON.parse(Cookies.get('dataFilm')).id : null)
     const [formDataInput, setFormDataInput] = useState(Cookies.get('dataFilm') ? JSON.parse(Cookies.get('dataFilm')) : {})
-    console.log("formDataInput : ",formDataInput)
+    // console.log("formDataInput : ",formDataInput)
     const [searchData, setSearchData] = useState([]);
     const [searchValue, setSearchValue] = useState("")
 

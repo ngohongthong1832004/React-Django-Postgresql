@@ -51,7 +51,10 @@ const ParentChat = ({
             }, 1000);
             if ( pageChildren == 0 ) setPageChildren(pageChildren + 3)
             setIsReply(!isReply)
-
+            let dataInfo = JSON.parse(Cookies.get("userInfo"))
+            // console.log("dataInfo.CountComment ", dataInfo.countComment)
+            dataInfo.countComment += 1
+            Cookies.set("userInfo" , JSON.stringify(dataInfo))
         })
         .catch(err => {
             toast.error("Reply fail")
@@ -122,6 +125,9 @@ const ParentChat = ({
         .then(res => {
             toast.success("Delete success")
             render(Math.random())
+            let dataInfo = JSON.parse(Cookies.get("userInfo"))
+            dataInfo.countComment = dataInfo.countComment - (1 + data?.data?.chatReply?.data?.length)
+            Cookies.set("userInfo" , JSON.stringify(dataInfo))
         })
         .catch(err => {
             toast.error("Delete fail")

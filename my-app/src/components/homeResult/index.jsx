@@ -1,5 +1,5 @@
 import classNames from "classnames/bind"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import {toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from "js-cookie"
@@ -32,6 +32,11 @@ const HomeResult = () => {
     const [allIdDisLikeChatReply, setAllIdDisLikeChatReply] = useState([])
     const [skeletonInfo, setSkeletonInfo] = useState(false)
     const [skeletonRecommend, setSkeletonRecommend] = useState(false)
+    const descriptionRef = useRef(null);
+    const [showButton, setShowButton] = useState(false);
+    const [showDesc, setShowDesc] = useState(true);
+
+    const descRef = useRef(null);
 
     let url = new URL(window.location.href);
     let params = new URLSearchParams(url.search);
@@ -305,6 +310,9 @@ const HomeResult = () => {
         .then((res) => {
             setRenderChat(!renderChat)
             e.target.reset()
+            let dataInfo = JSON.parse(Cookies.get("userInfo"))
+            dataInfo.countComment += 1
+            Cookies.set("userInfo" , JSON.stringify(dataInfo))
         })
         .catch((err) => {
             console.log(err)
@@ -319,6 +327,24 @@ const HomeResult = () => {
         }
     }
     
+
+    const handleSeeMore = () => {
+        setShowDesc(!showDesc);
+        setShowButton(!showButton);
+    };
+
+    useEffect(() => {
+        if (skeletonInfo) {
+            const lineHeight = parseFloat(getComputedStyle(descriptionRef?.current)?.lineHeight);
+            const descriptionHeight = descriptionRef.current.clientHeight;
+            const lineCount = Math.round(descriptionHeight / lineHeight);
+            if (lineCount > 3) {
+                setShowButton(true);
+                setShowDesc(false);
+            }
+        }
+      }, [skeletonInfo]);
+
 
     return (
         <div className={cx("homeResult","container lg:w-5/6 xl:w-4/5 2xl:w-4/6 mx-2")}>
@@ -412,8 +438,11 @@ const HomeResult = () => {
                         <div className = {cx("homeResult__wrap__info__detail__item")}>
                             <p className = {cx("homeResult__wrap__info__detail__item__text")}>Desc </p>
                             <span>:</span>
-                            { skeletonInfo ? <p className = {cx("homeResult__wrap__info__detail__item__text")}>{data?.desc}</p> : 
-                               <SkeletonText className={"h-16"} tagName = "h1" />
+                            { skeletonInfo ? <div className = {cx("homeResult__wrap__info__detail__item__text")}>
+                                    <p className={cx(`homeResult__wrap__info__detail__item__text__more${showDesc ? "--active" : "--active2"}`)} ref={descriptionRef} >{data?.desc}</p>
+                                    { showButton  && <label onClick={handleSeeMore} className={cx("btn__more")}>See more</label>}
+                                    </div> : 
+                               <SkeletonText className={"h-20"} tagName = "h1" />
                             }
                         </div>
                     </div>

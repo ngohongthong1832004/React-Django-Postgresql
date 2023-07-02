@@ -14,17 +14,6 @@ import SkeletonFive from "../skeleton/skeletonFive";
 const cx = classNames.bind(styles);
 
 const HomeWishlist = () => {
-  useEffect(() => {
-    const loader = async () => {
-      if (!isUser) {
-        toast.error('Please login to access this page');
-        return navigate("/");
-      }
-      return null;
-    };
-    loader();
-  }, []);  
-
   const [show, setShow] = useState(0); // 0: wishlist, 1: like
   const countLikeMovies= (Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')).countWishlist : 0);
   const countFollowMovies= ( Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')).countLike : 0);
@@ -37,12 +26,24 @@ const HomeWishlist = () => {
   const isUser = Cookies.get('sessionToken');
 
   useEffect(() => {
-    const option = {
-      headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Token ${Cookies.get('sessionToken')}`
-        }
-    }
+    const loader = async () => {
+      if (!isUser) {
+        toast.error('Please login to access this page');
+        return navigate("/");
+      }
+      return null;
+    };
+    loader();
+  }, []);  
+
+  useEffect(() => {
+    if (isUser) {
+      const option = {
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Token ${Cookies.get('sessionToken')}`
+          }
+      }
       axios.get(import.meta.env.VITE_URL_BACKEND + query + `?page=${page}`, option)
       .then(res => {
         setData(res.data)
@@ -51,6 +52,7 @@ const HomeWishlist = () => {
       .catch((err) => {
           console.log(err)
       })
+    }
   },[page, query])
 
   const getPage = (page) => {

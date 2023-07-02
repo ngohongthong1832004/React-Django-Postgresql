@@ -29,7 +29,7 @@ const Search = function () {
     formData.append("searchValue", debouncedSearchTerm)
     axios.post(import.meta.env.VITE_URL_BACKEND + "search-movie/", formData)
     .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         setData(res.data.data)
         setIsShowModalHint(true);
     })

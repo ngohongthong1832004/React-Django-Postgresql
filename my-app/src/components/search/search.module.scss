@@ -51,9 +51,10 @@
 }
 .search__wrap__modal {
     position: absolute;
+    z-index: 999;
     top: calc(100% + 0.5rem);
     left: 0;
-    width: calc(100% - 3.7rem);
+    width: 100%;
     padding: 0.5rem;
     background-color: var(--gray);
     border-radius: 1rem;
@@ -61,7 +62,8 @@
     .search__modal__wrap__title {
         margin: 0.2rem 0.5rem;
         padding: 0.1rem 0.75rem;
-        border-left: 3px solid var(--gray-2);
+        border-left: 2px solid var(--gray-2);
+        border-bottom: 1px solid var(--gray-2);
         border-radius: 0.5rem;
         display: block;
         &:hover{
