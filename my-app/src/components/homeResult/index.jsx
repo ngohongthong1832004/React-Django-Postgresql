@@ -116,6 +116,7 @@ const HomeResult = () => {
         axios.post(import.meta.env.VITE_URL_BACKEND + "search-movie/", formData)
         .then((res) => {
             setData(res.data.data[0])
+            setSkeletonInfo(true)
             formData.append("movieId", res.data.data[0].id)
             let option = {}
             Cookies.get('sessionToken') ? option = {
