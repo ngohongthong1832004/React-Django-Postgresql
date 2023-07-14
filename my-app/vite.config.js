@@ -20,10 +20,21 @@ export default defineConfig(({ command, mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   const env = loadEnv(mode, process.cwd(), '')
+
+  
   return {
     plugins: [
       react()
     ],
+    server: {
+      host: true,
+      port: 8000, // This is the port which we will use in docker
+      // Thanks @sergiomoura for the window fix
+      // add the next lines if you're using windows and hot reload doesn't work
+      watch: {
+        usePolling: true
+      }
+    },
     define: {
       __APP_ENV__: env.APP_ENV,
     },

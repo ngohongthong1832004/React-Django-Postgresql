@@ -1,0 +1,18 @@
+version: "3.4"
+services:
+  back-end:
+    build: ../../react-django-postgresql-BE
+    volumes:
+      - ../../react-django-postgresql-BE:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - "8000:8000"
+  front-end:
+    build: .
+    volumes:
+      - ./my-app:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - "8080:80"
+    depends_on:
+      - back-end
